@@ -64,36 +64,47 @@ int
 	parse_ambient_light(
 		char **element_fields,
 		struct s_rt_scene *scene
-		);	// FILE: parse_singleton.c
+		);	// FILE: parsing/parse_ambient_light.c
 int	
 	parse_camera(
 		char **element_fields,
 		struct s_rt_scene *scene
-		);	// FILE: parse_singleton.c
+		);	// FILE: parsing/parse_camera.c
 int	
 	parse_light(
 		char **element_fields,
 		struct s_rt_scene *scene
-		);	// FILE: parse_singleton.c
+		);	// FILE: parsing/parse_light.c
 int	
 	parse_sphere(
 		char **element_fields,
 		struct s_rt_scene *scene
-		);	// FILE: parse_singleton.c
+		);	// FILE: parsing/parse_sphere.c
 int	
 	parse_plane(
 		char **element_fields,
 		struct s_rt_scene *scene
-		);	// FILE: parse_singleton.c
+		);	// FILE: parsing/parse_plane.c
 int	
 	parse_cylinder(
 		char **element_fields,
 		struct s_rt_scene *scene
-		);	// FILE: parse_singleton.c
-size_t
-	count_fields(
-		char **element_fields
-		);	// FILE: parse_helpers.c
+		);	// FILE: parsing/parse_cylinder.c
+int	
+	parse_superquadric(
+		char **element_fields,
+		struct s_rt_scene *scene
+		);	// FILE: parsing/parse_superquadric.c
+int	
+	parse_triangle(
+		char **element_fields,
+		struct s_rt_scene *scene
+		);	// FILE: parsing/parse_triangle.c
+int	
+	parse_stlfile(
+		char **element_fields,
+		struct s_rt_scene *scene
+		);	// FILE: parsing/parse_stlfile.c
 //	//	cleanup functions
 void
 	free_scene(

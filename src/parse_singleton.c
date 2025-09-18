@@ -39,9 +39,9 @@ struct s_rt_scene *scene
 		ft_dprintf(2, ERR E_DUP, "ambient light");
 	else if (count_fields(element_fields) != AMBIENT_LIGHTING_FIELDS + 1)
 		ft_dprintf(2, ERR E_FIELD, "ambient light");
-	else if (atof_limit(element_fields[1], 0.0, 1.0f))
+	else if (atof_limit(&scene->ambient_light.ratio, element_fields[1], 0.0, 1.0f))
 		ft_dprintf(2, ERR E_OOB, "ambient light brightness", "[0.0,1.0]");
-	else if (get_rgb(element_fields[2], &scene->ambient_light.color))
+	else if (get_rgba(element_fields[2], &scene->ambient_light.color))
 		ft_dprintf(2, "Error\ninvalid color values detected\n");
 	else// TODO successpath
 	{
@@ -58,7 +58,8 @@ struct s_rt_scene *scene
 	if (scene->camera_defined)
 		ft_dprintf(2, ERR E_DUP, "camera");
 	else if (count_fields(element_fields) != CAMERA_FIELDS + 1)
-		ft_dprintf(2, ERR E_FIELD, "camera");
+		ft_dprintf(2, ERR E_FIELD, "camera"); // NOTE check if normalised
+											  // vectors actually are normalised
 	else //TODO successpath
 	{
 	}

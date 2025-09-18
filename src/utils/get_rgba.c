@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   parse_helpers.c                                         :+:    :+:       */
+/*   get_rgba.c                                              :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
@@ -46,36 +46,26 @@ struct s_rgba *color
 )
 {
 	char **const	split = ft_split(str, ',');
+	int				r;
+	int				g;
+	int				b;
 
+	if (!split)
+		return (ft_dprintf(2, ERR E_OOM), 1);
 	if (count_fields(split) != 3)
 	{
 		free_array(split);
 		ft_dprintf(2, ERR E_FIELD, "RGB");
 		return (1);
 	}
-	if (is_within_range(ft_atoi(split[0]), 0, 255)
-		&& is_within_range(ft_atoi(split[1]), 0, 255)
-		&& is_within_range(ft_atoi(split[2]), 0, 255))
-	{
-		color->r = ft_atoi(split[0]);
-		color->g = ft_atoi(split[1]);
-		color->b = ft_atoi(split[3]);
-		color->a = 0;
-		return (0);
-	}
-	ft_dprintf(2, ERR E_OOB, "RGB", "{0,1,2,...,255}");
-	return (1);
-}
-
-size_t
-	count_fields(
-char **element_fields
-)
-{
-	size_t	i;
-
-	i = 0;
-	while (element_fields[i])
-		i++;
-	return (i);
+	r = ft_atoi(split[0]);
+	g = ft_atoi(split[1]);
+	b = ft_atoi(split[2]);
+	free_array(split);
+	if (!is_within_range(r, 0, 255)
+		|| !is_within_range(g, 0, 255)
+		|| !is_within_range(b, 0, 255))
+		return (ft_dprintf(2, ERR E_OOB, "RGB", "{0,1,2,...,255}"), 1);
+	*color = (struct s_rgba){.r = r, .g = g, .b = b, .a = 0};
+	return (0);
 }
