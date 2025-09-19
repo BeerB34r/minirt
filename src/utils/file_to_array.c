@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/05/08 03:51:59 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/18 16:40:18 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/09/19 17:04:52 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -33,7 +33,7 @@
 
 static char
 	**fd_to_array(
-int fd,
+const int fd,
 int depth
 )
 {

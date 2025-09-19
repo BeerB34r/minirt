@@ -4,7 +4,7 @@
 # real numbers include the value INF as a substitute for infinity
 # RGB is any set of precisely three comma-separated integers limited to the range {0,1,2,...,255} inclusive
 # vec3 is any set of precisely three comma-separated real numbers (i.e: -42.0,0,42.0)
-# norm is any set of precisely three comma-separated real numbers in the set [-1.0,1.0]
+# norm is any set of precisely three comma-separated real numbers making up a unit vector
 # ambient lighting, float [0.0,1.0] - RGB
 A 0.1 0,42,255
 

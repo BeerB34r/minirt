@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   parse_light.c                                           :+:    :+:       */
+/*   get_norm.c                                              :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/19 20:48:56 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 20:59:38 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/19 20:29:33 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/19 20:46:48 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -26,28 +26,44 @@
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <math.h>
 #include <minirt_utils.h>
-#include <minirt_error.h>
 #include <minirt_declarations.h>
+#include <minirt_error.h>
 
-int
-	parse_light(
-char **element_fields,
-struct s_rt_scene *scene
+/**
+ * A normalised or unit vector is a vector whose magnitude is 1
+ * to calculate the magnitude of a vector, you sum the squares of the vector's
+ * elements and take its root:
+ * |v| = root(v.1 * v.1 + v.2 * v.2 + ... + v.n * v.n)
+ */
+static int
+	is_normalised(
+struct s_vec3 vector
 )
 {
-	if (scene->light_defined)
-		ft_dprintf(2, ERR E_DUP, "light");
-	else if (count_fields(element_fields) != LIGHT_FIELDS + 1)
-		ft_dprintf(2, ERR E_FIELD, "light");
-	else if (
-		!get_vec3(element_fields[1], &scene->light.pos)
-		&& !get_real_limit(element_fields[2], &scene->light.brightness, 0, 1)
-		&& !get_rgba(element_fields[3], &scene->light.color)
-	)
+	return (
+		1 == sqrt((vector.x * vector.x)
+			+ (vector.y * vector.y)
+			+ (vector.z * vector.z))
+	);
+}
+
+int
+	get_norm(
+const char *str,
+struct s_vec3 *store
+)
+{
+	struct s_vec3	result;
+
+	if (get_vec3(str, &result))
+		return (1);
+	else if (!is_normalised(result))
 	{
-		scene->light_defined = 1;
-		return (0);
+		ft_dprintf(2, ERR E_NOTN, str);
+		return (1);
 	}
-	return (1);
+	*store = result;
+	return (0);
 }

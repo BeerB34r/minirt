@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   parse_light.c                                           :+:    :+:       */
+/*   get_vec3.c                                              :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/19 20:48:56 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 20:59:38 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/19 20:15:50 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/19 20:16:42 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -26,28 +26,33 @@
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <minirt_utils.h>
 #include <minirt_error.h>
 #include <minirt_declarations.h>
+#include <minirt_utils.h>
 
 int
-	parse_light(
-char **element_fields,
-struct s_rt_scene *scene
+	get_vec3(
+const char *str,
+struct s_vec3 *store
 )
 {
-	if (scene->light_defined)
-		ft_dprintf(2, ERR E_DUP, "light");
-	else if (count_fields(element_fields) != LIGHT_FIELDS + 1)
-		ft_dprintf(2, ERR E_FIELD, "light");
-	else if (
-		!get_vec3(element_fields[1], &scene->light.pos)
-		&& !get_real_limit(element_fields[2], &scene->light.brightness, 0, 1)
-		&& !get_rgba(element_fields[3], &scene->light.color)
-	)
+	char **const	split = ft_split(str, ',');
+	struct s_vec3	result;
+
+	if (!split)
 	{
-		scene->light_defined = 1;
-		return (0);
+		ft_dprintf(2, ERR E_OOM);
+		return (1);
 	}
-	return (1);
+	else if (count_fields(split) != 3)
+	{
+		ft_dprintf(2, ERR E_FIELD, "vec3");
+		return (1);
+	}
+	else if (get_real(split[0], &result.x)
+		|| get_real(split[1], &result.y)
+		|| get_real(split[2], &result.z))
+		return (1);
+	*store = result;
+	return (0);
 }

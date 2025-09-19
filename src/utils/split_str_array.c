@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/09/18 16:40:31 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/18 16:40:57 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/09/19 16:59:22 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -30,7 +30,7 @@
 
 char
 	***split_str_array(
-char **file_array,
+const char *const *file_array,
 int depth
 )
 {

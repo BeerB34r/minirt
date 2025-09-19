@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/05/08 08:35:08 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/05/08 08:40:16 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/09/19 21:13:30 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -28,6 +28,7 @@
 #include <libft.h>
 #include <minirt_parse.h>
 #include <minirt_error.h>
+#include <minirt_declarations.h>
 
 const static t_element_id	g_singletons[] = {
 {"A", &parse_ambient_light},
@@ -101,6 +102,19 @@ struct s_rt_scene *scene
 	return (parse_subject(element_fields, scene));
 }
 
+static int
+	count_elements(
+char ***elements
+)
+{
+	int	i;
+
+	i = 0;
+	while (elements[i])
+		i++;
+	return (i);
+}
+
 int	
 	parse_scene(
 struct s_rt_scene *scene,
@@ -108,17 +122,24 @@ char ***split_file_array
 )
 {
 	size_t	i;
-	int		rval;
 
 	ft_bzero(scene, sizeof(struct s_rt_scene));
+	scene->elements = ft_calloc(
+			count_elements(split_file_array) - 3,
+			sizeof(struct s_rt_element)
+			);
+	if (!scene->elements)
+	{
+		ft_dprintf(2, ERR E_OOM);
+		return (1);
+	}
 	i = 0;
 	while (split_file_array[i])
 	{
-		rval = parse_element(split_file_array[i], scene);
-		if (rval)
+		if (parse_element(split_file_array[i], scene))
 		{
-			free_scene(scene);
-			return (rval);
+			free_scene(*scene);
+			return (1);
 		}
 	}
 	return (0);

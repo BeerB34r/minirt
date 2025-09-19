@@ -1,55 +1,51 @@
-SRC		=	get_fundamentals.c \
-			parse_singleton.c \
-			parse_trunk.c \
-			parse_helpers.c \
-			cleanup.c \
-			minirt_parse.c \
-			main.c \
-			free_array.c \
-			free_split_array.c \
-			file_to_array.c \
-			split_str_array.c \
-			clean_split_array.c 
-SRCDIR	=	src/utils/ src/ 
-BIN		=	$(addprefix $(BINDIR),$(SRC:.c=.o))
-BINDIR	=	bin/
-DEP		=	$(addprefix $(DEPDIR),$(SRC:.c=.d))
-DEPDIR	=	dep/
-DEPFLAG	=	-MM -MF $@ -MT $@ -MT $(BINDIR)$(addsuffix .o,$(notdir $(basename $<)))
-INC		=	-Ilib/libft/include -I inc -g3
-VPATH	=	$(SRCDIR)
-CFLAGS	=	-Wall -Wextra -Werror $(INC)
-CC		=	cc
-NAME	=	minirt_parser
+SRC				!= cat src.list
+SRCDIR			=	src/utils/ src/parsing/ src/ 
+TESTDIR			=	test/
+TESTFLAGS		=	-g3
+BIN				=	$(addprefix $(BINDIR),$(SRC:.c=.o))
+BINDIR			=	bin/
+DEP				=	$(addprefix $(DEPDIR),$(SRC:.c=.d))
+DEPDIR			=	dep/
+DEPFLAG			=	-MM -MF $@ -MT $@ -MT $(BINDIR)$(addsuffix .o,$(notdir $(basename $<)))
+INC				=	-Ilib/libft/include -I inc
+VPATH			=	$(SRCDIR)
+CFLAGS			:=	-Wall -Wextra -Werror -g3
+CPPFLAGS		=	$(INC)
+LDFLAGS			=	-lm lib/libft/libft.a
+CC				:=	cc
+NAME			:=	minirt_parser
 
 .DEFAULT_GOAL	=	all
-.PRECIOUS	: $(BINDIR) $(DEPDIR)
+.PRECIOUS		:	$(BINDIR) $(DEPDIR)
+.PHONY			:	debug clean fclean re all
 
-include	$(DEP)
+-include	$(DEP)
 
-all		:	$(NAME)
+all				:	$(NAME)
 
-$(NAME)	:	$(BIN)
-	$(CC) $(CFLAGS) -o $@ $^ lib/libft/libft.a
+$(NAME)			:	$(BIN)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(DEPDIR)%.d	:	%.c | $(DEPDIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(DEPFLAG) $<
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAG) $<
 $(BINDIR)%.o	:	%.c	| $(BINDIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
-%/	:
+test_%			:	%.o
+	$(CC) $(CPPFLAGS) $(TESTFLAGS) -o $@ $< $(TESTDIR)$(basename $<).c $(LDFLAGS)
+	./$@
+
+%/				:
 	mkdir -p $@
 
-clean	:
+clean			:
 	$(RM) -r $(BINDIR)
 
-fclean	:
+fclean			:
 	$(RM) -r $(BINDIR)
 	$(RM) -r $(DEPDIR)
 	$(RM) $(NAME)
 
-re		:
+re				:
 	$(MAKE) fclean
 	+$(MAKE) all
-
-.PHONY	:	debug clean fclean re all

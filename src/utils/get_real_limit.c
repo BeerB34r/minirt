@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   parse_light.c                                           :+:    :+:       */
+/*   get_real_limit.c                                        :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/19 20:48:56 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 20:59:38 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/18 18:54:13 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/19 19:59:17 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -26,28 +26,26 @@
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <minirt_utils.h>
 #include <minirt_error.h>
-#include <minirt_declarations.h>
+#include <minirt_utils.h>
 
 int
-	parse_light(
-char **element_fields,
-struct s_rt_scene *scene
+	get_real_limit(
+const char *str,
+double *store,
+double lower_bound,
+double upper_bound
 )
 {
-	if (scene->light_defined)
-		ft_dprintf(2, ERR E_DUP, "light");
-	else if (count_fields(element_fields) != LIGHT_FIELDS + 1)
-		ft_dprintf(2, ERR E_FIELD, "light");
-	else if (
-		!get_vec3(element_fields[1], &scene->light.pos)
-		&& !get_real_limit(element_fields[2], &scene->light.brightness, 0, 1)
-		&& !get_rgba(element_fields[3], &scene->light.color)
-	)
+	double	result;
+
+	if (get_real(str, &result))
+		return (1);
+	else if (!(result < lower_bound || upper_bound < result))
 	{
-		scene->light_defined = 1;
-		return (0);
+		ft_dprintf(2, ERR E_OOBR, result, lower_bound, upper_bound);
+		return (1);
 	}
-	return (1);
+	*store = result;
+	return (0);
 }

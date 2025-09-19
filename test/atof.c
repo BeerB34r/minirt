@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   parse_light.c                                           :+:    :+:       */
+/*   atof.c                                                  :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/19 20:48:56 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 20:59:38 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/19 18:28:49 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/19 18:38:11 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,29 +25,37 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <minirt_utils.h>
-#include <minirt_error.h>
-#include <minirt_declarations.h>
+#include <stdio.h>
+#include <minirt_parse.h>
+#include <stdlib.h>
+
+#define test(n, case) printf("test " #n ", '" case "': og = %f | oc = %f | [%s]\n", atof(case), rt_atof(case), atof(case) == rt_atof(case) ? "PASS" : "FAIL")
 
 int
-	parse_light(
-char **element_fields,
-struct s_rt_scene *scene
+	main(
+int ac,
+char **av
 )
 {
-	if (scene->light_defined)
-		ft_dprintf(2, ERR E_DUP, "light");
-	else if (count_fields(element_fields) != LIGHT_FIELDS + 1)
-		ft_dprintf(2, ERR E_FIELD, "light");
-	else if (
-		!get_vec3(element_fields[1], &scene->light.pos)
-		&& !get_real_limit(element_fields[2], &scene->light.brightness, 0, 1)
-		&& !get_rgba(element_fields[3], &scene->light.color)
-	)
-	{
-		scene->light_defined = 1;
-		return (0);
-	}
-	return (1);
+	(void)ac;
+	(void)av;
+
+	test(1, "1");
+	test(2, "1.0");
+	test(3, "0");
+	test(4, "-0");
+	test(5, "-0.0");
+	test(6, "INF");
+	test(7, "-INF");
+	test(8, "-");
+	test(9, ".");
+	test(10, "f");
+	test(11, "99999999.99999999");
+	test(12, "asd");
+	test(13, ".1f");
+	test(14, ".0");
+	test(15, "-.2");
+	test(16, "1.5");
+
+	return (0);
 }

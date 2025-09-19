@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/09/18 16:49:55 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/18 16:52:18 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/09/19 21:38:01 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -39,6 +39,7 @@ enum e_element_type
 	SPHERE,
 	PLANE,
 	CYLINDER,
+	SUPERQUADRIC,
 	TRIANGLE,
 	STLFILE,
 	UNDEFINED
@@ -69,16 +70,16 @@ struct s_rgba
  */
 struct s_vec3
 {
-	float	x;
-	float	y;
-	float	z;
+	double	x;
+	double	y;
+	double	z;
 };
 
 //	elements of a scene
 
 struct s_rt_element_ambient_light
 {
-	float			ratio;
+	double			ratio;
 	struct s_rgba	color;
 };
 # define AMBIENT_LIGHTING_FIELDS 2
@@ -87,14 +88,14 @@ struct s_rt_element_camera
 {
 	struct s_vec3	pos;
 	struct s_vec3	orientation;
-	char			fov;
+	int				fov;
 };
 # define CAMERA_FIELDS 3
 
 struct s_rt_element_light
 {
 	struct s_vec3	pos;
-	float			brightness;
+	double			brightness;
 	struct s_rgba	color;
 };
 # define LIGHT_FIELDS 3
@@ -102,7 +103,7 @@ struct s_rt_element_light
 struct s_rt_element_sphere
 {
 	struct s_vec3	pos;
-	float			diameter;
+	double			diameter;
 	struct s_rgba	color;
 };
 # define SPHERE_FIELDS 3
@@ -119,21 +120,22 @@ struct s_rt_element_cylinder
 {
 	struct s_vec3	pos;
 	struct s_vec3	axis;
-	float			diameter;
-	float			height;
+	double			diameter;
+	double			height;
 	struct s_rgba	color;
 };
 # define CYLINDER_FIELDS 5
 
 struct s_rt_element_triangle
 {
-	struct s_vec3	normal;
+	struct s_vec3	normal; // precomputed, not given by user
 	struct s_vec3	v1;
 	struct s_vec3	v2;
 	struct s_vec3	v3;
-	uint16_t		attr;
+	struct s_rgba	color;
+	uint16_t		attr; // only relevant for stlfile derived tris
 };
-# define TRIANGLE_FIELDS 5
+# define TRIANGLE_FIELDS 4
 
 struct s_rt_element_stlfile
 {
@@ -141,6 +143,20 @@ struct s_rt_element_stlfile
 	uint32_t						tri_count;
 	struct s_rt_element_triangle	*triangles;
 };
+# define STLFILE_FIELDS 3
+
+struct s_rt_element_superquadric
+{
+	struct s_vec3	pos;
+	double			r;
+	double			s;
+	double			t;
+	double			a;
+	double			b;
+	double			c;
+	struct s_rgba	color;
+};
+# define SUPERQUADRIC_FIELDS 8
 
 typedef struct s_rt_element
 {
@@ -155,6 +171,7 @@ typedef struct s_rt_element
 		struct s_rt_element_cylinder		cylinder;
 		struct s_rt_element_triangle		triangle;
 		struct s_rt_element_stlfile			stlfile;
+		struct s_rt_element_superquadric	superquadric;
 	};
 }	t_element;
 

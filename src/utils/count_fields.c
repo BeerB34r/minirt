@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/09/18 18:33:05 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/18 18:33:15 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/09/19 21:08:39 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -29,7 +29,7 @@
 
 size_t
 	count_fields(
-char **element_fields
+const char **element_fields
 )
 {
 	size_t	i;

@@ -43,6 +43,6 @@ char **av
 	const int			rval = minirt_parse(ac, av, &scene);
 
 	if (!rval)
-		free_scene(&scene);
+		free_scene(scene);
 	return (rval);
 }

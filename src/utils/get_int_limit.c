@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   atof_limit.c                                            :+:    :+:       */
+/*   get_int_limit.c                                         :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/18 18:54:13 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/18 18:56:51 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/19 19:42:53 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/19 19:42:53 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,12 +25,27 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
+#include <libft.h>
+#include <minirt_utils.h>
+#include <minirt_error.h>
+
 int
-	atof_limit(
-float *res,
-char *str,
-float lower_bound,
-float upper_bound
+	get_int_limit(
+const char *str,
+int *store,
+int lower_bound,
+int upper_bound
 )
 {
+	int	result;
+
+	if (get_int(str, &result))
+		return (1);
+	if (result < lower_bound || upper_bound < result)
+	{
+		ft_dprintf(2, ERR E_OOBI, lower_bound, lower_bound, upper_bound);
+		return (1);
+	}
+	*store = result;
+	return (0);
 }

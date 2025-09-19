@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   parse_light.c                                           :+:    :+:       */
+/*   get_int.c                                               :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/19 20:48:56 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 20:59:38 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/19 19:34:23 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/19 19:51:52 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -26,28 +26,37 @@
 /* ************************************************************************** */
 
 #include <libft.h>
-#include <minirt_utils.h>
 #include <minirt_error.h>
-#include <minirt_declarations.h>
 
-int
-	parse_light(
-char **element_fields,
-struct s_rt_scene *scene
+static int
+	is_integer(
+const char *str
 )
 {
-	if (scene->light_defined)
-		ft_dprintf(2, ERR E_DUP, "light");
-	else if (count_fields(element_fields) != LIGHT_FIELDS + 1)
-		ft_dprintf(2, ERR E_FIELD, "light");
-	else if (
-		!get_vec3(element_fields[1], &scene->light.pos)
-		&& !get_real_limit(element_fields[2], &scene->light.brightness, 0, 1)
-		&& !get_rgba(element_fields[3], &scene->light.color)
-	)
-	{
-		scene->light_defined = 1;
+	if (!*str || (!ft_isdigit(*str) && *str != '+' && *str != '-'))
 		return (0);
-	}
+	if (!ft_isdigit(*str))
+		str++;
+	if (!*str)
+		return (0);
+	while (ft_isdigit(*str))
+		str++;
+	if (*str)
+		return (0);
 	return (1);
+}
+
+int
+	get_int(
+const char *str,
+int *store
+)
+{
+	if (!is_integer(str))
+	{
+		ft_dprintf(2, ERR E_NOTI, str);
+		return (1);
+	}
+	*store = ft_atoi(str);
+	return (0);
 }

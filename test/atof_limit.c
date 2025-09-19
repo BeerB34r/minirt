@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   parse_singleton.c                                       :+:    :+:       */
+/*   atof_limit.c                                            :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/05/08 08:40:59 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/05/08 10:12:07 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/19 18:54:31 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/19 19:07:59 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,59 +25,40 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include <math.h>
 #include <minirt_parse.h>
-#include <minirt_error.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-int
-	parse_ambient_light(
-char **element_fields,
-struct s_rt_scene *scene
+#define test(str, lower, upper, expected) printf("test %d, '" str " ["#lower","#upper"] ': %f - expected: %f %s\n", ++n, atof_limit(str, lower, upper), expected, atof_limit(str, lower, upper) == expected ? "[PASS]" : "[FAIL]")
+
+double
+	rt_atof(
+const char *str
 )
 {
-	if (scene->ambient_light_defined)
-		ft_dprintf(2, ERR E_DUP, "ambient light");
-	else if (count_fields(element_fields) != AMBIENT_LIGHTING_FIELDS + 1)
-		ft_dprintf(2, ERR E_FIELD, "ambient light");
-	else if (atof_limit(&scene->ambient_light.ratio, element_fields[1], 0.0, 1.0f))
-		ft_dprintf(2, ERR E_OOB, "ambient light brightness", "[0.0,1.0]");
-	else if (get_rgba(element_fields[2], &scene->ambient_light.color))
-		ft_dprintf(2, "Error\ninvalid color values detected\n");
-	else// TODO successpath
-	{
-	}
-	return (1);
+	return (atof(str));
 }
 
 int
-	parse_camera(
-char **element_fields,
-struct s_rt_scene *scene
+	main(
+int ac,
+char **av
 )
 {
-	if (scene->camera_defined)
-		ft_dprintf(2, ERR E_DUP, "camera");
-	else if (count_fields(element_fields) != CAMERA_FIELDS + 1)
-		ft_dprintf(2, ERR E_FIELD, "camera"); // NOTE check if normalised
-											  // vectors actually are normalised
-	else //TODO successpath
-	{
-	}
-	return (1);
-}
+	int	n = 0;
 
-int
-	parse_light(
-char **element_fields,
-struct s_rt_scene *scene
-)
-{
-	if (scene->light_defined)
-		ft_dprintf(2, ERR E_DUP, "light");
-	else if (count_fields(element_fields) != LIGHT_FIELDS + 1)
-		ft_dprintf(2, ERR E_FIELD, "light");
-	else //TODO successpath
-	{
-	}
-	return (1);
+	(void)ac;
+	(void)av;
+	test("1.0", 0.0, 1.0, 1.0);
+	test("0.0", 0.0, 1.0, 0.0);
+	test("1.1", 0.0, 1.0, NAN);
+	test("1.0", 0.0, NAN, 1.0);
+	test("0.0", NAN, 1.0, 0.0);
+	test("INF", 1.0, INFINITY, INFINITY);
+	test("INF", INFINITY, INFINITY, INFINITY);
+	test("-INF", -INFINITY, INFINITY, -INFINITY);
+	test("-INFINITY", -INFINITY, -INFINITY, -INFINITY);
+	test("INF", NAN, NAN, INFINITY);
+	test("0.1", 0.12, 1.0, NAN);
 }

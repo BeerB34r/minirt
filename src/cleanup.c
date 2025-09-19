@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/05/20 18:19:49 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/05/20 18:43:25 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/09/19 21:02:25 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -27,7 +27,6 @@
 
 #include <libft.h>
 #include <minirt_parse.h>
-
 #include <stdlib.h>
 
 void
