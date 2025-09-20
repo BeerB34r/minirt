@@ -143,7 +143,7 @@ struct s_rt_element_stlfile
 	uint32_t						tri_count;
 	struct s_rt_element_triangle	*triangles;
 };
-# define STLFILE_FIELDS 3
+# define STLFILE_FIELDS 1
 
 struct s_rt_element_superquadric
 {

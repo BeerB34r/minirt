@@ -45,13 +45,14 @@ struct s_rt_element element
 	free(element.stlfile.triangles);
 }
 
-static void (*const	g_cleanup_funcs[9])(struct s_rt_element) = {
+static void (*const	g_cleanup_funcs[10])(struct s_rt_element) = {
 	&free_noop, // AMBIENT_LIGHTING
 	&free_noop, // CAMERA
 	&free_noop, // LIGHT
 	&free_noop, // SPHERE
 	&free_noop, // PLANE
 	&free_noop, // CYLINDER
+	&free_noop, // SUPERQUADRIC
 	&free_noop, // TRIANGLE
 	&free_stlfile, // STLFILE
 	&free_noop, // UNDEFINED
@@ -66,8 +67,8 @@ struct s_rt_scene scene
 {
 	unsigned int	i;
 
-	i = 0;
-	while (i < scene.element_count)
+	i = -1;
+	while (++i < scene.element_count)
 		g_cleanup_funcs[scene.elements[i].type](scene.elements[i]);
 	free(scene.elements);
 }

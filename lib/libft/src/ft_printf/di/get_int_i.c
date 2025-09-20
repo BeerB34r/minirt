@@ -39,16 +39,16 @@ static t_uchar	*pf_itoa(t_sint value, t_printf_arg *argument, t_uint numwidth)
 	t_uint	outlen;
 
 	outlen = numwidth;
-	if (argument->parameter_precision != maybe \
+	if (argument->parameter_precision != maybe
 		&& argument->precision > numwidth)
 		outlen = argument->precision;
-	else if (argument->parameter_precision == maybe \
-			&& argument->width > numwidth \
-			&& argument->flags & zeropad \
-			&& !(argument->flags & leftjustify))
+	else if (argument->parameter_precision == maybe
+		&& argument->width > numwidth
+		&& argument->flags & zeropad
+		&& !(argument->flags & leftjustify))
 	{
 		outlen = argument->width;
-		if (argument->flags & (spaceprefix | signprefix) \
+		if (argument->flags & (spaceprefix | signprefix)
 			|| value < 0)
 			outlen--;
 	}

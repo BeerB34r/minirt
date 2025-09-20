@@ -142,14 +142,21 @@ struct s_rt_scene *scene
 )
 {
 	struct s_rt_element_stlfile	result;
+	char						*trim;
 
 	if (count_fields(element_fields) != STLFILE_FIELDS + 1)
 		ft_dprintf(STDERR_FILENO, ERR E_FIELD, "stlfile");
-	else if (!read_stl_file(element_fields[1], &result))
+	else
 	{
-		scene->elements[(scene->element_count)].type = STLFILE;
-		scene->elements[(scene->element_count)++].stlfile = result;
-		return (0);
+		trim = ft_strchr(element_fields[1], '\n');
+		if (trim)
+			*trim = 0;
+		if (!read_stl_file(element_fields[1], &result))
+		{
+			scene->elements[(scene->element_count)].type = STLFILE;
+			scene->elements[(scene->element_count)++].stlfile = result;
+			return (0);
+		}
 	}
 	return (1);
 }

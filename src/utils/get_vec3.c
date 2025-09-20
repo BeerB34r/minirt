@@ -46,13 +46,18 @@ struct s_vec3 *store
 	}
 	else if (count_fields(split) != 3)
 	{
+		free_array(split);
 		ft_dprintf(2, ERR E_FIELD, "vec3");
 		return (1);
 	}
 	else if (get_real(split[0], &result.x)
 		|| get_real(split[1], &result.y)
 		|| get_real(split[2], &result.z))
+	{
+		free_array(split);
 		return (1);
+	}
 	*store = result;
+	free_array(split);
 	return (0);
 }

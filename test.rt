@@ -9,7 +9,7 @@
 A 0.1 0,42,255
 
 # camera, vec3 pos - norm orientation - int FOV
-C -42.0,0.0,42.0 -1.0,0.42,1.0 42
+C -42.0,0.0,42.0 0.0,1.0,0.0 42
 
 # light, vec3 pos - float brightness [0.0,1.0] - RGB
 L -42.0,0.0,42.0 0.42 0,42,255
@@ -18,10 +18,10 @@ L -42.0,0.0,42.0 0.42 0,42,255
 sp -42.0,0.0,42.0 4.2 0,42,255
 
 # plane, vec3 pos - norm orientation - RGB
-pl -42.0,0.0,42.0 -1.0,0.42,1.0 0,42,255
+pl -42.0,0.0,42.0 0.0,0.0,1.0 0,42,255
 
 # cylinder, vec3 pos - norm orientation - float diameter - float height - RGB
-cy -42.0,0.0,42.0 -1.0,0.42,1.0 42.0 42.0 0,42,255
+cy -42.0,0.0,42.0 0.0,0.0,1.0 42.0 42.0 0,42,255
 
 ## Bonus section
 # you can model any given superquadric using its general function:
@@ -41,5 +41,4 @@ sq -42.0,0.0,42.0 2.0 2.0 2.0 5 5 5 0,42,255
 tri -42.0,0.0,42.0 0.0,42.0,-42.0 42.0,-42.0,0.0 0,42,255
 
 # binary stereolithography file, filename
-stl foo.stl
-
+stl bulb.stl

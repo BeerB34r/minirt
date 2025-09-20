@@ -9,7 +9,7 @@ DEPDIR			=	dep/
 DEPFLAG			=	-MM -MF $@ -MT $@ -MT $(BINDIR)$(addsuffix .o,$(notdir $(basename $<)))
 INC				=	-Ilib/libft/include -I inc
 VPATH			=	$(SRCDIR)
-CFLAGS			:=	-Wall -Wextra -Werror -g3
+CFLAGS			:=	-Wall -Wextra -Werror -O1 -ffast-math
 CPPFLAGS		=	$(INC)
 LDFLAGS			=	-lm lib/libft/libft.a
 CC				:=	cc
@@ -24,7 +24,7 @@ NAME			:=	minirt_parser
 all				:	$(NAME)
 
 $(NAME)			:	$(BIN)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(DEPDIR)%.d	:	%.c | $(DEPDIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAG) $<

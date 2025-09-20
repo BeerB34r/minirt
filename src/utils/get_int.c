@@ -41,7 +41,7 @@ const char *str
 		return (0);
 	while (ft_isdigit(*str))
 		str++;
-	if (*str)
+	if (*str && *str != '\n')
 		return (0);
 	return (1);
 }

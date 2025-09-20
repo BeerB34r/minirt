@@ -25,6 +25,7 @@
 # include "./c/printf_c.h"
 # include "./s/printf_s.h"
 # include "./%/printf_percent.h"
+# include "./f/printf_f.h"
 
 static t_uchar *(*const	g_specifiers[18])(t_printf_arg *, va_list *) = {
 	get_signed_decimal,
@@ -32,7 +33,7 @@ static t_uchar *(*const	g_specifiers[18])(t_printf_arg *, va_list *) = {
 	get_unsigned_octal,
 	get_unsigned_lo_hex,
 	get_unsigned_hi_hex,
-	NULL,	//	get_float_dec_lo,
+	get_float_dec_lo,	//	get_float_dec_lo,
 	NULL,	//	get_float_dec_hi,
 	NULL,	//	get_scientific_lo,
 	NULL,	//	get_scientific_hi,

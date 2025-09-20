@@ -1,5 +1,5 @@
 CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror -fPIE -g3
+CFLAGS		=	-Wall -Wextra -Werror -fPIE -Ofast
 
 PRCN_SRC	=	printf_percent.c
 A_LO_SRC	=
@@ -10,7 +10,7 @@ SINT_SRC	=	printf_signed_decimal.c get_signed_decimal_utils.c \
 				get_ptrdiff_i.c get_h_i.c get_hh_i.c get_size_t_i.c
 E_LO_SRC	=
 E_HI_SRC	=
-F_LO_SRC	=
+F_LO_SRC	=	printf_f.c
 F_HI_SRC	=
 G_LO_SRC	=
 G_HI_SRC	=

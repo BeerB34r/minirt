@@ -41,7 +41,7 @@ double upper_bound
 
 	if (get_real(str, &result))
 		return (1);
-	else if (!(result < lower_bound || upper_bound < result))
+	else if ((result < lower_bound || upper_bound < result))
 	{
 		ft_dprintf(2, ERR E_OOBR, result, lower_bound, upper_bound);
 		return (1);

@@ -1,5 +1,5 @@
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -Ofast
 SRCS	=	get_next_line_bonus.c get_next_line_utils_bonus.c
 OBJS	=	$(SRCS:.c=.o)
 INCL	=	$(INCLUDE)
