@@ -39,6 +39,8 @@
 # define ERR "Error\n"
 # define E_OOM "unable to allocate sufficient memory\n"
 # define E_FD "unable to allocate file descriptor for %s\n"
+# define E_BADR "unexpected read(%s) return value\n"
+# define E_UNSUP "this program does not support ascii stl files\n"
 # define E_EXT "file does not end in '.rt'\n"
 # define E_DUP "duplicate %s element detected\n"
 # define E_FIELD "incorrect field count for %s element\n"
