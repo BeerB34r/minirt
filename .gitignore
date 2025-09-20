@@ -1,0 +1,7 @@
+*
+!*/
+!*.[ch]
+!Makefile
+!src.list
+!.gitignore
+!README.md
