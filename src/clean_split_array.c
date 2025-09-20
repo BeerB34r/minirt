@@ -47,7 +47,7 @@ static int
 char **line
 )
 {
-	if (!ft_strncmp(line[0], "#", 2) || !ft_strncmp(line[0], "\n", 2))
+	if (!ft_strncmp(line[0], "#", 1) || !ft_strncmp(line[0], "\n", 1))
 		return (0);
 	return (1);
 }

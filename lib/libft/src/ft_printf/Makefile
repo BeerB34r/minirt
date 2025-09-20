@@ -1,5 +1,5 @@
 CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror -fPIE
+CFLAGS		=	-Wall -Wextra -Werror -fPIE -g3
 
 PRCN_SRC	=	printf_percent.c
 A_LO_SRC	=

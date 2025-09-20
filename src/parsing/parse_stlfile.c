@@ -34,16 +34,6 @@
 #include <fcntl.h>
 
 static int
-	read_n(
-int fd,
-void *buf,
-size_t n
-)
-{
-	return (read(fd, buf, n) != (ssize_t)n);
-}
-
-static int
 	get_tri_vec3(
 int fd,
 struct s_vec3 *store
@@ -80,7 +70,7 @@ struct s_rt_element_stlfile *store
 			|| get_tri_vec3(fd, &store->triangles[i].v1)
 			|| get_tri_vec3(fd, &store->triangles[i].v2)
 			|| get_tri_vec3(fd, &store->triangles[i].v3)
-			|| read_n(fd, &store->triangles[i].attr, 2))
+			|| read(fd, &store->triangles[i].attr, 2) != 2)
 		{
 			ft_dprintf(STDERR_FILENO, ERR E_BADR, filename);
 			return (1);
@@ -97,6 +87,27 @@ struct s_rt_element_stlfile *store
 }
 
 static int
+	get_file_metadata(
+int fd,
+const char *filename,
+struct s_rt_element_stlfile *store
+)
+{
+	if (fd < 0)
+		return (ft_dprintf(STDERR_FILENO, ERR E_FD, filename));
+	else if (read(fd, store->header, 80) != 80)
+		ft_dprintf(STDERR_FILENO, ERR E_BADR, filename);
+	else if (!ft_strncmp((char *)store->header, "solid", 5))
+		ft_dprintf(STDERR_FILENO, ERR E_UNSUP);
+	else if (read(fd, &store->tri_count, 4) != 4)
+		ft_dprintf(STDERR_FILENO, ERR E_BADR, filename);
+	else
+		return (0);
+	close(fd);
+	return (1);
+}
+
+static int
 	read_stl_file(
 const char *filename,
 struct s_rt_element_stlfile *store
@@ -106,23 +117,8 @@ struct s_rt_element_stlfile *store
 	struct s_rt_element_stlfile	result;
 	int							err;
 
-	if (fd < 0)
-		return (ft_dprintf(STDERR_FILENO, ERR E_FD, filename));
-	else if (read_n(fd, result.header, 80))
-	{
-		close(fd);
-		return (ft_dprintf(STDERR_FILENO, ERR E_BADR, filename));
-	}
-	else if (!ft_strncmp((char *)result.header, "solid", 5))
-	{
-		close(fd);
-		return (ft_dprintf(STDERR_FILENO, ERR E_UNSUP));
-	}
-	else if (read_n(fd, &result.tri_count, 4))
-	{
-		close(fd);
-		return (ft_dprintf(STDERR_FILENO, ERR E_BADR, filename), 1);
-	}
+	if (get_file_metadata(fd, filename, &result))
+		return (1);
 	result.triangles = ft_calloc(store->tri_count,
 			sizeof(struct s_rt_element_triangle));
 	if (!result.triangles)
