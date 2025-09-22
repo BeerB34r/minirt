@@ -1,6 +1,8 @@
 *
 !*/
-!*.[ch]
+!*.c
+!*.h
+!*.rt
 !Makefile
 !src.list
 !.gitignore
