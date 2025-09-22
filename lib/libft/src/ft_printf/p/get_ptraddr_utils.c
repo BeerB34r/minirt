@@ -34,9 +34,9 @@ t_uint	pad_p(t_uchar **out, t_printf_arg *argument)
 	if (!padstr)
 		return (1);
 	padchar = ' ';
-	if (argument->parameter_precision == maybe && \
-		argument->flags & zeropad && \
-		!(argument->flags & leftjustify))
+	if (argument->parameter_precision == maybe
+		&& argument->flags & zeropad
+		&& !(argument->flags & leftjustify))
 		padchar = '0';
 	ft_memset(padstr, padchar, padding);
 	if (argument->flags & leftjustify)

@@ -15,7 +15,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-static void	put_array(t_uchar *out, t_uint index, \
+static void	put_array(t_uchar *out, t_uint index,
 						size_t value, char *radix)
 {
 	const t_uint	base = ft_strlen(radix);
@@ -29,20 +29,20 @@ static void	put_array(t_uchar *out, t_uint index, \
 	out[index] = radix[mod];
 }
 
-static t_uchar	*pf_itoa(size_t value, t_printf_arg *argument, \
+static t_uchar	*pf_itoa(size_t value, t_printf_arg *argument,
 							t_uint numwidth)
 {
 	t_uchar	*out;
 	t_uint	outlen;
 
 	outlen = numwidth;
-	if (argument->parameter_precision != maybe \
+	if (argument->parameter_precision != maybe
 		&& argument->precision > numwidth)
 		outlen = argument->precision;
-	else if (argument->parameter_precision == maybe \
-			&& argument->width > numwidth \
-			&& argument->flags & zeropad \
-			&& !(argument->flags & leftjustify))
+	else if (argument->parameter_precision == maybe
+		&& argument->width > numwidth
+		&& argument->flags & zeropad
+		&& !(argument->flags & leftjustify))
 	{
 		outlen = argument->width;
 		if (argument->flags & (spaceprefix | signprefix))
