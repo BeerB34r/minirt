@@ -116,11 +116,12 @@ char ***split_file_array
 	size_t	i;
 
 	ft_bzero(scene, sizeof(struct s_rt_scene));
-	scene->elements = ft_calloc(
-			count_elements(split_file_array) - 3,
-			sizeof(struct s_rt_element)
-			);
-	if (!scene->elements)
+	if (count_elements(split_file_array) - 3)
+		scene->elements = ft_calloc(
+				count_elements(split_file_array) - 3,
+				sizeof(struct s_rt_element)
+				);
+	if (!scene->elements && count_elements(split_file_array) - 3)
 	{
 		ft_dprintf(2, ERR E_OOM);
 		return (1);

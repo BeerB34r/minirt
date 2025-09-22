@@ -43,7 +43,7 @@ struct s_rt_scene *scene
 	else if (
 		!get_vec3(element_fields[1], &result.pos)
 		&& !get_norm(element_fields[2], &result.axis)
-		&& !get_real(element_fields[3], &result.diameter)
+		&& !get_real(element_fields[3], &result.radius)
 		&& !get_real(element_fields[4], &result.height)
 		&& !get_rgba(element_fields[5], &result.color)
 	)

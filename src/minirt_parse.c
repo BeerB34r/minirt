@@ -56,7 +56,6 @@ struct s_rt_scene *scene
 	if (clean_split_array(&split_file))
 	{
 		free_split_array(split_file);
-		ft_dprintf(2, ERR E_OOM);
 		return (4);
 	}
 	rval = parse_scene(scene, split_file);

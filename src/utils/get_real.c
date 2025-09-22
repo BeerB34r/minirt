@@ -73,7 +73,7 @@ const char *str
 	decimal = 1;
 	while (str[i] && ft_isdigit(str[i]))
 		res = fma((str[i++] - 0x30) * sign, pow(0.1, decimal++), res);
-	if (str[i] && (str[i + 1] || ft_tolower(str[i]) != 'f'))
+	if ((str[i] && ft_tolower(str[i]) != 'f') || (str[i] && str[i + 1]))
 		return (NAN);
 	return (res);
 }

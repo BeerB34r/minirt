@@ -42,7 +42,7 @@ struct s_rt_scene *scene
 		ft_dprintf(2, ERR E_FIELD, "sphere");
 	else if (
 		!get_vec3(element_fields[1], &result.pos)
-		&& !get_real(element_fields[2], &result.diameter)
+		&& !get_real(element_fields[2], &result.radius)
 		&& !get_rgba(element_fields[3], &result.color)
 	)
 	{

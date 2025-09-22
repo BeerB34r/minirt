@@ -26,21 +26,19 @@
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <minirt_error.h>
 #include <minirt_utils.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-static int
-	count_lines(
-char ***split_array
-)
-{
-	int	i;
-
-	i = 0;
-	while (split_array[i])
-		i++;
-	return (i);
-}
+const static char	*g_required_singletons[][2] = {
+{"A", "ambient light"},
+{"C", "camera"},
+{"L", "light"}
+};
+#define SINGLETON_IDENTIFIER 0
+#define SINGLETON_DESCRIPTION 1
+#define REQUIRED_COUNT 3
 
 static int
 	is_relevant_line(
@@ -57,15 +55,61 @@ static int
 char ***split_array
 )
 {
-	int	i;
-	int	count;
+	unsigned int	i;
+	unsigned int	count;
 
-	i = 0;
+	i = -1;
 	count = 0;
-	while (split_array[i])
-		if (is_relevant_line(split_array[i++]))
+	while (split_array[++i])
+		if (is_relevant_line(split_array[i]))
 			count++;
 	return (count);
+}
+
+static int
+	check_singleton(
+const char *id,
+bool list[REQUIRED_COUNT]
+)
+{
+	size_t	i;
+
+	i = -1;
+	while (++i < REQUIRED_COUNT)
+		if (!ft_strncmp(g_required_singletons[i][SINGLETON_IDENTIFIER],
+			id, ft_strlen(id) + 1))
+			break ;
+	if (i == REQUIRED_COUNT)
+		return (ft_dprintf(STDERR_FILENO, ERR E_UNREC, id));
+	if (list[i])
+		return (ft_dprintf(STDERR_FILENO, ERR E_DUP,
+				g_required_singletons[i][SINGLETON_DESCRIPTION]));
+	list[i] = true;
+	return (0);
+}
+
+static int
+	check_required_singletons(
+char ***lines
+)
+{
+	bool			list[REQUIRED_COUNT];
+	unsigned int	err;
+	unsigned int	i;
+
+	i = -1;
+	ft_bzero(list, sizeof(list));
+	while (lines[++i])
+		if (ft_isupper(lines[i][0][0]))
+			if (check_singleton(lines[i][0], list))
+				return (1);
+	i = -1;
+	err = 0;
+	while (++i < REQUIRED_COUNT)
+		if (!list[i])
+			err = ft_dprintf(STDERR_FILENO, ERR E_MISS,
+					g_required_singletons[i][SINGLETON_DESCRIPTION]);
+	return (err);
 }
 
 int
@@ -76,26 +120,24 @@ char ****split_array
 	size_t			i;
 	size_t			j;
 	char ***const	og = *split_array;
-	const int		relevant_lines = count_relevant_lines(og);
+	const size_t	relevant_lines = count_relevant_lines(og);
 	char			***new;
 
-	if (count_lines(og) == relevant_lines)
-		return (0);
+	if (count_fields((char **)og) == relevant_lines)
+		return (check_required_singletons(og));
 	new = ft_calloc(relevant_lines + 1, sizeof(char **));
 	if (!new)
-		return (1);
+		return (ft_dprintf(STDERR_FILENO, ERR E_OOM));
 	i = 0;
 	j = 0;
 	while (og[i])
 	{
 		if (!is_relevant_line(og[i]))
-		{
 			free_array(og[i++]);
-			continue ;
-		}
-		new[j++] = og[i++];
+		else
+			new[j++] = og[i++];
 	}
 	free(og);
 	*split_array = new;
-	return (0);
+	return (check_required_singletons(*split_array));
 }

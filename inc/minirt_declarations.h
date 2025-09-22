@@ -103,7 +103,7 @@ struct s_rt_element_light
 struct s_rt_element_sphere
 {
 	struct s_vec3	pos;
-	double			diameter;
+	double			radius;
 	struct s_rgba	color;
 };
 # define SPHERE_FIELDS 3
@@ -120,7 +120,7 @@ struct s_rt_element_cylinder
 {
 	struct s_vec3	pos;
 	struct s_vec3	axis;
-	double			diameter;
+	double			radius;
 	double			height;
 	struct s_rgba	color;
 };

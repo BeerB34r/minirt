@@ -43,7 +43,7 @@ struct s_rt_scene *scene
 	else if (
 		!get_vec3(element_fields[1], &scene->camera.pos)
 		&& !get_norm(element_fields[2], &scene->camera.orientation)
-		&& !get_int(element_fields[3], &scene->camera.fov)
+		&& !get_int_limit(element_fields[3], &scene->camera.fov, 0, 180)
 	)
 	{
 		scene->camera_defined = 1;
