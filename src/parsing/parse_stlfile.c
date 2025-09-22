@@ -119,7 +119,7 @@ struct s_rt_element_stlfile *store
 
 	if (get_file_metadata(fd, filename, &result))
 		return (1);
-	result.triangles = ft_calloc(store->tri_count,
+	result.triangles = ft_calloc(result.tri_count,
 			sizeof(struct s_rt_element_triangle));
 	if (!result.triangles)
 	{

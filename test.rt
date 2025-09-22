@@ -41,4 +41,4 @@ sq -42.0,0.0,42.0 2.0 2.0 2.0 5 5 5 0,42,255
 tri -42.0,0.0,42.0 0.0,42.0,-42.0 42.0,-42.0,0.0 0,42,255
 
 # binary stereolithography file, filename
-stl bulb.stl
+stl hornet_60k_faces.stl

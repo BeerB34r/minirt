@@ -20,9 +20,10 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	size_t	memsize;
 
 	if (!nmemb || !size)
-		return (malloc(0));
-	if (ft_uint64_overflow_mul(nmemb, size, &memsize))
 		return (NULL);
+	if ((SIZE_MAX / nmemb) < size)
+		return (NULL);
+	memsize = nmemb * size;
 	ret = malloc(memsize);
 	if (!ret)
 		return (NULL);

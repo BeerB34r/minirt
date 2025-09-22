@@ -1,4 +1,4 @@
-SRC				!= cat src.list
+SRC				!=	cat src.list
 SRCDIR			=	src/utils/ src/parsing/ src/ 
 TESTDIR			=	test/
 TESTFLAGS		=	-g3
@@ -9,7 +9,7 @@ DEPDIR			=	dep/
 DEPFLAG			=	-MM -MF $@ -MT $@ -MT $(BINDIR)$(addsuffix .o,$(notdir $(basename $<)))
 INC				=	-Ilib/libft/include -I inc
 VPATH			=	$(SRCDIR)
-CFLAGS			:=	-Wall -Wextra -Werror -O1 -ffast-math
+CFLAGS			:=	-Wall -Wextra -Werror -O3 -ffast-math
 CPPFLAGS		=	$(INC)
 LDFLAGS			=	-lm lib/libft/libft.a
 CC				:=	cc
