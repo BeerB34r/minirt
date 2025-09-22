@@ -8,19 +8,19 @@
 # ambient lighting, float [0.0,1.0] - RGB
 A 0.1 0,42,255
 
-# camera, vec3 pos - norm orientation - int FOV
+# camera, vec3 pos - norm orientation - int FOV {0,1,2,...180}
 C -42.0,0.0,42.0 0.0,1.0,0.0 42
 
 # light, vec3 pos - float brightness [0.0,1.0] - RGB
 L -42.0,0.0,42.0 0.42 0,42,255
 
-# sphere, vec3 pos - float diameter - RGB
+# sphere, vec3 pos - float radius - RGB
 sp -42.0,0.0,42.0 4.2 0,42,255
 
 # plane, vec3 pos - norm orientation - RGB
 pl -42.0,0.0,42.0 0.0,0.0,1.0 0,42,255
 
-# cylinder, vec3 pos - norm orientation - float diameter - float height - RGB
+# cylinder, vec3 pos - norm orientation - float radius - float height - RGB
 cy -42.0,0.0,42.0 0.0,0.0,1.0 42.0 42.0 0,42,255
 
 ## Bonus section
