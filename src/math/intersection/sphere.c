@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   minirt_math.h                                           :+:    :+:       */
+/*   sphere.c                                                :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/23 15:38:31 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/23 15:50:48 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/23 16:13:08 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/23 18:55:04 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,94 +25,57 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#ifndef MINIRT_MATH_H
-# define MINIRT_MATH_H
+#include <math.h>
+#include <minirt_math.h>
+#include <minirt_declarations.h>
 
-# include <minirt_declarations.h> // function prototypes
+static double
+	compute_nabla(
+struct s_vec3 u,
+struct s_vec3 o,
+struct s_vec3 c,
+double r
+)
+{
+	return (
+		vec3_dot_product(u, vec3_sub(o, c))
+		- vec3_dot_product(vec3_sub(o, c), vec3_sub(o, c))
+		- (r * r)
+	);
+}
 
-//	//	vec3 interface
-int			
-	vec3_is_normalised(
-		struct s_vec3 vector
-		);	// FILE: math/vec3_is_normalised.c
-double		
-	vec3_magnitude(
-		struct s_vec3 vector
-		);	// FILE: math/vec3_magnitude.c
-struct s_vec3
-	vec3_normalise(
-		struct s_vec3 vector
-		);	// FILE: math/vec3_normalise.c
-struct s_vec3
-	vec3_add(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_add.c
-struct s_vec3
-	vec3_sub(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_sub.c
-struct s_vec3
-	vec3_scalar_mul(
-		struct s_vec3 a,
-		double r
-		);	// FILE: math/vec3_scalar_mul.c
-double		
-	vec3_dot_product(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_dot_product.c
-struct s_vec3
-	vec3_cross_product(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_cross_product.c
-double		
-	vec3_box_product(
-		struct s_vec3 a,
-		struct s_vec3 b,
-		struct s_vec3 c
-		);	// FILE: math/vec3_box_product.c
+static double
+	get_min_greater_than_0(
+double a,
+double b
+)
+{
+	const double	min = fmin(a, b);
+	const double	max = fmax(a, b);
 
-//	//	line intersection functions
-//	returns a real number d equal to the distance from the lines origin to the
-//	point of intersection, or NAN if there is no intersection
-double		
+	if (min >= 0)
+		return (min);
+	if (max >= 0)
+		return (max);
+	return (NAN);
+}
+
+double
 	closest_sphere_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/sphere.c
-double		
-	closest_plane_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/plane.c
-double		
-	closest_cylinder_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/cylinder.c
-double		
-	closest_superquadric_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/superquadric.c
-double		
-	closest_triangle_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/triangle.c
-double		
-	closest_stlfile_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/stlfile.c
+t_element object,
+struct s_vec3 o,
+struct s_vec3 u
+)
+{
+	const struct s_vec3	c = object.sphere.pos;
+	const double		r = object.sphere.radius;
+	const double		nabla = compute_nabla(u, o, c, r);
+	const double		add = -vec3_dot_product(u, vec3_sub(o, c))
+		+ sqrt(nabla);
+	const double		sub = -vec3_dot_product(u, vec3_sub(o, c))
+		- sqrt(nabla);
 
-#endif // MINIRT_MATH_H
+	if (nabla < 0)
+		return (NAN);
+	return (get_min_greater_than_0(add, sub));
+}

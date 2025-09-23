@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   minirt_math.h                                           :+:    :+:       */
+/*   plane.c                                                 :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/23 15:38:31 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/23 15:50:48 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/23 18:46:49 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/23 19:08:31 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,94 +25,29 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#ifndef MINIRT_MATH_H
-# define MINIRT_MATH_H
+#include <math.h>
+#include <minirt_math.h>
+#include <minirt_declarations.h>
 
-# include <minirt_declarations.h> // function prototypes
-
-//	//	vec3 interface
-int			
-	vec3_is_normalised(
-		struct s_vec3 vector
-		);	// FILE: math/vec3_is_normalised.c
-double		
-	vec3_magnitude(
-		struct s_vec3 vector
-		);	// FILE: math/vec3_magnitude.c
-struct s_vec3
-	vec3_normalise(
-		struct s_vec3 vector
-		);	// FILE: math/vec3_normalise.c
-struct s_vec3
-	vec3_add(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_add.c
-struct s_vec3
-	vec3_sub(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_sub.c
-struct s_vec3
-	vec3_scalar_mul(
-		struct s_vec3 a,
-		double r
-		);	// FILE: math/vec3_scalar_mul.c
-double		
-	vec3_dot_product(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_dot_product.c
-struct s_vec3
-	vec3_cross_product(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_cross_product.c
-double		
-	vec3_box_product(
-		struct s_vec3 a,
-		struct s_vec3 b,
-		struct s_vec3 c
-		);	// FILE: math/vec3_box_product.c
-
-//	//	line intersection functions
-//	returns a real number d equal to the distance from the lines origin to the
-//	point of intersection, or NAN if there is no intersection
-double		
-	closest_sphere_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/sphere.c
-double		
+double
 	closest_plane_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/plane.c
-double		
-	closest_cylinder_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/cylinder.c
-double		
-	closest_superquadric_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/superquadric.c
-double		
-	closest_triangle_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/triangle.c
-double		
-	closest_stlfile_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/stlfile.c
+t_element	object,
+struct s_vec3 l0,
+struct s_vec3 l
+)
+{
+	const struct s_vec3	p0 = object.plane.pos;
+	const struct s_vec3	n = object.plane.normal;
+	double				d;
 
-#endif // MINIRT_MATH_H
+	if (vec3_dot_product(l, n) == 0)
+	{
+		if (vec3_dot_product(vec3_sub(p0, l0), n) == 0)
+			return (0);
+		return (NAN);
+	}
+	d = vec3_dot_product(vec3_sub(p0, l0), n) / vec3_dot_product(l, n);
+	if (d >= 0)
+		return (d);
+	return (NAN);
+}
