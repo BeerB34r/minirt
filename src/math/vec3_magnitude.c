@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   get_norm.c                                              :+:    :+:       */
+/*   vec3_magnitude.c                                        :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/19 20:29:33 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/23 15:47:18 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/23 15:55:18 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/23 15:56:14 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,27 +25,17 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <minirt_utils.h>
 #include <minirt_declarations.h>
-#include <minirt_math.h>
-#include <minirt_error.h>
+#include <math.h>
 
-int
-	get_norm(
-const char *str,
-struct s_vec3 *store
+double
+	vec3_magnitude(
+struct s_vec3 vector
 )
 {
-	struct s_vec3	result;
-
-	if (get_vec3(str, &result))
-		return (1);
-	else if (!vec3_is_normalised(result))
-	{
-		ft_dprintf(2, ERR E_NOTN, str);
-		return (1);
-	}
-	*store = result;
-	return (0);
+	return (
+		sqrt((vector.x * vector.x)
+			+ (vector.y * vector.y)
+			+ (vector.z * vector.z))
+	);
 }

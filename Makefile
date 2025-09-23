@@ -1,5 +1,5 @@
 SRC				!=	cat src.list
-SRCDIR			=	src/utils/ src/parsing/ src/ 
+SRCDIR			=	src/utils/ src/parsing/ src/math/ src/ 
 TESTDIR			=	test/
 TESTFLAGS		=	-g3
 BIN				=	$(addprefix $(BINDIR),$(SRC:.c=.o))

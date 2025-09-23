@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   get_norm.c                                              :+:    :+:       */
+/*   minirt_math.h                                           :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/19 20:29:33 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/23 15:47:18 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/09/23 15:38:31 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/09/23 15:50:48 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,27 +25,32 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <minirt_utils.h>
-#include <minirt_declarations.h>
-#include <minirt_math.h>
-#include <minirt_error.h>
+#ifndef MINIRT_MATH_H
+# define MINIRT_MATH_H
 
-int
-	get_norm(
-const char *str,
-struct s_vec3 *store
-)
-{
-	struct s_vec3	result;
+# include <minirt_declarations.h> // function prototypes
 
-	if (get_vec3(str, &result))
-		return (1);
-	else if (!vec3_is_normalised(result))
-	{
-		ft_dprintf(2, ERR E_NOTN, str);
-		return (1);
-	}
-	*store = result;
-	return (0);
-}
+int			
+	vec3_is_normalised(
+		struct s_vec3 vector
+		);	// FILE: math/vec3_is_normalised.c
+double		
+	vec3_magnitude(
+		struct s_vec3 vector
+		);	// FILE: math/vec3_magnitude.c
+struct s_vec3
+	vec3_normalise(
+		struct s_vec3 vector
+		);	// FILE: math/vec3_normalise.c
+struct s_vec3
+	vec3_sub(
+		struct s_vec3 a,
+		struct s_vec3 b
+		);	// FILE: math/vec3_sub.c
+struct s_vec3
+	vec3_cross_product(
+		struct s_vec3 a,
+		struct s_vec3 b
+		);	// FILE: math/vec3_cross_product.c
+
+#endif // MINIRT_MATH_H
