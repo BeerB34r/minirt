@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/09/18 16:49:55 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 21:38:01 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/09/23 18:16:04 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -192,4 +192,5 @@ typedef struct s_element_identifier
 	char	*name;
 	int		(*func)(char **, struct s_rt_scene *);
 }	t_element_id;
+
 #endif // MINIRT_DECLARATIONS_H
