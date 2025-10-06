@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   minirt_math.h                                           :+:    :+:       */
+/*   superquadric.c                                          :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/23 15:38:31 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/23 15:50:48 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/10/06 13:35:10 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/10/06 14:29:52 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,93 +25,30 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#ifndef MINIRT_MATH_H
-# define MINIRT_MATH_H
+#include "minirt_math.h"
+#include "minirt_math_superquadrics.h"
+#include <math.h>
 
-# include <minirt_declarations.h> // function prototypes
-
-//	//	vec3 interface
-int			
-	vec3_is_normalised(
-		struct s_vec3 vector
-		);	// FILE: math/vec3_is_normalised.c
-double		
-	vec3_magnitude(
-		struct s_vec3 vector
-		);	// FILE: math/vec3_magnitude.c
-struct s_vec3
-	vec3_normalise(
-		struct s_vec3 vector
-		);	// FILE: math/vec3_normalise.c
-struct s_vec3
-	vec3_add(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_add.c
-struct s_vec3
-	vec3_sub(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_sub.c
-struct s_vec3
-	vec3_scalar_mul(
-		struct s_vec3 a,
-		double r
-		);	// FILE: math/vec3_scalar_mul.c
-double		
-	vec3_dot_product(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_dot_product.c
-struct s_vec3
-	vec3_cross_product(
-		struct s_vec3 a,
-		struct s_vec3 b
-		);	// FILE: math/vec3_cross_product.c
-double		
-	vec3_box_product(
-		struct s_vec3 a,
-		struct s_vec3 b,
-		struct s_vec3 c
-		);	// FILE: math/vec3_box_product.c
-
-//	//	line intersection functions
-//	returns a real number d equal to the distance from the lines origin to the
-//	point of intersection, or NAN if there is no intersection
-double		
-	closest_sphere_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/sphere.c
-double		
-	closest_plane_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/plane.c
-double		
-	closest_cylinder_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/cylinder.c
-double		
+double
 	closest_superquadric_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/superquadric.c
-double		
-	closest_triangle_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/triangle.c
-double		
-	closest_stlfile_intersection(
-		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
-		);	// FILE: math/intersection/stlfile.c
-#endif // MINIRT_MATH_H
+t_element object,
+struct s_vec3 origin,
+struct s_vec3 normal
+)
+{
+	const struct s_rt_element_superquadric	sq = object.superquadric;
+	const t_sq_gf_arg						arg = {
+		.x = origin.x - sq.pos.x,
+		.y = origin.y - sq.pos.y,
+		.z = origin.z - sq.pos.z,
+		.a = sq.a, .b = sq.b, .c = sq.c,
+		.r = sq.r, .s = sq.s, .t = sq.t
+	};
+	double									intersection;
+
+	intersection = !!fmin(superquadric_general_form(arg), 0)
+		* fmax(sq.a, fmax(sq.b, sq.c));
+	if (sq_point_of_intersection(arg, origin, vec3_normalise(normal), &intersection))
+		return (NAN);
+	return (intersection);
+}

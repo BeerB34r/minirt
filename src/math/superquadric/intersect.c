@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/10/06 10:53:07 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/06 12:25:47 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/10/06 14:37:57 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -45,9 +45,9 @@ t_sq_gf_arg sq
 )
 {
 	return (
-		(sq.r * sq.x * pow(fabs(sq.x / sq.a), -2 + sq.r)) / (sq.a * sq.a)
-		+ (sq.s * sq.y * pow(fabs(sq.y / sq.b), -2 + sq.s)) / (sq.b * sq.b)
-		+ (sq.t * sq.z * pow(fabs(sq.z / sq.c), -2 + sq.t)) / (sq.c * sq.c)
+		(sq.r * sq.x * pow(fabs(sq.x / sq.a), sq.r - 2)) / (sq.a * sq.a)
+		+ (sq.s * sq.y * pow(fabs(sq.y / sq.b), sq.s - 2)) / (sq.b * sq.b)
+		+ (sq.t * sq.z * pow(fabs(sq.z / sq.c), sq.t - 2)) / (sq.c * sq.c)
 		- 1
 	);
 }
@@ -65,7 +65,7 @@ t_sq_gf_arg sq_params
 		.r = sq_params.r, .s = sq_params.s, .t = sq_params.t
 	};
 
-	*t = *t + (superquadric_general_form(sq) / d_superquadric_general_form(sq));
+	*t = *t - (superquadric_general_form(sq) / d_superquadric_general_form(sq));
 }
 
 static double
@@ -87,7 +87,7 @@ double t
 }
 
 static int
-	discard_obvious(
+	discard_obvious_misses(
 t_sq_gf_arg sq,
 struct s_vec3 line_origin,
 struct s_vec3 line_vector
@@ -105,7 +105,7 @@ int
 t_sq_gf_arg sq,
 struct s_vec3 line_origin,
 struct s_vec3 line_vector,
-struct s_vec3 *intersection
+double *intersection
 )
 {
 	unsigned int	i;
@@ -113,9 +113,11 @@ struct s_vec3 *intersection
 	double			sign;
 
 	if (sq.r >= 0 && sq.s >= 0 && sq.t >= 0
-		&& discard_obvious(sq, line_origin, line_vector))
+		&& discard_obvious_misses(sq, line_origin, line_vector))
 		return (1);
 	t = INITIAL_GUESS;
+	if (intersection)
+		t = *intersection;
 	sign = get_sign(sq, line_origin, line_vector, t);
 	i = -1;
 	while (++i < MAX_ITER && sign != 0)
@@ -129,6 +131,6 @@ struct s_vec3 *intersection
 	if (sign != 0)
 		return (1);
 	if (intersection)
-		*intersection = vec3_add(vec3_scalar_mul(line_vector, t), line_origin);
+		*intersection = t;
 	return (0);
 }

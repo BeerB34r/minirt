@@ -67,7 +67,7 @@ int
 		t_sq_gf_arg sq,
 		struct s_vec3 line_origin,
 		struct s_vec3 line_vector,
-		struct s_vec3 *intersection
+		double *intersection
 		);	// FILE: math/superquadric/intersect.c
 struct s_vec3
 	sq_intersection_normal(

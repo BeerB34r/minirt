@@ -7,11 +7,11 @@ BINDIR			=	bin/
 DEP				=	$(addprefix $(DEPDIR),$(SRC:.c=.d))
 DEPDIR			=	dep/
 DEPFLAG			=	-MM -MF $@ -MT $@ -MT $(BINDIR)$(addsuffix .o,$(notdir $(basename $<)))
-INC				=	-Ilib/libft/include -I inc
+INC				=	-Ilib/libft/include -Iinc -Ilib/mlx42/include/MLX42
 VPATH			=	$(SRCDIR)
 CFLAGS			:=	-Wall -Wextra -Werror -O3 -ffast-math -fhonor-infinities -fhonor-nans
 CPPFLAGS		=	$(INC) -g3
-LDFLAGS			=	-lm lib/libft/libft.a
+LDFLAGS			=	-lm lib/libft/libft.a lib/mlx42/build/libmlx42.a -ldl -lglfw -pthread
 CC				:=	cc
 NAME			:=	minirt_parser
 
