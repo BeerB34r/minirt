@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/10/06 10:53:07 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/06 11:44:49 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/10/06 12:25:47 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -31,8 +31,12 @@
 #include <minirt_utils.h>
 #include <minirt_math_superquadrics.h>
 #include <math.h>
+#include <libft.h>
 
-#define MAX_ITER 20
+#ifndef DEBUG
+# define DEBUG 0
+#endif // DEBUG
+#define MAX_ITER 100
 #define INITIAL_GUESS 0.0
 
 static double
@@ -64,16 +68,6 @@ t_sq_gf_arg sq_params
 	*t = *t + (superquadric_general_form(sq) / d_superquadric_general_form(sq));
 }
 
-static struct s_vec3
-	line(
-struct s_vec3 origin,
-struct s_vec3 normal,
-double t
-)
-{
-	return (vec3_add(vec3_scalar_mul(normal, t), origin));
-}
-
 static double
 	get_sign(
 t_sq_gf_arg sq,
@@ -82,13 +76,28 @@ struct s_vec3 line_vector,
 double t
 )
 {
-	const struct s_vec3	internal = line(line_origin, line_vector, t);
+	const struct s_vec3	internal
+		= vec3_add(vec3_scalar_mul(line_vector, t), line_origin);
 
 	return (superquadric_general_form((t_sq_gf_arg){
 			.x = internal.x, .y = internal.y, .z = internal.z,
 			.a = sq.a, .b = sq.b, .c = sq.c,
 			.r = sq.r, .s = sq.s, .t = sq.t
 		}));
+}
+
+static int
+	discard_obvious(
+t_sq_gf_arg sq,
+struct s_vec3 line_origin,
+struct s_vec3 line_vector
+)
+{
+	const double	r = (sqrt(3) / 2) * fmax(sq.a, fmax(sq.b, sq.c));
+	const double	nabla = pow(vec3_dot_product(line_vector, line_origin), 2)
+		- (vec3_dot_product(line_origin, line_origin) - r * r);
+
+	return (nabla < 0);
 }
 
 int
@@ -103,17 +112,23 @@ struct s_vec3 *intersection
 	double			t;
 	double			sign;
 
+	if (sq.r >= 0 && sq.s >= 0 && sq.t >= 0
+		&& discard_obvious(sq, line_origin, line_vector))
+		return (1);
 	t = INITIAL_GUESS;
 	sign = get_sign(sq, line_origin, line_vector, t);
 	i = -1;
 	while (++i < MAX_ITER && sign != 0)
 	{
-		newton_iteration(&t, line(line_origin, line_vector, t), sq);
+		newton_iteration(&t,
+			vec3_add(vec3_scalar_mul(line_vector, t), line_origin), sq);
 		sign = get_sign(sq, line_origin, line_vector, t);
+		if (DEBUG)
+			ft_printf("iteration %i: t = %f, sign = %f\n", i, t, sign);
 	}
 	if (sign != 0)
 		return (1);
 	if (intersection)
-		*intersection = line(line_origin, line_vector, t);
+		*intersection = vec3_add(vec3_scalar_mul(line_vector, t), line_origin);
 	return (0);
 }

@@ -25,7 +25,10 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
+#include <libft.h>
 #include <minirt_parse.h>
+#include <minirt_math.h>
+#include <minirt_math_superquadrics.h>
 
 /**
  * entrypoint to the program
@@ -43,6 +46,9 @@ char **av
 	const int			rval = minirt_parse(ac, av, &scene);
 
 	if (!rval)
+	{
+		render_scene(scene);
 		free_scene(scene);
+	}
 	return (rval);
 }

@@ -69,4 +69,9 @@ int
 		struct s_vec3 line_vector,
 		struct s_vec3 *intersection
 		);	// FILE: math/superquadric/intersect.c
+struct s_vec3
+	sq_intersection_normal(
+		struct s_vec3 p,
+		t_sq_gf_arg sq
+		);	// FILE: math/superquadric/compute_normal.c
 #endif // MINIRT_MATH_SUPERQUADRICS_H

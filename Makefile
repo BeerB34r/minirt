@@ -1,5 +1,5 @@
 SRC				!=	cat src.list
-SRCDIR			=	src/utils/ src/parsing/ src/math/ src/math/intersection/ src/ 
+SRCDIR			=	src/utils/ src/parsing/ src/math/ src/math/intersection/ src/math/superquadric src/ 
 TESTDIR			=	test/
 TESTFLAGS		=	-g3
 BIN				=	$(addprefix $(BINDIR),$(SRC:.c=.o))
@@ -10,7 +10,7 @@ DEPFLAG			=	-MM -MF $@ -MT $@ -MT $(BINDIR)$(addsuffix .o,$(notdir $(basename $<
 INC				=	-Ilib/libft/include -I inc
 VPATH			=	$(SRCDIR)
 CFLAGS			:=	-Wall -Wextra -Werror -O3 -ffast-math -fhonor-infinities -fhonor-nans
-CPPFLAGS		=	$(INC)
+CPPFLAGS		=	$(INC) -g3
 LDFLAGS			=	-lm lib/libft/libft.a
 CC				:=	cc
 NAME			:=	minirt_parser

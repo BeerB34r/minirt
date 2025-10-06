@@ -36,4 +36,8 @@ struct s_vec3 origin,
 struct s_vec3 normal
 )
 {
+	(void)object;
+	(void)origin;
+	(void)normal;
+	return (0);
 }
