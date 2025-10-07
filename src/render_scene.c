@@ -42,10 +42,13 @@ struct s_vec3 line_origin,
 struct s_vec3 line_vector
 )
 {
+	const struct s_vec3	normal = vec3_normalise(line_vector);
+	double				res;
+
 	if (object.type == SUPERQUADRIC)
 	{
-		double	res;
-		res = closest_superquadric_intersection(object, line_origin, line_vector);
+		printf("normal: (%f, %f, %f), magnitude %f\n", normal.x, normal.y, normal.z, vec3_magnitude(normal));
+		res = closest_superquadric_intersection(object, line_origin, normal);
 		printf("%f\n", res);
 		return (!isnan(res));
 	}
@@ -78,9 +81,7 @@ t_fov *data
 		.x = data->t_norm.y, .y = data->t_norm.z, .z = data->t_norm.x};
 	data->b_norm = (struct s_vec3){
 		.x = data->t_norm.z, .y = data->t_norm.x, .z = data->t_norm.y};
-	data->theta = data->fov * (M_PI / 180);
-	data->g_x = tan(data->theta / 2) / 2;
-	data->g_y = data->g_x * ((data->m - 1.0) / (data->k / 1.0));
+	data->theta = data->fov * (M_PI / 180); data->g_x = tan(data->theta / 2) / 2; data->g_y = data->g_x * ((data->m - 1.0) / (data->k / 1.0));
 	data->q_x = vec3_scalar_mul(data->b_norm, (2 * data->g_x) / (data->k - 1));
 	data->q_y = vec3_scalar_mul(data->v_norm, (2 * data->g_y) / (data->m - 1));
 	data->p_1m = vec3_sub(vec3_sub(
