@@ -95,6 +95,7 @@ struct s_vec3 line_vector
 	const double	nabla = pow(vec3_dot_product(line_vector, line_origin), 2)
 		- (vec3_dot_product(line_origin, line_origin) - r * r);
 
+	return (0);
 	return (nabla < 0);
 }
 
@@ -124,7 +125,8 @@ double *intersection
 			vec3_add(vec3_scalar_mul(line_vector, t), line_origin), sq);
 		sign = get_sign(sq, line_origin, line_vector, t);
 	}
-	if (trunc(sign * pow(10, 6)) != 0)
+	if (trunc(sign * pow(10, 10)) != 0)
+	/*if (sign != 0)*/
 		return (1);
 	if (intersection)
 		*intersection = t;
