@@ -26,20 +26,23 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include "minirt_math_superquadrics.h"
+#include <stdbool.h>
 #include <libft.h>
 #include <minirt_math.h>
 #include <math.h>
 #include <minirt_declarations.h>
 #include <MLX42.h>
 
-#define HEIGHT 200
-#define WIDTH 200
+#define HEIGHT 500
+#define WIDTH 500
 
 int
 	check_intersection(
 struct s_rt_element object,
 struct s_vec3 line_origin,
-struct s_vec3 line_vector
+struct s_vec3 line_vector,
+double *t
 )
 {
 	const struct s_vec3	normal = vec3_normalise(line_vector);
@@ -47,10 +50,11 @@ struct s_vec3 line_vector
 
 	if (object.type == SUPERQUADRIC)
 	{
-		printf("normal: (%f, %f, %f), magnitude %f\n", normal.x, normal.y, normal.z, vec3_magnitude(normal));
 		res = closest_superquadric_intersection(object, line_origin, normal);
-		printf("%f\n", res);
-		return (!isnan(res));
+		if (res == res)
+			*t = res;
+		/*printf("result: %f\n", res);*/
+		return (res == res);
 	}
 	return (0);
 }
@@ -81,7 +85,7 @@ t_fov *data
 		.x = data->t_norm.y, .y = data->t_norm.z, .z = data->t_norm.x};
 	data->b_norm = (struct s_vec3){
 		.x = data->t_norm.z, .y = data->t_norm.x, .z = data->t_norm.y};
-	data->theta = data->fov * (M_PI / 180); data->g_x = tan(data->theta / 2) / 2; data->g_y = data->g_x * ((data->m - 1.0) / (data->k / 1.0));
+	data->theta = data->fov * (acos(-1) / 180); data->g_x = tan(data->theta / 2) / 2; data->g_y = data->g_x * ((data->m - 1.0) / (data->k / 1.0));
 	data->q_x = vec3_scalar_mul(data->b_norm, (2 * data->g_x) / (data->k - 1));
 	data->q_y = vec3_scalar_mul(data->v_norm, (2 * data->g_y) / (data->m - 1));
 	data->p_1m = vec3_sub(vec3_sub(
@@ -98,11 +102,25 @@ int j
 )
 {
 	const struct s_vec3	unnormalised = vec3_add(vec3_add(
-					fov.p_1m,
-					vec3_scalar_mul(fov.q_x, i - 1)),
-				vec3_scalar_mul(fov.q_y, j - 1));
+				fov.p_1m,
+				vec3_scalar_mul(fov.q_x, i - 1)),
+			vec3_scalar_mul(fov.q_y, j - 1));
 
 	return (vec3_normalise(unnormalised));
+}
+
+uint32_t
+	normal_to_rgba(
+struct s_vec3 normal
+)
+{
+	uint32_t		internal;
+
+	internal = ((int)trunc(fabs(normal.x) * 255) << 0)
+		+ ((int)trunc(fabs(normal.y) * 255) << 8)
+		+ ((int)trunc(fabs(normal.z) * 255) << 16)
+		+ (0 << 24);
+	return (internal);
 }
 
 void
@@ -114,16 +132,23 @@ struct s_rt_scene scene
 	mlx_image_t		*img;
 	t_fov			fov;
 	bool			hit;
+	double			t;
 	unsigned int	i;
 	unsigned int	j;
 	unsigned int	k;
 
-	mlx = mlx_init(WIDTH, HEIGHT, "she trace on my rays", true);
+	mlx = mlx_init(WIDTH, HEIGHT, "she trace on my rays", 1);
 	if (!mlx)
 		return ;
 	img = mlx_new_image(mlx, mlx->width, mlx->height);
 	if (!img)
 	{
+		mlx_terminate(mlx);
+		return ;
+	}
+	if (mlx_image_to_window(mlx, img, 0, 0))
+	{
+		mlx_delete_image(mlx, img);
 		mlx_terminate(mlx);
 		return ;
 	}
@@ -142,22 +167,36 @@ struct s_rt_scene scene
 		while (++j < WIDTH)
 		{
 			k = -1;
+			hit = 0;
+			t = FP_INFINITE;
 			while (++k < scene.element_count)
 				if (check_intersection(scene.elements[k],
 						scene.camera.pos,
-						camera_angle(fov, i, j)))
-					hit = true;
-			if (hit)
+						camera_angle(fov, i, j), &t))
+					break ;
+			if (t != FP_INFINITE)
+			{
+				mlx_put_pixel(img, i, j, normal_to_rgba(
+						sq_intersection_normal(
+							vec3_add(
+								vec3_scalar_mul(
+									camera_angle(fov, i, j), t),
+								vec3_sub(scene.camera.pos,
+									scene.elements[k].superquadric.pos)),
+							(t_sq_gf_arg){
+							.a = scene.elements[k].superquadric.a,
+							.b = scene.elements[k].superquadric.b,
+							.c = scene.elements[k].superquadric.c,
+							.r = scene.elements[k].superquadric.r,
+							.s = scene.elements[k].superquadric.s,
+							.t = scene.elements[k].superquadric.t
+						})));
+			}
+			else if (t != FP_INFINITE)
 				mlx_put_pixel(img, i, j, 0xFFFFFFFF);
 			else
 				mlx_put_pixel(img, i, j, 0x00000000);
 		}
-	}
-	if (mlx_image_to_window(mlx, img, 0, 0))
-	{
-		mlx_delete_image(mlx, img);
-		mlx_terminate(mlx);
-		return ;
 	}
 	mlx_loop(mlx);
 }

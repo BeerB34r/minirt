@@ -25,6 +25,7 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
+#include "minirt_declarations.h"
 #include "minirt_math.h"
 #include "minirt_math_superquadrics.h"
 #include <math.h>
@@ -38,9 +39,6 @@ struct s_vec3 normal
 {
 	const struct s_rt_element_superquadric	sq = object.superquadric;
 	const t_sq_gf_arg						arg = {
-		.x = origin.x - sq.pos.x,
-		.y = origin.y - sq.pos.y,
-		.z = origin.z - sq.pos.z,
 		.a = sq.a, .b = sq.b, .c = sq.c,
 		.r = sq.r, .s = sq.s, .t = sq.t
 	};
@@ -48,7 +46,7 @@ struct s_vec3 normal
 
 	intersection = !!fmin(superquadric_general_form(arg), 0)
 		* fmax(sq.a, fmax(sq.b, sq.c));
-	if (sq_point_of_intersection(arg, origin, vec3_normalise(normal), &intersection))
+	if (sq_point_of_intersection(arg, vec3_sub(origin, sq.pos), vec3_normalise(normal), &intersection))
 		return (NAN);
 	return (intersection);
 }

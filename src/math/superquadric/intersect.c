@@ -32,11 +32,9 @@
 #include <minirt_math_superquadrics.h>
 #include <math.h>
 #include <libft.h>
+#include <stdio.h>
 
-#ifndef DEBUG
-# define DEBUG 0
-#endif // DEBUG
-#define MAX_ITER 100
+#define MAX_ITER 200
 #define INITIAL_GUESS 0.0
 
 static double
@@ -48,7 +46,7 @@ t_sq_gf_arg sq
 		(sq.r * sq.x * pow(fabs(sq.x / sq.a), sq.r - 2)) / (sq.a * sq.a)
 		+ (sq.s * sq.y * pow(fabs(sq.y / sq.b), sq.s - 2)) / (sq.b * sq.b)
 		+ (sq.t * sq.z * pow(fabs(sq.z / sq.c), sq.t - 2)) / (sq.c * sq.c)
-		- 1
+		+ 1
 	);
 }
 
@@ -65,7 +63,7 @@ t_sq_gf_arg sq_params
 		.r = sq_params.r, .s = sq_params.s, .t = sq_params.t
 	};
 
-	*t = *t - (superquadric_general_form(sq) / d_superquadric_general_form(sq));
+	*t = *t + (superquadric_general_form(sq) / d_superquadric_general_form(sq));
 }
 
 static double
@@ -125,8 +123,6 @@ double *intersection
 		newton_iteration(&t,
 			vec3_add(vec3_scalar_mul(line_vector, t), line_origin), sq);
 		sign = get_sign(sq, line_origin, line_vector, t);
-		if (DEBUG)
-			ft_printf("iteration %i: t = %f, sign = %f\n", i, t, sign);
 	}
 	if (sign != 0)
 		return (1);

@@ -44,7 +44,10 @@ struct s_vec3 *store
 	else if (!vec3_is_normalised(result))
 	{
 		ft_dprintf(2, ERR E_NOTN, str);
-		return (1);
+		ft_dprintf(2, "fixing it for you in post tho 😘\n");
+		result = vec3_normalise(result);
+		ft_dprintf(2, "next time put in %f,%f,%f and see if that works ;P\n",
+			result.x, result.y, result.z);
 	}
 	*store = result;
 	return (0);

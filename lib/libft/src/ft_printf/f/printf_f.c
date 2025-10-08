@@ -87,9 +87,9 @@ t_uchar	*get_float_dec_lo(t_printf_arg *argument, va_list *args)
 	const double	arg = va_arg(*args, double);
 
 	(void)argument;
-	if (isnan(arg) && signbit(arg))
+	if (arg != arg && signbit(arg))
 		return ((t_uchar *)ft_strdup("-nan"));
-	if (isnan(arg))
+	if (arg != arg)
 		return ((t_uchar *)ft_strdup("nan"));
 	if (isinf(arg) && signbit(arg))
 		return ((t_uchar *)ft_strdup("-inf"));
