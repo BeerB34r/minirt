@@ -46,7 +46,7 @@ t_sq_gf_arg sq
 		(sq.r * sq.x * pow(fabs(sq.x / sq.a), sq.r - 2)) / (sq.a * sq.a)
 		+ (sq.s * sq.y * pow(fabs(sq.y / sq.b), sq.s - 2)) / (sq.b * sq.b)
 		+ (sq.t * sq.z * pow(fabs(sq.z / sq.c), sq.t - 2)) / (sq.c * sq.c)
-		+ 1
+		- 1
 	);
 }
 
@@ -63,7 +63,7 @@ t_sq_gf_arg sq_params
 		.r = sq_params.r, .s = sq_params.s, .t = sq_params.t
 	};
 
-	*t = *t + (superquadric_general_form(sq) / d_superquadric_general_form(sq));
+	*t = *t - (superquadric_general_form(sq) / d_superquadric_general_form(sq));
 }
 
 static double
@@ -124,7 +124,7 @@ double *intersection
 			vec3_add(vec3_scalar_mul(line_vector, t), line_origin), sq);
 		sign = get_sign(sq, line_origin, line_vector, t);
 	}
-	if (sign != 0)
+	if (trunc(sign * pow(10, 6)) != 0)
 		return (1);
 	if (intersection)
 		*intersection = t;

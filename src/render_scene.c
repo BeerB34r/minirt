@@ -116,10 +116,10 @@ struct s_vec3 normal
 {
 	uint32_t		internal;
 
-	internal = ((int)trunc(fabs(normal.x) * 255) << 0)
-		+ ((int)trunc(fabs(normal.y) * 255) << 8)
-		+ ((int)trunc(fabs(normal.z) * 255) << 16)
-		+ (0 << 24);
+	internal = ((int)trunc(fabs(normal.x) * 255) << 24)
+		+ ((int)trunc(fabs(normal.y) * 255) << 16)
+		+ ((int)trunc(fabs(normal.z) * 255) << 8)
+		+ (255 << 0);
 	return (internal);
 }
 
@@ -131,7 +131,6 @@ struct s_rt_scene scene
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	t_fov			fov;
-	bool			hit;
 	double			t;
 	unsigned int	i;
 	unsigned int	j;
@@ -167,7 +166,6 @@ struct s_rt_scene scene
 		while (++j < WIDTH)
 		{
 			k = -1;
-			hit = 0;
 			t = FP_INFINITE;
 			while (++k < scene.element_count)
 				if (check_intersection(scene.elements[k],
