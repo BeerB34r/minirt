@@ -43,12 +43,12 @@ double x
 	return (0);
 }
 
-struct s_vec3
+t_vec3
 	superquadric_parametric_form(
 t_sq_pf_arg args
 )
 {
-	return ((struct s_vec3){
+	return ((t_vec3){
 		.x = (
 			args.a
 			* (sgn(sin(args.v)) * pow(fabs(sin(args.v)), 2 / args.r))

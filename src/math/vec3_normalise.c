@@ -28,14 +28,14 @@
 #include <minirt_declarations.h>
 #include <minirt_math.h>
 
-struct s_vec3
+t_norm
 	vec3_normalise(
-struct s_vec3 vector
+t_vec3 vector
 )
 {
 	const double	magnitude = vec3_magnitude(vector);
 
-	return ((struct s_vec3){
+	return ((t_norm){
 		.x = vector.x / magnitude,
 		.y = vector.y / magnitude,
 		.z = vector.z / magnitude

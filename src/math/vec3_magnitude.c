@@ -30,7 +30,7 @@
 
 double
 	vec3_magnitude(
-struct s_vec3 vector
+t_vec3 vector
 )
 {
 	return (

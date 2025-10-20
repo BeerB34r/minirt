@@ -15,11 +15,9 @@
 char	*ft_strchr(const char *s, int c)
 {
 	int		i;
-	int		len;
 	char	chr;
 
 	i = 0;
-	len = ft_strlen(s);
 	chr = (char)c;
 	while (s[i])
 	{

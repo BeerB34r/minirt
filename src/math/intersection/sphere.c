@@ -31,15 +31,14 @@
 
 static double
 	compute_nabla(
-struct s_vec3 u,
-struct s_vec3 o,
-struct s_vec3 c,
+t_line line,
+t_vec3 c,
 double r
 )
 {
 	return (
-		vec3_dot_product(u, vec3_sub(o, c))
-		- vec3_dot_product(vec3_sub(o, c), vec3_sub(o, c))
+		vec3_dot_product(line.normal, vec3_sub(line.origin, c))
+		- vec3_dot_product(vec3_sub(line.origin, c), vec3_sub(line.origin, c))
 		- (r * r)
 	);
 }
@@ -63,16 +62,17 @@ double b
 double
 	closest_sphere_intersection(
 t_element object,
-struct s_vec3 o,
-struct s_vec3 u
+t_line line
 )
 {
-	const struct s_vec3	c = object.sphere.pos;
-	const double		r = object.sphere.radius;
-	const double		nabla = compute_nabla(u, o, c, r);
-	const double		add = -vec3_dot_product(u, vec3_sub(o, c))
+	const t_vec3	c = object.sphere.pos;
+	const double	r = object.sphere.radius;
+	const double	nabla = compute_nabla(line, c, r);
+	const double	add = -vec3_dot_product(line.normal,
+			vec3_sub(line.origin, c))
 		+ sqrt(nabla);
-	const double		sub = -vec3_dot_product(u, vec3_sub(o, c))
+	const double	sub = -vec3_dot_product(line.normal,
+			vec3_sub(line.origin, c))
 		- sqrt(nabla);
 
 	if (nabla < 0)

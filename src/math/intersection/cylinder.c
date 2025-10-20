@@ -32,12 +32,10 @@
 double
 	closest_cylinder_intersection(
 t_element object,
-struct s_vec3 origin,
-struct s_vec3 normal
+t_line line
 )
 {
 	(void)object;
-	(void)origin;
-	(void)normal;
+	(void)line;
 	return (0);
 }

@@ -40,17 +40,15 @@
 int
 	check_intersection(
 struct s_rt_element object,
-struct s_vec3 line_origin,
-struct s_vec3 line_vector,
+t_line line,
 double *t
 )
 {
-	const struct s_vec3	normal = vec3_normalise(line_vector);
-	double				res;
+	double			res;
 
 	if (object.type == SUPERQUADRIC)
 	{
-		res = closest_superquadric_intersection(object, line_origin, normal);
+		res = closest_superquadric_intersection(object, line);
 		if (res == res)
 			*t = res;
 		/*printf("result: %f\n", res);*/
@@ -61,19 +59,19 @@ double *t
 
 typedef struct s_view_plane
 {
-	struct s_vec3	origin;
-	struct s_vec3	t_norm;
-	struct s_vec3	v_norm;
-	struct s_vec3	b_norm;
-	int				m;	// height
-	int				k;	// width
-	int				fov;
-	double			theta;
-	double			g_x;
-	double			g_y;
-	struct s_vec3	q_x;
-	struct s_vec3	q_y;
-	struct s_vec3	p_1m;
+	t_vec3	origin;
+	t_norm	t_norm;
+	t_norm	v_norm;
+	t_norm	b_norm;
+	int		m;	// height
+	int		k;	// width
+	int		fov;
+	double	theta;
+	double	g_x;
+	double	g_y;
+	t_vec3	q_x;
+	t_vec3	q_y;
+	t_vec3	p_1m;
 }	t_fov;
 
 static void
@@ -81,11 +79,13 @@ static void
 t_fov *data
 )
 {
-	data->v_norm = (struct s_vec3){
+	data->v_norm = (t_norm){
 		.x = data->t_norm.y, .y = data->t_norm.z, .z = data->t_norm.x};
-	data->b_norm = (struct s_vec3){
+	data->b_norm = (t_norm){
 		.x = data->t_norm.z, .y = data->t_norm.x, .z = data->t_norm.y};
-	data->theta = data->fov * (acos(-1) / 180); data->g_x = tan(data->theta / 2) / 2; data->g_y = data->g_x * ((data->m - 1.0) / (data->k / 1.0));
+	data->theta = data->fov * (acos(-1) / 180);
+	data->g_x = tan(data->theta / 2) / 2;
+	data->g_y = data->g_x * ((data->m - 1.0) / (data->k / 1.0));
 	data->q_x = vec3_scalar_mul(data->b_norm, (2 * data->g_x) / (data->k - 1));
 	data->q_y = vec3_scalar_mul(data->v_norm, (2 * data->g_y) / (data->m - 1));
 	data->p_1m = vec3_sub(vec3_sub(
@@ -94,24 +94,28 @@ t_fov *data
 			vec3_scalar_mul(data->v_norm, data->g_y));
 }
 
-struct s_vec3
+t_line
 	camera_angle(
 t_fov fov,
 int i,
 int j
 )
 {
-	const struct s_vec3	unnormalised = vec3_add(vec3_add(
+	const t_vec3	unnormalised = vec3_add(vec3_add(
 				fov.p_1m,
 				vec3_scalar_mul(fov.q_x, i - 1)),
 			vec3_scalar_mul(fov.q_y, j - 1));
+	const t_line	line = (t_line){
+		.normal = vec3_normalise(unnormalised),
+		.origin = fov.origin
+	};
 
-	return (vec3_normalise(unnormalised));
+	return (line);
 }
 
 uint32_t
 	normal_to_rgba(
-struct s_vec3 normal
+t_norm normal
 )
 {
 	uint32_t		internal;
@@ -169,7 +173,6 @@ struct s_rt_scene scene
 			t = FP_INFINITE;
 			while (++k < scene.element_count)
 				if (check_intersection(scene.elements[k],
-						scene.camera.pos,
 						camera_angle(fov, i, j), &t))
 					break ;
 			if (t != FP_INFINITE)
@@ -178,7 +181,7 @@ struct s_rt_scene scene
 						sq_intersection_normal(
 							vec3_add(
 								vec3_scalar_mul(
-									camera_angle(fov, i, j), t),
+									camera_angle(fov, i, j).normal, t),
 								vec3_sub(scene.camera.pos,
 									scene.elements[k].superquadric.pos)),
 							(t_sq_gf_arg){

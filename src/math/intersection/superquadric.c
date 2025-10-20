@@ -33,8 +33,7 @@
 double
 	closest_superquadric_intersection(
 t_element object,
-struct s_vec3 origin,
-struct s_vec3 normal
+t_line line
 )
 {
 	const struct s_rt_element_superquadric	sq = object.superquadric;
@@ -44,9 +43,10 @@ struct s_vec3 normal
 	};
 	double									intersection;
 
+	line.origin = vec3_sub(line.origin, sq.pos);
 	intersection = !!fmin(superquadric_general_form(arg), 0)
 		* fmax(sq.a, fmax(sq.b, sq.c));
-	if (sq_point_of_intersection(arg, vec3_sub(origin, sq.pos), vec3_normalise(normal), &intersection))
+	if (sq_point_of_intersection(arg, line, &intersection))
 		return (NAN);
 	return (intersection);
 }

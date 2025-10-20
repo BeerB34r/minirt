@@ -34,10 +34,10 @@
 int
 	get_norm(
 const char *str,
-struct s_vec3 *store
+t_norm *store
 )
 {
-	struct s_vec3	result;
+	t_norm	result;
 
 	if (get_vec3(str, &result))
 		return (1);

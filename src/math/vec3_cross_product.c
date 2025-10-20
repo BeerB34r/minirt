@@ -27,13 +27,13 @@
 
 #include <minirt_declarations.h>
 
-struct s_vec3
+t_vec3
 	vec3_cross_product(
-struct s_vec3 a,
-struct s_vec3 b
+t_vec3 a,
+t_vec3 b
 )
 {
-	return ((struct s_vec3){
+	return ((t_vec3){
 		.x = a.y * b.z - a.z * b.y,
 		.y = a.z * b.x - a.x * b.z,
 		.z = a.x * b.y - a.y * b.x,

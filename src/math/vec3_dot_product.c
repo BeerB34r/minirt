@@ -29,8 +29,8 @@
 
 double
 	vec3_dot_product(
-struct s_vec3 a,
-struct s_vec3 b
+t_vec3 a,
+t_vec3 b
 )
 {
 	return ((a.x * b.x)

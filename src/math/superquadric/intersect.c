@@ -53,7 +53,7 @@ t_sq_gf_arg sq
 static void
 	newton_iteration(
 double *t,
-struct s_vec3 l_of_t,
+t_vec3 l_of_t,
 t_sq_gf_arg sq_params
 )
 {
@@ -69,13 +69,12 @@ t_sq_gf_arg sq_params
 static double
 	get_sign(
 t_sq_gf_arg sq,
-struct s_vec3 line_origin,
-struct s_vec3 line_vector,
+t_line line,
 double t
 )
 {
-	const struct s_vec3	internal
-		= vec3_add(vec3_scalar_mul(line_vector, t), line_origin);
+	const t_vec3	internal
+		= vec3_add(vec3_scalar_mul(line.normal, t), line.origin);
 
 	return (superquadric_general_form((t_sq_gf_arg){
 			.x = internal.x, .y = internal.y, .z = internal.z,
@@ -87,13 +86,12 @@ double t
 static int
 	discard_obvious_misses(
 t_sq_gf_arg sq,
-struct s_vec3 line_origin,
-struct s_vec3 line_vector
+t_line line
 )
 {
 	const double	r = (sqrt(3) / 2) * fmax(sq.a, fmax(sq.b, sq.c));
-	const double	nabla = pow(vec3_dot_product(line_vector, line_origin), 2)
-		- (vec3_dot_product(line_origin, line_origin) - r * r);
+	const double	nabla = pow(vec3_dot_product(line.normal, line.origin), 2)
+		- (vec3_dot_product(line.origin, line.origin) - r * r);
 
 	return (0);
 	return (nabla < 0);
@@ -102,8 +100,7 @@ struct s_vec3 line_vector
 int
 	sq_point_of_intersection(
 t_sq_gf_arg sq,
-struct s_vec3 line_origin,
-struct s_vec3 line_vector,
+t_line line,
 double *intersection
 )
 {
@@ -112,18 +109,18 @@ double *intersection
 	double			sign;
 
 	if (sq.r >= 0 && sq.s >= 0 && sq.t >= 0
-		&& discard_obvious_misses(sq, line_origin, line_vector))
+		&& discard_obvious_misses(sq, line))
 		return (1);
 	t = INITIAL_GUESS;
 	if (intersection)
 		t = *intersection;
-	sign = get_sign(sq, line_origin, line_vector, t);
+	sign = get_sign(sq, line, t);
 	i = -1;
 	while (++i < MAX_ITER && sign != 0)
 	{
 		newton_iteration(&t,
-			vec3_add(vec3_scalar_mul(line_vector, t), line_origin), sq);
-		sign = get_sign(sq, line_origin, line_vector, t);
+			vec3_add(vec3_scalar_mul(line.normal, t), line.origin), sq);
+		sign = get_sign(sq, line, t);
 	}
 	if (trunc(sign * pow(10, 10)) != 0)
 	/*if (sign != 0)*/

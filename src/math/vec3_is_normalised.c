@@ -36,7 +36,7 @@
  */
 int
 	vec3_is_normalised(
-struct s_vec3 vector
+t_vec3 vector
 )
 {
 	return (

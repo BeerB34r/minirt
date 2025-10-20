@@ -68,12 +68,25 @@ struct s_rgba
 /**
  *	point in 𝐑³ space 
  */
-struct s_vec3
+typedef union u_vec3
 {
-	double	x;
-	double	y;
-	double	z;
-};
+	double		v[4];
+	struct
+	{
+		double	x;
+		double	y;
+		double	z;
+		double	w; // unused for the most part
+	};
+}	t_vec3;
+
+typedef t_vec3 t_norm;
+
+typedef struct s_line
+{
+	t_vec3	origin;
+	t_norm	normal;
+}	t_line;
 
 //	elements of a scene
 
@@ -86,15 +99,15 @@ struct s_rt_element_ambient_light
 
 struct s_rt_element_camera
 {
-	struct s_vec3	pos;
-	struct s_vec3	orientation;
+	t_vec3			pos;
+	t_norm			orientation;
 	int				fov;
 };
 # define CAMERA_FIELDS 3
 
 struct s_rt_element_light
 {
-	struct s_vec3	pos;
+	t_vec3			pos;
 	double			brightness;
 	struct s_rgba	color;
 };
@@ -102,7 +115,7 @@ struct s_rt_element_light
 
 struct s_rt_element_sphere
 {
-	struct s_vec3	pos;
+	t_vec3			pos;
 	double			radius;
 	struct s_rgba	color;
 };
@@ -110,16 +123,16 @@ struct s_rt_element_sphere
 
 struct s_rt_element_plane
 {
-	struct s_vec3	pos;
-	struct s_vec3	normal;
+	t_vec3			pos;
+	t_norm			normal;
 	struct s_rgba	color;
 };
 # define PLANE_FIELDS 3
 
 struct s_rt_element_cylinder
 {
-	struct s_vec3	pos;
-	struct s_vec3	axis;
+	t_vec3			pos;
+	t_norm			axis;
 	double			radius;
 	double			height;
 	struct s_rgba	color;
@@ -128,10 +141,10 @@ struct s_rt_element_cylinder
 
 struct s_rt_element_triangle
 {
-	struct s_vec3	normal; // precomputed, not given by user
-	struct s_vec3	v1;
-	struct s_vec3	v2;
-	struct s_vec3	v3;
+	t_norm			normal; // precomputed, not given by user
+	t_vec3			v1;
+	t_vec3			v2;
+	t_vec3			v3;
 	struct s_rgba	color;
 	uint16_t		attr; // only relevant for stlfile derived tris
 };
@@ -147,7 +160,7 @@ struct s_rt_element_stlfile
 
 struct s_rt_element_superquadric
 {
-	struct s_vec3	pos;
+	t_vec3			pos;
 	double			r;
 	double			s;
 	double			t;

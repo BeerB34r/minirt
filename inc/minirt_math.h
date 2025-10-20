@@ -31,87 +31,81 @@
 # include <minirt_declarations.h> // function prototypes
 
 //	//	vec3 interface
-int			
+int		
 	vec3_is_normalised(
-		struct s_vec3 vector
+		t_vec3 vector
 		);	// FILE: math/vec3_is_normalised.c
-double		
+double	
 	vec3_magnitude(
-		struct s_vec3 vector
+		t_vec3 vector
 		);	// FILE: math/vec3_magnitude.c
-struct s_vec3
+t_norm	
 	vec3_normalise(
-		struct s_vec3 vector
+		t_vec3 vector
 		);	// FILE: math/vec3_normalise.c
-struct s_vec3
+t_vec3	
 	vec3_add(
-		struct s_vec3 a,
-		struct s_vec3 b
+		t_vec3 a,
+		t_vec3 b
 		);	// FILE: math/vec3_add.c
-struct s_vec3
+t_vec3	
 	vec3_sub(
-		struct s_vec3 a,
-		struct s_vec3 b
+		t_vec3 a,
+		t_vec3 b
 		);	// FILE: math/vec3_sub.c
-struct s_vec3
+t_vec3	
 	vec3_scalar_mul(
-		struct s_vec3 a,
+		t_vec3 a,
 		double r
 		);	// FILE: math/vec3_scalar_mul.c
-double		
+double	
 	vec3_dot_product(
-		struct s_vec3 a,
-		struct s_vec3 b
+		t_vec3 a,
+		t_vec3 b
 		);	// FILE: math/vec3_dot_product.c
-struct s_vec3
+t_vec3	
 	vec3_cross_product(
-		struct s_vec3 a,
-		struct s_vec3 b
+		t_vec3 a,
+		t_vec3 b
 		);	// FILE: math/vec3_cross_product.c
-double		
+double	
 	vec3_box_product(
-		struct s_vec3 a,
-		struct s_vec3 b,
-		struct s_vec3 c
+		t_vec3 a,
+		t_vec3 b,
+		t_vec3 c
 		);	// FILE: math/vec3_box_product.c
 
 //	//	line intersection functions
 //	returns a real number d equal to the distance from the lines origin to the
 //	point of intersection, or NAN if there is no intersection
-double		
+double	
 	closest_sphere_intersection(
 		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
+		t_line line
 		);	// FILE: math/intersection/sphere.c
-double		
+double	
 	closest_plane_intersection(
 		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
+		t_line line
 		);	// FILE: math/intersection/plane.c
-double		
+double	
 	closest_cylinder_intersection(
 		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
+		t_line line
 		);	// FILE: math/intersection/cylinder.c
-double		
+double	
 	closest_superquadric_intersection(
 		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
+		t_line line
 		);	// FILE: math/intersection/superquadric.c
-double		
+double	
 	closest_triangle_intersection(
 		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
+		t_line line
 		);	// FILE: math/intersection/triangle.c
-double		
+double	
 	closest_stlfile_intersection(
 		t_element object,
-		struct s_vec3 origin,
-		struct s_vec3 normal
+		t_line line
 		);	// FILE: math/intersection/stlfile.c
 #endif // MINIRT_MATH_H

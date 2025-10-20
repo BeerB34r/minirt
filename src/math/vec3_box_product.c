@@ -30,9 +30,9 @@
 
 double
 	vec3_box_product(
-struct s_vec3 a,
-struct s_vec3 b,
-struct s_vec3 c
+t_vec3 a,
+t_vec3 b,
+t_vec3 c
 )
 {
 	return (vec3_dot_product(a, vec3_cross_product(b, c)));

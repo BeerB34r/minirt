@@ -25,6 +25,7 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
+#include "minirt_math.h"
 #include <libft.h>
 #include <minirt_utils.h>
 #include <minirt_error.h>
@@ -36,14 +37,14 @@
 static int
 	get_tri_vec3(
 int fd,
-struct s_vec3 *store
+t_vec3 *store
 )
 {
 	float	float3[3];
 
 	if (read(fd, float3, 12) != 12)
 		return (1);
-	*store = (struct s_vec3){
+	*store = (t_vec3){
 		.x = float3[0],
 		.y = float3[1],
 		.z = float3[2]
@@ -81,6 +82,7 @@ struct s_rt_element_stlfile *store
 			.b = ((store->triangles[i].attr >> 8) & 0b1111) * 8,
 			.a = 0
 		};
+		store->triangles[i].normal = vec3_normalise(store->triangles[i].normal);
 		i++;
 	}
 	return (read(fd, &i, 1));

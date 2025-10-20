@@ -42,7 +42,7 @@ typedef struct s_superquadric_parameters
 	double	s;
 	double	t;
 }	t_sq_gf_arg;
-double		
+double	
 	superquadric_general_form(
 		t_sq_gf_arg args
 		);	// FILE:	math/superquadric/general_form.c
@@ -58,20 +58,20 @@ typedef struct s_superquadric_parametric_parameters
 	double	s;
 	double	t;
 }	t_sq_pf_arg;
-struct s_vec3
+
+t_vec3	
 	superquadric_parametric_form(
 		t_sq_pf_arg args
 		);	// FILE:	math/superquadric/parametric_form.c
-int			
+int		
 	sq_point_of_intersection(
 		t_sq_gf_arg sq,
-		struct s_vec3 line_origin,
-		struct s_vec3 line_vector,
+		t_line line,
 		double *intersection
 		);	// FILE: math/superquadric/intersect.c
-struct s_vec3
+t_norm	
 	sq_intersection_normal(
-		struct s_vec3 p,
+		t_vec3 p,
 		t_sq_gf_arg sq
 		);	// FILE: math/superquadric/compute_normal.c
 #endif // MINIRT_MATH_SUPERQUADRICS_H

@@ -95,12 +95,12 @@ int
 int	
 	get_vec3(
 		const char *str,
-		struct s_vec3 *store
+		t_vec3 *store
 		);	// FILE: utils/get_vec3.c
 int	
 	get_norm(
 		const char *str,
-		struct s_vec3 *store
+		t_vec3 *store
 		);	// FILE: utils/get_norm.c
 int	
 	get_rgba(

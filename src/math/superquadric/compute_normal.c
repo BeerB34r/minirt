@@ -41,13 +41,13 @@ double exponent
 	return (pow(fabs(x), exponent) * pow(1 / fabs(constant), exponent));
 }
 
-struct s_vec3
+t_norm
 	sq_intersection_normal(
-struct s_vec3 p,
+t_vec3 p,
 t_sq_gf_arg sq
 )
 {
-	return (vec3_normalise((struct s_vec3){
+	return (vec3_normalise((t_vec3){
 			.x = sq_dfdx(p.x, sq.a, sq.r),
 			.y = sq_dfdx(p.y, sq.b, sq.s),
 			.z = sq_dfdx(p.z, sq.c, sq.t)

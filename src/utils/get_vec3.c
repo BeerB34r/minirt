@@ -33,11 +33,11 @@
 int
 	get_vec3(
 const char *str,
-struct s_vec3 *store
+t_vec3 *store
 )
 {
 	char **const	split = ft_split(str, ',');
-	struct s_vec3	result;
+	t_vec3			result;
 
 	if (!split)
 	{

@@ -27,13 +27,13 @@
 
 #include <minirt_declarations.h>
 
-struct s_vec3
+t_vec3
 	vec3_scalar_mul(
-struct s_vec3 a,
+t_vec3 a,
 double r
 )
 {
-	return ((struct s_vec3){
+	return ((t_vec3){
 		.x = a.x * r,
 		.y = a.y * r,
 		.z = a.z * r
