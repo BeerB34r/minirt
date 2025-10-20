@@ -120,9 +120,9 @@ t_norm normal
 {
 	uint32_t		internal;
 
-	internal = ((int)trunc(fabs(normal.x) * 255) << 24)
-		+ ((int)trunc(fabs(normal.y) * 255) << 16)
-		+ ((int)trunc(fabs(normal.z) * 255) << 8)
+	internal = ((int)trunc(normal.x * 255 * 0.5 + 127) << 24)
+		+ ((int)trunc(normal.y * 255 * 0.5 + 127) << 16)
+		+ ((int)trunc(normal.z * 255 * 0.5 + 127) << 8)
 		+ (255 << 0);
 	return (internal);
 }

@@ -1,5 +1,5 @@
 SRC				!=	cat src.list
-SRCDIR			=	src/utils/ src/parsing/ src/math/ src/math/intersection/ src/math/superquadric src/ 
+SRCDIR			=	src/utils/ src/parsing/ src/math/ src/math/intersection/ src/math/superquadric src/
 TESTDIR			=	test/
 TESTFLAGS		=	-g3
 BIN				=	$(addprefix $(BINDIR),$(SRC:.c=.o))
@@ -15,7 +15,8 @@ LDFLAGS			=	-lm lib/libft/libft.a lib/mlx42/build/libmlx42.a -ldl -lglfw -pthrea
 CC				:=	cc
 NAME			:=	minirt_parser
 
-.EXTRA_PREREQS	=	Makefile
+MAKEFLAGS		+=	-r
+.EXTRA_PREREQS	=	$(firstword $(MAKEFILE_LIST))
 .DEFAULT_GOAL	=	all
 .PRECIOUS		:	$(BINDIR) $(DEPDIR)
 .PHONY			:	debug clean fclean re all
@@ -37,7 +38,7 @@ test_%			:	%.o
 	./$@
 
 %/				:
-	mkdir -p $@
+	@mkdir -p $@
 
 clean			:
 	$(RM) -r $(BINDIR)
