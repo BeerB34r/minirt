@@ -15,6 +15,7 @@ LDFLAGS			=	-lm lib/libft/libft.a lib/mlx42/build/libmlx42.a -ldl -lglfw -pthrea
 CC				:=	cc
 NAME			:=	minirt_parser
 
+.EXTRA_PREREQS	=	Makefile
 .DEFAULT_GOAL	=	all
 .PRECIOUS		:	$(BINDIR) $(DEPDIR)
 .PHONY			:	debug clean fclean re all
