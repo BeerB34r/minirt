@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   math.c                                                  :+:    :+:       */
+/*   norm.c                                                  :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/10/01 16:13:54 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/01 16:48:21 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/10/24 08:41:35 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/10/24 08:53:54 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,31 +25,72 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <minirt_declarations.h>
-#include <minirt_math.h>
-#include <minirt_utils.h>
-#include <minirt_math_superquadrics.h>
 #include <math.h>
+#include <minirt_math_superquadrics.h>
+#include <minirt_math.h>
+#include <minirt_declarations.h>
 
 static double
-	parametric_term(
-double x,
-double constant,
-double exponent
+	xuv(
+t_uv uv,
+struct s_rt_element_superquadric s
 )
 {
-	return (pow(fabs(x / constant), exponent));
+	const double	cu = cos(uv.u);
+	const double	cv = cos(uv.v);
+
+	if (!cu || !cv)
+		return (0);
+	return (
+		(1 / s.a1)
+		* pow(cu, 2 - s.e1)
+		* pow(cv, 2 - s.e2)
+	);
 }
 
-double
-	superquadric_general_form(
-t_sq_gf_arg args
+static double
+	yuv(
+t_uv uv,
+struct s_rt_element_superquadric s
 )
 {
+	const double	cu = cos(uv.u);
+	const double	sv = sin(uv.u);
+
+	if (!cu || ! sv)
+		return (0);
 	return (
-		parametric_term(args.x, args.a, args.r)
-		+ parametric_term(args.y, args.b, args.s)
-		+ parametric_term(args.z, args.c, args.t)
-		- 1
+		(1 / s.a2)
+		* pow(cu, 2 - s.e1)
+		* pow(sv, 2 - s.e2)
 	);
+}
+
+static double
+	zuv(
+t_uv uv,
+struct s_rt_element_superquadric s
+)
+{
+	const double	su = sin(uv.u);
+
+	if (!su)
+		return (0);
+	return (
+		(1 / s.a3)
+		* pow(su, 2 - s.e1)
+	);
+}
+
+t_norm
+	sq_e_norm(
+t_uv uv,
+struct s_rt_element_superquadric s
+)
+{
+	const double	x = xuv(uv, s);
+	const double	y = yuv(uv, s);
+	const double	z = zuv(uv, s);
+
+	return (vec3_normalise((t_vec3){.x = x, .y = y, .z = z}));
 }

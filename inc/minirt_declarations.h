@@ -70,7 +70,7 @@ struct s_rgba
  */
 typedef union u_vec3
 {
-	double		v[4];
+	double		a[4];
 	struct
 	{
 		double	x;
@@ -80,7 +80,18 @@ typedef union u_vec3
 	};
 }	t_vec3;
 
-typedef t_vec3 t_norm;
+typedef t_vec3	t_norm;
+typedef t_vec3	t_vec4;
+
+typedef union u_uv
+{
+	double	a[2];
+	struct
+	{
+		double	u;
+		double	v;
+	};
+}	t_uv;
 
 typedef struct s_line
 {
@@ -158,18 +169,32 @@ struct s_rt_element_stlfile
 };
 # define STLFILE_FIELDS 1
 
+enum e_sq_subtype
+{
+	ELLIPSOID,
+	HYPERBOLOID1,
+	HYPERBOLOID2,
+	TORUS
+};
 struct s_rt_element_superquadric
 {
-	t_vec3			pos;
-	double			r;
-	double			s;
-	double			t;
-	double			a;
-	double			b;
-	double			c;
-	struct s_rgba	color;
+	enum e_sq_subtype	subtype;
+	t_vec3				pos;
+	t_vec4				rot;
+	double				e1p;
+	double				e1q;
+	double				e1;
+	double				e2p;
+	double				e2q;
+	double				e2;
+	double				a1;
+	double				a2;
+	double				a3;
+	double				a4;	// TORUS EXCLUSIVE
+	double				a;	// TORUS EXCLUSIVE
+	struct s_rgba		color;
 };
-# define SUPERQUADRIC_FIELDS 8
+# define SUPERQUADRIC_FIELDS 12
 
 typedef struct s_rt_element
 {

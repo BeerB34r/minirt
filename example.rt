@@ -4,37 +4,37 @@
 # real numbers include the value INF as a substitute for infinity
 # RGB is any set of precisely three comma-separated integers limited to the range {0,1,2,...,255} inclusive
 # vec3 is any set of precisely three comma-separated real numbers (i.e: -42.0,0,42.0)
+# vec4 is any set of precisely four comma-separated real numbers (i.e: -42.0,0,42.0,0)
 # norm is any set of precisely three comma-separated real numbers making up a unit vector
-# ambient lighting, float [0.0,1.0] - RGB
+# ambient lighting, real [0.0,1.0] - RGB
 A 0.1 0,42,255
 
 # camera, vec3 pos - norm orientation - int FOV {0,1,2,...180}
 C -42.0,0.0,42.0 0.0,1.0,0.0 42
 
-# light, vec3 pos - float brightness [0.0,1.0] - RGB
+# light, vec3 pos - real brightness [0.0,1.0] - RGB
 L -42.0,0.0,42.0 0.42 0,42,255
 
-# sphere, vec3 pos - float radius - RGB
+# sphere, vec3 pos - real radius - RGB
 sp -42.0,0.0,42.0 4.2 0,42,255
 
 # plane, vec3 pos - norm orientation - RGB
 pl -42.0,0.0,42.0 0.0,0.0,1.0 0,42,255
 
-# cylinder, vec3 pos - norm orientation - float radius - float height - RGB
+# cylinder, vec3 pos - norm orientation - real radius - real height - RGB
 cy -42.0,0.0,42.0 0.0,0.0,1.0 42.0 42.0 0,42,255
 
 ## Bonus section
-# you can model any given superquadric using its general function:
-# |x/A|^r + |y/B|^s + |z/C|^t = 1
-# as long as r >= 0, s >= 0, t >= 0 the shape will be finite. as soon as
-# any of them is allowed to become negative, we are touching superhyperboloids
-# Special cases
-# if r = s = t = 2 then the figure is a sphere
-# if r = s = t = 1 then the figure is an octahedron
-# if r = s then the figure is some sort of superellipsoid
+# NB: not all values of {e1p/e1q,e2p/e2q} will look good, lame curve exponents
+# should work nicely however
+# sq
+# subtype [e (ellipsoid) || h1 (hyperboloid1) || h2 (hyperboloid2) || t (torus)]
+# - vec3 pos - vec4 rot - real e1p {1,2,...,INF} - real e1q {1,2,...,INF}
+# - real e2p {1,2,...,INF} - real e2q {1,2,...,INF} - real a1 (0, INF]
+# - real a2 (0, INF] - real a3 (0, INF] - real a (0,INF] - RGB
+sq h2 1,1,1 0,0,0,0 3 5 3 5 2 2 2 1 255,0,0
+#sq st vec3 vec4 e1p e1q e2p e2q a1 a2 a3 a RGB
 
-# superquadric, vec3 pos - float r - float s - float t - float A - float B - float C - RGB
-sq -42.0,0.0,42.0 2.0 2.0 2.0 5 5 5 0,42,255
 
 ## Extra section
 #triangle, vec3 A - vec3 B - vec3 C - RGB

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   compute_normal.c                                        :+:    :+:       */
+/*   get_real_int.c                                          :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/10/01 18:00:55 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/01 18:37:12 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/10/24 06:27:09 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/10/24 06:34:48 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,32 +25,26 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <minirt_declarations.h>
-#include <minirt_math.h>
-#include <minirt_math_superquadrics.h>
-#include <minirt_utils.h>
 #include <math.h>
+#include <libft.h>
+#include <minirt_utils.h>
+#include <minirt_error.h>
 
-static double
-	sq_dfdx(
-double x,
-double constant,
-double exponent
+int
+	get_real_int(
+const char *str,
+double *store
 )
 {
-	return (pow(fabs(x), exponent) * pow(1 / fabs(constant), exponent));
-}
+	double	internal;
 
-t_norm
-	sq_intersection_normal(
-t_vec3 p,
-t_sq_gf_arg sq
-)
-{
-	return (vec3_normalise((t_vec3){
-			.x = sq_dfdx(p.x, sq.a, sq.r),
-			.y = sq_dfdx(p.y, sq.b, sq.s),
-			.z = sq_dfdx(p.z, sq.c, sq.t)
-		})
-	);
+	if (get_real(str, &internal))
+		return (1);
+	else if (modf(internal, &internal))
+	{
+		ft_dprintf(2, ERR E_NOTI, str);
+		return (1);
+	}
+	*store = internal;
+	return (0);
 }

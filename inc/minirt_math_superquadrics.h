@@ -30,48 +30,26 @@
 
 # include <minirt_declarations.h>
 
-typedef struct s_superquadric_parameters
-{
-	double	x;
-	double	y;
-	double	z;
-	double	a;
-	double	b;
-	double	c;
-	double	r;
-	double	s;
-	double	t;
-}	t_sq_gf_arg;
-double	
-	superquadric_general_form(
-		t_sq_gf_arg args
-		);	// FILE:	math/superquadric/general_form.c
+t_vec3
+	sq_wp_op(
+		t_vec3 pw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/worldspace_to_objectspace.c
 
-typedef struct s_superquadric_parametric_parameters
-{
-	double	u;
-	double	v;
-	double	a;
-	double	b;
-	double	c;
-	double	r;
-	double	s;
-	double	t;
-}	t_sq_pf_arg;
-
-t_vec3	
-	superquadric_parametric_form(
-		t_sq_pf_arg args
-		);	// FILE:	math/superquadric/parametric_form.c
-int		
-	sq_point_of_intersection(
-		t_sq_gf_arg sq,
-		t_line line,
-		double *intersection
-		);	// FILE: math/superquadric/intersect.c
-t_norm	
-	sq_intersection_normal(
-		t_vec3 p,
-		t_sq_gf_arg sq
-		);	// FILE: math/superquadric/compute_normal.c
+/*	Ellipsoids */
+double
+	sq_e_io(
+		t_vec3 pw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/ellipsoid/io_func.c
+t_uv
+	sq_e_xyz_uv(
+		t_vec3 pw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/ellipsoid/xyz_to_uv.c
+t_norm
+	sq_e_norm(
+		t_uv uv,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/ellipsoid/norm.c
 #endif // MINIRT_MATH_SUPERQUADRICS_H
