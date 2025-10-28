@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   worldspace_to_objectspace.c                             :+:    :+:       */
+/*   e_derivative.c                                          :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/10/24 08:26:07 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/24 08:28:06 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/10/28 19:58:59 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/10/28 19:59:16 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,16 +25,27 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
+#include <math.h>
 #include <minirt_declarations.h>
-#include <minirt_math.h>
 
-// TODO: ROTATION MATRIX
-t_vec3
-	sq_wp_op(
-t_vec3 pw,
+double
+	sq_e_derivative(
+t_line l,
+t_vec3 p,
 struct s_rt_element_superquadric s
 )
 {
-	return (vec3_sub(pw, s.pos));
+	return (
+		((s.e2
+				* (((2 * l.normal.x * pow(p.x / s.a1, (2 / s.e2) - 1))
+						/ (s.a1 * s.e2))
+					+ ((2 * l.normal.y * pow(p.y / s.a2, (2 / s.e2) - 1))
+						/ (s.a2 * s.e2)))
+				* pow(
+					pow(p.x / s.a1, 2 / s.e2) + pow(p.y / s.a2, 2 / s.e2),
+					(s.e2 / s.e1) - 1))
+			/ s.e1)
+		+ ((2 * l.normal.z * pow(p.z / s.a3, (2 / s.e1) - 1))
+			/ (s.a3 * s.e1))
+	);
 }
-

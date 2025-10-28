@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/09/23 15:38:31 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/23 15:50:48 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/10/28 19:43:10 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -75,6 +75,12 @@ double
 		t_vec3 c
 		);	// FILE: math/vec3_box_product.c
 
+//	//	line interface
+t_vec3	
+	l_t(
+		t_line l,
+		double t
+		);	// FILE: math/line_l_t.c
 //	//	line intersection functions
 //	returns a real number d equal to the distance from the lines origin to the
 //	point of intersection, or NAN if there is no intersection

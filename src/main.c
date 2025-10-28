@@ -30,6 +30,7 @@
 #include <minirt_parse.h>
 #include <minirt_math.h>
 #include <minirt_math_superquadrics.h>
+#include <stdio.h>
 
 void	render_scene(struct s_rt_scene scene);
 

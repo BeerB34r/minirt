@@ -48,10 +48,9 @@ double *t
 
 	if (object.type == SUPERQUADRIC)
 	{
-		res = closest_superquadric_intersection(object, line);
+		res = sq_e_int(line, object.superquadric);
 		if (res == res)
 			*t = res;
-		/*printf("result: %f\n", res);*/
 		return (res == res);
 	}
 	return (0);
@@ -178,20 +177,14 @@ struct s_rt_scene scene
 			if (t != FP_INFINITE)
 			{
 				mlx_put_pixel(img, i, j, normal_to_rgba(
-						sq_intersection_normal(
-							vec3_add(
-								vec3_scalar_mul(
-									camera_angle(fov, i, j).normal, t),
-								vec3_sub(scene.camera.pos,
-									scene.elements[k].superquadric.pos)),
-							(t_sq_gf_arg){
-							.a = scene.elements[k].superquadric.a,
-							.b = scene.elements[k].superquadric.b,
-							.c = scene.elements[k].superquadric.c,
-							.r = scene.elements[k].superquadric.r,
-							.s = scene.elements[k].superquadric.s,
-							.t = scene.elements[k].superquadric.t
-						})));
+						sq_e_norm(
+							sq_e_xyz_uv(
+								l_t(
+									camera_angle(fov, i, j), t),
+								scene.elements[k].superquadric),
+							scene.elements[k].superquadric)
+						)
+					);
 			}
 			else if (t != FP_INFINITE)
 				mlx_put_pixel(img, i, j, 0xFFFFFFFF);

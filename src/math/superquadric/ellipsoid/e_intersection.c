@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   minirt_math_superquadrics.h                             :+:    :+:       */
+/*   intersection.c                                          :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/10/01 17:07:16 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/28 19:58:27 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/10/27 17:27:20 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/10/27 18:54:23 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,67 +25,68 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#ifndef MINIRT_MATH_SUPERQUADRICS_H
-# define MINIRT_MATH_SUPERQUADRICS_H
+#include <math.h>
+#include <minirt_declarations.h>
+#include <minirt_math_superquadrics.h>
+#include <minirt_math.h>
+#include <minirt_utils.h>
+#include <stdio.h>
 
-# include <minirt_declarations.h>
-/*	Naming conventions
- *	sq_.* => functions belonging to the superquadric interface
- *	.*_e_.* => infix for functions belonging to the ellipsoid interface
- *	.*_h1_.* => infix for functions belonging to the hyperboloids of one sheet
- *	interface
- *	.*_h2_.* => infix for functions belonging to the hyperboloids of two sheets
- *	interface
- *	.*_t_.* => infix for functions belonging to the torus interface
- *	.*wp_op() => convert point in world-space to object-space
- *	.*wl_ol() => convert line in world-space to object-space
- *	.*_io() => determine wether a point in world-space is inside a given object
- *		return > 1 => outside object
- *		return < 1 => inside object
- *		return = 1 => on the object's surface
- *	.*derivative() => the derivative of the io function, in object space
- *	.*xyz_uv() => converts a given point in world-space on the surface of the
- *	object to angles u,v in terms of the object
- *	.*norm() => returns the unit normal of a point on an objects surface defined
- *	using the angles u,v
- */
+#define MAX_NEWTON_ITER 100
 
-t_vec3
-	sq_wp_op(
-		t_vec3 pw,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/worldspace_to_objectspace.c
-t_line
-	sq_wl_ol(
-		t_line lw,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/worldspace_to_objectspace.c
+// TODO: negative distance
+static double
+	initial_guess(
+t_vec3 pw,
+struct s_rt_element_superquadric s
+)
+{
+	const double	distance = vec3_magnitude(sq_wp_op(pw, s));
+	const double	max_side = fmax(s.a1, fmax(s.a2, s.a3));
 
-/*	Ellipsoids */
-double
-	sq_e_io(
-		t_vec3 pw,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/ellipsoid/e_io_func.c
-t_uv
-	sq_e_xyz_uv(
-		t_vec3 pw,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/ellipsoid/e_xyz_to_uv.c
-t_norm
-	sq_e_norm(
-		t_uv uv,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/ellipsoid/e_norm.c
+	if (distance <= max_side)
+		return (0);
+	return (distance - max_side);
+}
+
+static double
+	newton_iter(
+t_line lw,
+double t,
+struct s_rt_element_superquadric s
+)
+{
+	return (t
+		- ((sq_e_io(l_t(lw, t), s) - 1)
+			/ sq_e_derivative(sq_wl_ol(lw, s), l_t(sq_wl_ol(lw, s), t), s)));
+}
+
+static double
+	approx(
+double n
+)
+{
+	const double	exponent = 10;
+
+	return (round(n * pow(10, exponent)) / pow(10, exponent));
+}
+
 double
 	sq_e_int(
-		t_line lw,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/ellipsoid/e_intersection.c
-double
-	sq_e_derivative(
-		t_line l,
-		t_vec3 p,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/ellipsoid/e_derivative.c
-#endif // MINIRT_MATH_SUPERQUADRICS_H
+t_line lw,
+struct s_rt_element_superquadric s
+)
+{
+	size_t			i;
+	double			t;
+
+	t = initial_guess(lw.origin, s);
+	i = -1;
+	while (++i < MAX_NEWTON_ITER)
+	{
+		t = newton_iter(lw, t, s);
+		if (approx(sq_e_io(l_t(lw, t), s)) == 1)
+			return (t);
+	}
+	return (NAN);
+}
