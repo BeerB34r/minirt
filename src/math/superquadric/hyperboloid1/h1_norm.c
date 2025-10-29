@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   minirt_math.h                                           :+:    :+:       */
+/*   h1_norm.c                                               :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/23 15:38:31 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/28 19:43:10 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/10/24 08:41:35 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/10/24 08:53:54 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,104 +25,72 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#ifndef MINIRT_MATH_H
-# define MINIRT_MATH_H
+#include <math.h>
+#include <minirt_math_superquadrics.h>
+#include <minirt_math.h>
+#include <minirt_declarations.h>
 
-# include <minirt_declarations.h> // function prototypes
+static double
+	xuv(
+t_uv uv,
+struct s_rt_element_superquadric s
+)
+{
+	const double	su = sec(uv.u);
+	const double	cv = cos(uv.v);
 
-//	//	mathematical constants (for some fucking reason???????)
+	if (!su || !cv)
+		return (0);
+	return (
+		(1 / s.a1)
+		* pow(su, 2 - s.e1)
+		* pow(cv, 2 - s.e2)
+	);
+}
 
-//	//	trigonometric interface (for some fucking reason????)
-double	
-	sec(
-		double theta
-		);	// FILE: math/sec.c
-double	
-	asec(
-		double theta
-		);	// FILE: math/sec.c
-//	//	vec3 interface
-int		
-	vec3_is_normalised(
-		t_vec3 vector
-		);	// FILE: math/vec3_is_normalised.c
-double	
-	vec3_magnitude(
-		t_vec3 vector
-		);	// FILE: math/vec3_magnitude.c
-t_norm	
-	vec3_normalise(
-		t_vec3 vector
-		);	// FILE: math/vec3_normalise.c
-t_vec3	
-	vec3_add(
-		t_vec3 a,
-		t_vec3 b
-		);	// FILE: math/vec3_add.c
-t_vec3	
-	vec3_sub(
-		t_vec3 a,
-		t_vec3 b
-		);	// FILE: math/vec3_sub.c
-t_vec3	
-	vec3_scalar_mul(
-		t_vec3 a,
-		double r
-		);	// FILE: math/vec3_scalar_mul.c
-double	
-	vec3_dot_product(
-		t_vec3 a,
-		t_vec3 b
-		);	// FILE: math/vec3_dot_product.c
-t_vec3	
-	vec3_cross_product(
-		t_vec3 a,
-		t_vec3 b
-		);	// FILE: math/vec3_cross_product.c
-double	
-	vec3_box_product(
-		t_vec3 a,
-		t_vec3 b,
-		t_vec3 c
-		);	// FILE: math/vec3_box_product.c
+static double
+	yuv(
+t_uv uv,
+struct s_rt_element_superquadric s
+)
+{
+	const double	su = sec(uv.u);
+	const double	sv = sin(uv.u);
 
-//	//	line interface
-t_vec3	
-	l_t(
-		t_line l,
-		double t
-		);	// FILE: math/line_l_t.c
-//	//	line intersection functions
-//	returns a real number d equal to the distance from the lines origin to the
-//	point of intersection, or NAN if there is no intersection
-double	
-	closest_sphere_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/sphere.c
-double	
-	closest_plane_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/plane.c
-double	
-	closest_cylinder_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/cylinder.c
-double	
-	closest_superquadric_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/superquadric.c
-double	
-	closest_triangle_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/triangle.c
-double	
-	closest_stlfile_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/stlfile.c
-#endif // MINIRT_MATH_H
+	if (!su || ! sv)
+		return (0);
+	return (
+		(1 / s.a2)
+		* pow(su, 2 - s.e1)
+		* pow(sv, 2 - s.e2)
+	);
+}
+
+static double
+	zuv(
+t_uv uv,
+struct s_rt_element_superquadric s
+)
+{
+	const double	tu = tan(uv.u);
+
+	if (!tu)
+		return (0);
+	return (
+		(1 / s.a3)
+		* -pow(tu, 2 - s.e1)
+	);
+}
+
+t_norm
+	sq_h1_norm(
+t_uv uv,
+struct s_rt_element_superquadric s
+)
+{
+	const double	x = xuv(uv, s);
+	const double	y = yuv(uv, s);
+	const double	z = zuv(uv, s);
+
+	return (vec3_normalise((t_vec3){.x = x, .y = y, .z = z}));
+}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   minirt_math.h                                           :+:    :+:       */
+/*   h2_xyz_to_uv.c                                          :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/23 15:38:31 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/28 19:43:10 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/10/24 08:24:08 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/10/29 18:19:54 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,104 +25,33 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#ifndef MINIRT_MATH_H
-# define MINIRT_MATH_H
+#include <math.h>
+#include <minirt_declarations.h>
+#include <minirt_math.h>
+#include <minirt_math_superquadrics.h>
 
-# include <minirt_declarations.h> // function prototypes
+t_uv
+	sq_h2_xyz_uv(
+t_vec3 pw,
+struct s_rt_element_superquadric s
+)
+{
+	const t_vec3	p = sq_wp_op(pw, s);
+	double			u;
+	double			vx;
+	double			vy;
+	double			v;
 
-//	//	mathematical constants (for some fucking reason???????)
-
-//	//	trigonometric interface (for some fucking reason????)
-double	
-	sec(
-		double theta
-		);	// FILE: math/sec.c
-double	
-	asec(
-		double theta
-		);	// FILE: math/sec.c
-//	//	vec3 interface
-int		
-	vec3_is_normalised(
-		t_vec3 vector
-		);	// FILE: math/vec3_is_normalised.c
-double	
-	vec3_magnitude(
-		t_vec3 vector
-		);	// FILE: math/vec3_magnitude.c
-t_norm	
-	vec3_normalise(
-		t_vec3 vector
-		);	// FILE: math/vec3_normalise.c
-t_vec3	
-	vec3_add(
-		t_vec3 a,
-		t_vec3 b
-		);	// FILE: math/vec3_add.c
-t_vec3	
-	vec3_sub(
-		t_vec3 a,
-		t_vec3 b
-		);	// FILE: math/vec3_sub.c
-t_vec3	
-	vec3_scalar_mul(
-		t_vec3 a,
-		double r
-		);	// FILE: math/vec3_scalar_mul.c
-double	
-	vec3_dot_product(
-		t_vec3 a,
-		t_vec3 b
-		);	// FILE: math/vec3_dot_product.c
-t_vec3	
-	vec3_cross_product(
-		t_vec3 a,
-		t_vec3 b
-		);	// FILE: math/vec3_cross_product.c
-double	
-	vec3_box_product(
-		t_vec3 a,
-		t_vec3 b,
-		t_vec3 c
-		);	// FILE: math/vec3_box_product.c
-
-//	//	line interface
-t_vec3	
-	l_t(
-		t_line l,
-		double t
-		);	// FILE: math/line_l_t.c
-//	//	line intersection functions
-//	returns a real number d equal to the distance from the lines origin to the
-//	point of intersection, or NAN if there is no intersection
-double	
-	closest_sphere_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/sphere.c
-double	
-	closest_plane_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/plane.c
-double	
-	closest_cylinder_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/cylinder.c
-double	
-	closest_superquadric_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/superquadric.c
-double	
-	closest_triangle_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/triangle.c
-double	
-	closest_stlfile_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/stlfile.c
-#endif // MINIRT_MATH_H
+	u = atan(pow(p.z / s.a3, 1 / s.e1));
+	if (!sec(u))
+		return ((t_uv){.u = u, .v = 0});
+	vx = asec(pow(p.x / (s.a1 * pow(sec(u), s.e1)), s.e2));
+	if (p.x < 0)
+		vy = 1;
+	else
+		vy = atan(pow(p.y / (s.a2 * pow(sec(u), s.e1)), s.e2));
+	v = copysign(vx, vy);
+	if (p.x < 0 && p.y >= 0)
+		v = -v + (2 * M_PI);
+	return ((t_uv){.u = u, .v = v});
+}

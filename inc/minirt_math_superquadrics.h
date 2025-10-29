@@ -31,12 +31,12 @@
 # include <minirt_declarations.h>
 /*	Naming conventions
  *	sq_.* => functions belonging to the superquadric interface
- *	.*_e_.* => infix for functions belonging to the ellipsoid interface
- *	.*_h1_.* => infix for functions belonging to the hyperboloids of one sheet
- *	interface
- *	.*_h2_.* => infix for functions belonging to the hyperboloids of two sheets
- *	interface
- *	.*_t_.* => infix for functions belonging to the torus interface
+ *	.*_e_.* => infix for functions belonging to the superellipsoid interface
+ *	.*_h1_.* => infix for functions belonging to the superhyperboloids of one
+ *	sheet interface
+ *	.*_h2_.* => infix for functions belonging to the superhyperboloids of two
+ *	sheets interface
+ *	.*_t_.* => infix for functions belonging to the supertoroid interface
  *	.*wp_op() => convert point in world-space to object-space
  *	.*wl_ol() => convert line in world-space to object-space
  *	.*_io() => determine wether a point in world-space is inside a given object
@@ -61,7 +61,7 @@ t_line
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/worldspace_to_objectspace.c
 
-/*	Ellipsoids */
+/*	Superellipsoids */
 double
 	sq_e_io(
 		t_vec3 pw,
@@ -88,4 +88,42 @@ double
 		t_vec3 p,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/ellipsoid/e_derivative.c
+/*	Superhyperboloids of one sheet */
+double
+	sq_h1_io(
+		t_vec3 pw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/hyperboloid1/h1_io_func.c
+t_uv
+	sq_h1_xyz_uv(
+		t_vec3 pw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/hyperboloid1/h1_xyz_to_uv.c
+t_norm
+	sq_h1_norm(
+		t_uv uv,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/hyperboloid1/h1_norm.c
+/*	Superhyperboloids of two sheets */
+double
+	sq_h2_io(
+		t_vec3 pw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/hyperboloid2/h2_io_func.c
+t_uv
+	sq_h2_xyz_uv(
+		t_vec3 pw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/hyperboloid2/h2_xyz_to_uv.c
+t_norm
+	sq_h2_norm(
+		t_uv uv,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/hyperboloid2/h2_norm.c
+/*	Supertoroids */
+double
+	sq_t_io(
+		t_vec3 pw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/toroid/t_io_func.c //TODO
 #endif // MINIRT_MATH_SUPERQUADRICS_H

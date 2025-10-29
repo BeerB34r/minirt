@@ -1,5 +1,15 @@
 SRC				!=	cat src.list
-SRCDIR			=	src/utils/ src/parsing/ src/math/ src/math/intersection/ src/math/superquadric src/math/superquadric/ellipsoid/ src/
+SRCDIR			=	src/ \
+					src/utils/ \
+					src/parsing/ \
+					src/math/ \
+					src/math/intersection/ \
+					src/math/superquadric \
+					src/math/superquadric/ellipsoid/ \
+					src/math/superquadric/hyperboloid1 \
+					src/math/superquadric/hyperboloid2 \
+					src/math/superquadric/toroid \
+
 TESTDIR			=	test/
 TESTFLAGS		=	-g3
 BIN				=	$(addprefix $(BINDIR),$(SRC:.c=.o))
@@ -9,7 +19,7 @@ DEPDIR			=	dep/
 DEPFLAG			=	-MM -MF $@ -MT $@ -MT $(BINDIR)$(addsuffix .o,$(notdir $(basename $<)))
 INC				=	-Ilib/libft/include -Iinc -Ilib/mlx42/include/MLX42
 VPATH			=	$(SRCDIR)
-CFLAGS			:=	-Wall -Wextra -Werror -std=c2x -ffast-math -O3 -fhonor-infinities -fhonor-nans
+CFLAGS			:=	-Wall -Wextra -Werror -ffast-math -O3 -fhonor-infinities -fhonor-nans
 CPPFLAGS		=	$(INC) -g3
 LDFLAGS			=	-lm lib/libft/libft.a lib/mlx42/build/libmlx42.a -ldl -lglfw -pthread
 CC				:=	cc
