@@ -26,16 +26,33 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include "minirt_math_superquadrics.h"
 #include <stdbool.h>
 #include <libft.h>
 #include <minirt_math.h>
 #include <math.h>
 #include <minirt_declarations.h>
+#include <minirt_math_superquadrics.h>
 #include <MLX42.h>
 
 #define HEIGHT 500
 #define WIDTH 500
+
+double
+	sq_int(
+t_line lw,
+struct s_rt_element_superquadric s
+)
+{
+	if (s.subtype == ELLIPSOID)
+		return (sq_e_int(lw, s));
+	else if (s.subtype == HYPERBOLOID1)
+		return (sq_h1_int(lw, s));
+	else if (s.subtype == HYPERBOLOID2)
+		return (sq_h2_int(lw, s));
+	else if (s.subtype == TOROID)
+		;/*return (sq_t_int(lw, s));*/
+	return (NAN);
+}
 
 int
 	check_intersection(
@@ -48,7 +65,7 @@ double *t
 
 	if (object.type == SUPERQUADRIC)
 	{
-		res = sq_e_int(line, object.superquadric);
+		res = sq_int(line, object.superquadric);
 		if (res == res)
 			*t = res;
 		return (res == res);
@@ -126,6 +143,40 @@ t_norm normal
 	return (internal);
 }
 
+t_norm
+	sq_norm(
+t_uv uv,
+struct s_rt_element_superquadric s
+)
+{
+	if (s.subtype == ELLIPSOID)
+		return (sq_e_norm(uv, s));
+	else if (s.subtype == HYPERBOLOID1)
+		return (sq_h1_norm(uv, s));
+	else if (s.subtype == HYPERBOLOID2)
+		return (sq_h2_norm(uv, s));
+	else if (s.subtype == TOROID)
+		;/*return (sq_t_int(lw, s));*/
+	return ((t_norm){.x = NAN, .y = NAN, .z = NAN});
+}
+
+t_uv
+	sq_xyz_uv(
+t_vec3 pw,
+struct s_rt_element_superquadric s
+)
+{
+	if (s.subtype == ELLIPSOID)
+		return (sq_e_xyz_uv(pw, s));
+	else if (s.subtype == HYPERBOLOID1)
+		return (sq_h1_xyz_uv(pw, s));
+	else if (s.subtype == HYPERBOLOID2)
+		return (sq_h2_xyz_uv(pw, s));
+	else if (s.subtype == TOROID)
+		;/*return (sq_t_xyz_uv(pw, s));*/
+	return ((t_uv){.u = NAN, .v = NAN});
+}
+
 void
 	render_scene(
 struct s_rt_scene scene
@@ -177,8 +228,8 @@ struct s_rt_scene scene
 			if (t != FP_INFINITE)
 			{
 				mlx_put_pixel(img, i, j, normal_to_rgba(
-						sq_e_norm(
-							sq_e_xyz_uv(
+						sq_norm(
+							sq_xyz_uv(
 								l_t(
 									camera_angle(fov, i, j), t),
 								scene.elements[k].superquadric),

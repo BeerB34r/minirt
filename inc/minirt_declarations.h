@@ -174,7 +174,7 @@ enum e_sq_subtype
 	ELLIPSOID,
 	HYPERBOLOID1,
 	HYPERBOLOID2,
-	TORUS
+	TOROID
 };
 struct s_rt_element_superquadric
 {

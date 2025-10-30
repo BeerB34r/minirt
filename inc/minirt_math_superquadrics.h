@@ -104,6 +104,17 @@ t_norm
 		t_uv uv,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/hyperboloid1/h1_norm.c
+double
+	sq_h1_int(
+		t_line lw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/hyperboloid1/h1_intersection.c
+double
+	sq_h1_derivative(
+		t_line l,
+		t_vec3 p,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/hyperboloid1/h1_derivative.c
 /*	Superhyperboloids of two sheets */
 double
 	sq_h2_io(
@@ -120,6 +131,17 @@ t_norm
 		t_uv uv,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/hyperboloid2/h2_norm.c
+double
+	sq_h2_int(
+		t_line lw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/hyperboloid2/h2_intersection.c
+double
+	sq_h2_derivative(
+		t_line l,
+		t_vec3 p,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/hyperboloid2/h2_derivative.c
 /*	Supertoroids */
 double
 	sq_t_io(
