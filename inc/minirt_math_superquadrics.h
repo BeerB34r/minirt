@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/10/01 17:07:16 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/28 19:58:27 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/10/31 18:04:12 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -60,6 +60,21 @@ t_line
 		t_line lw,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/worldspace_to_objectspace.c
+double
+	sq_int(
+		t_line lw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/sq_intersection.c
+t_norm
+	sq_norm(
+		t_uv uv,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/sq_norm.c
+t_uv
+	sq_xyz_uv(
+		t_vec3 pw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/sq_xyz_to_uv.c
 
 /*	Superellipsoids */
 double

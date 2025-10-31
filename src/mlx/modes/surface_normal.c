@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   render_scene.c                                          :+:    :+:       */
+/*   surface_normal.c                                        :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/10/06 14:58:25 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/06 14:58:45 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/10/31 20:31:08 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/10/31 20:34:38 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,131 +25,46 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <libft.h>
-#include <minirt_math.h>
 #include <math.h>
 #include <minirt_declarations.h>
-#include <minirt_math_superquadrics.h>
 #include <minirt_mlx.h>
+#include <minirt_math.h>
+#include <minirt_math_superquadrics.h>
 #include <MLX42.h>
-#include <stdio.h>
 
-int
-	check_intersection(
-struct s_rt_element object,
-t_line line,
-double *t
+static
+uint32_t
+	normal_to_rgba(
+t_norm normal
 )
 {
-	double			res;
-
-	if (object.type == SUPERQUADRIC)
-	{
-		res = sq_int(line, object.superquadric);
-		if (res == res)
-			*t = res;
-		return (res == res);
-	}
-	return (0);
+	return (((int)trunc(normal.x * 255 * 0.5 + 127) << 24)
+		+ ((int)trunc(normal.y * 255 * 0.5 + 127) << 16)
+		+ ((int)trunc(normal.z * 255 * 0.5 + 127) << 8)
+		+ (255 << 0));
 }
 
-int
-	get_viewport(
-mlx_t **mlx,
-mlx_image_t **img,
-t_viewport metadata
-)
-{
-	*mlx = mlx_init(
-			metadata.w,
-			metadata.h,
-			metadata.title,
-			metadata.resizable
-			);
-	if (!*mlx)
-		return (1);
-	*img = mlx_new_image(
-			*mlx,
-			(*mlx)->width,
-			(*mlx)->height
-			);
-	if (!(*img))
-		;
-	else if (mlx_image_to_window(*mlx, *img, 0, 0) != -1)
-		return (0);
-	else
-		mlx_delete_image(*mlx, *img);
-	mlx_terminate(*mlx);
-	*mlx = NULL;
-	*img = NULL;
-	return (1);
-}
-
-const static
-	struct s_camera_mode g_modes[] = {
-{HIT_OR_MISS, hit_or_miss_color},
-{SURFACE_NORMAL, surface_normal_color}
-};
-
+// TODO: generalise norm-acquisition
 void
-	set_pixel_value(
-enum e_camera_mode mode,
+	surface_normal_color(
 mlx_image_t *img,
 t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
 struct s_rt_scene scene,
+unsigned int obj,
 unsigned int x,
-unsigned int y
+unsigned int y,
+double t
 )
 {
-	unsigned int	obj;
-	unsigned int	i;
-	double			t;
-
-	obj = -1;
-	t = NAN;
-	while (++obj < scene.element_count)
-		if (check_intersection(scene.elements[obj], angles[x][y], &t))
-			break ;
-	i = -1;
-	while (++i < CAMERA_MODE_COUNT)
+	if (t == t)
 	{
-		if (mode == g_modes[i].mode)
-		{
-			g_modes[i].func(img, angles, scene, obj, x, y, t);
-			return ;
-		}
+		mlx_put_pixel(img, x, y, normal_to_rgba(
+				sq_norm(sq_xyz_uv(l_t(angles[x][y], t),
+						scene.elements[obj].superquadric),
+					scene.elements[obj].superquadric)
+				)
+			);
 	}
-}
-
-void
-	render_scene(
-struct s_rt_scene scene
-)
-{
-	mlx_t			*mlx;
-	mlx_image_t		*img;
-	t_line			angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];
-	unsigned int	i;
-	unsigned int	j;
-
-	if (get_viewport(&mlx, &img,
-			(t_viewport){
-			VIEWPORT_WIDTH,
-			VIEWPORT_HEIGHT,
-			VIEWPORT_TITLE,
-			VIEWPORT_RESIZABLE
-		}))
-		return ;
-	populate_plane_array(scene.camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, angles);
-	i = -1;
-	while (++i < VIEWPORT_WIDTH)
-	{
-		j = -1;
-		while (++j < VIEWPORT_HEIGHT)
-		{
-			set_pixel_value(SURFACE_NORMAL, img, angles, scene, i, j);
-		}
-	}
-	mlx_loop(mlx);
+	else
+		mlx_put_pixel(img, x, y, PIXEL_TRANSPARENT);
 }

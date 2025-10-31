@@ -2,6 +2,7 @@ SRC				!=	cat src.list
 SRCDIR			=	src/ \
 					src/utils/ \
 					src/parsing/ \
+					src/mlx/ \
 					src/math/ \
 					src/math/intersection/ \
 					src/math/superquadric \

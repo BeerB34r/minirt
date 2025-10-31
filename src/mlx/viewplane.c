@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   render_scene.c                                          :+:    :+:       */
+/*   viewplane.c                                             :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/10/06 14:58:25 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/06 14:58:45 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/10/31 19:08:55 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/10/31 19:12:05 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,131 +25,66 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <libft.h>
-#include <minirt_math.h>
 #include <math.h>
 #include <minirt_declarations.h>
-#include <minirt_math_superquadrics.h>
 #include <minirt_mlx.h>
-#include <MLX42.h>
-#include <stdio.h>
+#include <minirt_math.h>
 
-int
-	check_intersection(
-struct s_rt_element object,
-t_line line,
-double *t
+static void
+	view_plane_array(
+t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+t_plane_array_opts opt
 )
 {
-	double			res;
-
-	if (object.type == SUPERQUADRIC)
-	{
-		res = sq_int(line, object.superquadric);
-		if (res == res)
-			*t = res;
-		return (res == res);
-	}
-	return (0);
-}
-
-int
-	get_viewport(
-mlx_t **mlx,
-mlx_image_t **img,
-t_viewport metadata
-)
-{
-	*mlx = mlx_init(
-			metadata.w,
-			metadata.h,
-			metadata.title,
-			metadata.resizable
-			);
-	if (!*mlx)
-		return (1);
-	*img = mlx_new_image(
-			*mlx,
-			(*mlx)->width,
-			(*mlx)->height
-			);
-	if (!(*img))
-		;
-	else if (mlx_image_to_window(*mlx, *img, 0, 0) != -1)
-		return (0);
-	else
-		mlx_delete_image(*mlx, *img);
-	mlx_terminate(*mlx);
-	*mlx = NULL;
-	*img = NULL;
-	return (1);
-}
-
-const static
-	struct s_camera_mode g_modes[] = {
-{HIT_OR_MISS, hit_or_miss_color},
-{SURFACE_NORMAL, surface_normal_color}
-};
-
-void
-	set_pixel_value(
-enum e_camera_mode mode,
-mlx_image_t *img,
-t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-struct s_rt_scene scene,
-unsigned int x,
-unsigned int y
-)
-{
-	unsigned int	obj;
-	unsigned int	i;
-	double			t;
-
-	obj = -1;
-	t = NAN;
-	while (++obj < scene.element_count)
-		if (check_intersection(scene.elements[obj], angles[x][y], &t))
-			break ;
-	i = -1;
-	while (++i < CAMERA_MODE_COUNT)
-	{
-		if (mode == g_modes[i].mode)
-		{
-			g_modes[i].func(img, angles, scene, obj, x, y, t);
-			return ;
-		}
-	}
-}
-
-void
-	render_scene(
-struct s_rt_scene scene
-)
-{
-	mlx_t			*mlx;
-	mlx_image_t		*img;
-	t_line			angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];
 	unsigned int	i;
 	unsigned int	j;
 
-	if (get_viewport(&mlx, &img,
-			(t_viewport){
-			VIEWPORT_WIDTH,
-			VIEWPORT_HEIGHT,
-			VIEWPORT_TITLE,
-			VIEWPORT_RESIZABLE
-		}))
-		return ;
-	populate_plane_array(scene.camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, angles);
 	i = -1;
-	while (++i < VIEWPORT_WIDTH)
+	while (++i < opt.w)
 	{
 		j = -1;
-		while (++j < VIEWPORT_HEIGHT)
-		{
-			set_pixel_value(SURFACE_NORMAL, img, angles, scene, i, j);
-		}
+		while (++j < opt.h)
+			array[i][j] = (t_line){.origin = opt.origin,
+				.normal = vec3_normalise(
+					vec3_add(vec3_add(
+							opt.p_1m,
+							vec3_scalar_mul(opt.q_x, i)),
+						vec3_scalar_mul(opt.q_y, j)))
+			};
 	}
-	mlx_loop(mlx);
+}
+
+void
+	populate_plane_array(
+struct s_rt_element_camera c,
+unsigned int w,
+unsigned int h,
+t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
+)
+{
+	const double	theta = c.fov * (M_PI / 180);
+	const double	g_y = tan(theta / 2) * ((h - 1.0) / (w - 1.0));
+	const t_vec3	q_x = vec3_scalar_mul((t_norm){
+			.x = c.orientation.z, .y = c.orientation.x, .z = c.orientation.y},
+			(2 * tan(theta / 2)) / (w - 1));
+	const t_vec3	q_y = vec3_scalar_mul((t_norm){
+			.x = c.orientation.y, .y = c.orientation.z, .z = c.orientation.x},
+			(2 * g_y) / (h - 1));
+	const t_vec3	p_1m = vec3_sub(vec3_sub(
+				c.orientation, vec3_scalar_mul((t_norm){
+					.x = c.orientation.z,
+					.y = c.orientation.x,
+					.z = c.orientation.y
+				}, tan(theta / 2))),
+			vec3_scalar_mul((t_norm){
+				.x = c.orientation.y,
+				.y = c.orientation.z,
+				.z = c.orientation.x
+			}, g_y));
+
+	view_plane_array(array, (t_plane_array_opts){.origin = c.pos,
+		.w = w, .h = h,
+		.p_1m = p_1m,
+		.q_x = q_x,
+		.q_y = q_y});
 }

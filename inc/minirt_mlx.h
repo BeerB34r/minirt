@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   render_scene.c                                          :+:    :+:       */
+/*   minirt_mlx.h                                            :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/10/06 14:58:25 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/06 14:58:45 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/10/31 18:06:32 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/10/31 20:02:51 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,131 +25,94 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <libft.h>
-#include <minirt_math.h>
-#include <math.h>
-#include <minirt_declarations.h>
-#include <minirt_math_superquadrics.h>
-#include <minirt_mlx.h>
-#include <MLX42.h>
-#include <stdio.h>
+#ifndef MINIRT_MLX_H
+# define MINIRT_MLX_H
 
-int
-	check_intersection(
-struct s_rt_element object,
-t_line line,
-double *t
-)
+# define VIEWPORT_HEIGHT 500
+# define VIEWPORT_WIDTH 500
+# define VIEWPORT_TITLE "she trace on my rays"
+# define VIEWPORT_RESIZABLE 1
+
+# define PIXEL_TRANSPARENT 0x00000000
+# define PIXEL_BLACK 0x000000FF
+# define PIXEL_WHITE 0xFFFFFFFF
+# define PIXEL_RED 0xFF0000FF
+# define PIXEL_BLU 0x0000FFFF
+# define PIXEL_GRE 0x00FF00FF
+
+# define CAMERA_MODE_COUNT 2
+
+# include <stdbool.h>
+# include <minirt_declarations.h>
+# include <MLX42.h>
+
+typedef struct s_viewport_metadata
 {
-	double			res;
+	unsigned int	w;
+	unsigned int	h;
+	char			*title;
+	bool			resizable;
+}	t_viewport;
 
-	if (object.type == SUPERQUADRIC)
-	{
-		res = sq_int(line, object.superquadric);
-		if (res == res)
-			*t = res;
-		return (res == res);
-	}
-	return (0);
-}
-
-int
-	get_viewport(
-mlx_t **mlx,
-mlx_image_t **img,
-t_viewport metadata
-)
+enum e_camera_mode
 {
-	*mlx = mlx_init(
-			metadata.w,
-			metadata.h,
-			metadata.title,
-			metadata.resizable
+	HIT_OR_MISS,
+	SURFACE_NORMAL,
+};
+struct s_camera_mode
+{
+	enum e_camera_mode	mode;
+	void				(*func)(
+			mlx_image_t *,
+			t_line[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+			struct s_rt_scene,
+			unsigned int,
+			unsigned int,
+			unsigned int,
+			double
 			);
-	if (!*mlx)
-		return (1);
-	*img = mlx_new_image(
-			*mlx,
-			(*mlx)->width,
-			(*mlx)->height
-			);
-	if (!(*img))
-		;
-	else if (mlx_image_to_window(*mlx, *img, 0, 0) != -1)
-		return (0);
-	else
-		mlx_delete_image(*mlx, *img);
-	mlx_terminate(*mlx);
-	*mlx = NULL;
-	*img = NULL;
-	return (1);
-}
-
-const static
-	struct s_camera_mode g_modes[] = {
-{HIT_OR_MISS, hit_or_miss_color},
-{SURFACE_NORMAL, surface_normal_color}
 };
 
-void
-	set_pixel_value(
-enum e_camera_mode mode,
-mlx_image_t *img,
-t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-struct s_rt_scene scene,
-unsigned int x,
-unsigned int y
-)
-{
-	unsigned int	obj;
-	unsigned int	i;
-	double			t;
-
-	obj = -1;
-	t = NAN;
-	while (++obj < scene.element_count)
-		if (check_intersection(scene.elements[obj], angles[x][y], &t))
-			break ;
-	i = -1;
-	while (++i < CAMERA_MODE_COUNT)
-	{
-		if (mode == g_modes[i].mode)
-		{
-			g_modes[i].func(img, angles, scene, obj, x, y, t);
-			return ;
-		}
-	}
-}
+# define HIT_OR_MISS_PIXEL_HIT PIXEL_WHITE
+# define HIT_OR_MISS_PIXEL_MISS PIXEL_BLACK
 
 void
-	render_scene(
-struct s_rt_scene scene
-)
-{
-	mlx_t			*mlx;
-	mlx_image_t		*img;
-	t_line			angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];
-	unsigned int	i;
-	unsigned int	j;
+	hit_or_miss_color(
+		mlx_image_t *img,
+		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+		struct s_rt_scene scene,
+		unsigned int obj,
+		unsigned int x,
+		unsigned int y,
+		double t
+		);	// FILE: mlx/modes/hit_or_miss.c
+void
+	surface_normal_color(
+		mlx_image_t *img,
+		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+		struct s_rt_scene scene,
+		unsigned int obj,
+		unsigned int x,
+		unsigned int y,
+		double t
+		);	// FILE: mlx/modes/surface_normal.c
 
-	if (get_viewport(&mlx, &img,
-			(t_viewport){
-			VIEWPORT_WIDTH,
-			VIEWPORT_HEIGHT,
-			VIEWPORT_TITLE,
-			VIEWPORT_RESIZABLE
-		}))
-		return ;
-	populate_plane_array(scene.camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, angles);
-	i = -1;
-	while (++i < VIEWPORT_WIDTH)
-	{
-		j = -1;
-		while (++j < VIEWPORT_HEIGHT)
-		{
-			set_pixel_value(SURFACE_NORMAL, img, angles, scene, i, j);
-		}
-	}
-	mlx_loop(mlx);
-}
+typedef struct s_plane_array_opts
+{
+	t_vec3			origin;
+	t_vec3			p_1m;
+	t_vec3			q_x;
+	t_vec3			q_y;
+	unsigned int	w;
+	unsigned int	h;
+}	t_plane_array_opts;
+
+void
+	populate_plane_array(
+		struct s_rt_element_camera c,
+		unsigned int w,
+		unsigned int h,
+		t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
+		);	// FILE: mlx/view_plane.c
+
+#endif // MINIRT_MLX_H

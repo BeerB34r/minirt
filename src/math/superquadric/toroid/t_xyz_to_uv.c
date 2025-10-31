@@ -43,7 +43,6 @@ struct s_rt_element_superquadric s
 	if (!(cos(u) + s.a4))
 		return ((t_uv){.u = u, .v = 0});
 	vx = acos(pow(p.x / (s.a1 * (s.a4 + pow(cos(u), s.e1))), 1 / s.e2));
-	vx = fmin(vx, 1.0);
 	vy = asin(pow(p.y / (s.a2 * (s.a4 + pow(cos(u), s.e1))), 1 / s.e2));
 	return ((t_uv){.u = u, .v = copysign(vx, vy)});
 }
@@ -62,7 +61,6 @@ struct s_rt_element_superquadric s
 	if (!(cos(u) + s.a4))
 		return ((t_uv){.u = u, .v = 0});
 	vx = acos(pow(p.x / (s.a1 * (s.a4 + pow(cos(u), s.e1))), 1 / s.e2));
-	vx = fmin(vx, 1.0);
 	vy = asin(pow(p.y / (s.a2 * (s.a4 + pow(cos(u), s.e1))), 1 / s.e2));
 	return ((t_uv){.u = u, .v = copysign(vx, vy)});
 }
