@@ -50,7 +50,7 @@ struct s_rt_element_superquadric s
 	else if (s.subtype == HYPERBOLOID2)
 		return (sq_h2_int(lw, s));
 	else if (s.subtype == TOROID)
-		;/*return (sq_t_int(lw, s));*/
+		return (sq_t_int(lw, s));
 	return (NAN);
 }
 
@@ -156,7 +156,7 @@ struct s_rt_element_superquadric s
 	else if (s.subtype == HYPERBOLOID2)
 		return (sq_h2_norm(uv, s));
 	else if (s.subtype == TOROID)
-		;/*return (sq_t_int(lw, s));*/
+		return (sq_t_norm(uv, s));
 	return ((t_norm){.x = NAN, .y = NAN, .z = NAN});
 }
 
@@ -173,7 +173,7 @@ struct s_rt_element_superquadric s
 	else if (s.subtype == HYPERBOLOID2)
 		return (sq_h2_xyz_uv(pw, s));
 	else if (s.subtype == TOROID)
-		;/*return (sq_t_xyz_uv(pw, s));*/
+		return (sq_t_xyz_uv(pw, s));
 	return ((t_uv){.u = NAN, .v = NAN});
 }
 

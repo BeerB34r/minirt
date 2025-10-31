@@ -147,5 +147,26 @@ double
 	sq_t_io(
 		t_vec3 pw,
 		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/toroid/t_io_func.c //TODO
+		);	// FILE: math/superquadric/toroid/t_io_func.c
+t_uv
+	sq_t_xyz_uv(
+		t_vec3 pw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/toroid/t_xyz_to_uv.c
+t_norm
+	sq_t_norm(
+		t_uv uv,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/toroid/t_norm.c
+double
+	sq_t_int(
+		t_line lw,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/toroid/t_intersection.c
+double
+	sq_t_derivative(
+		t_line l,
+		t_vec3 p,
+		struct s_rt_element_superquadric s
+		);	// FILE: math/superquadric/toroid/t_derivative.c
 #endif // MINIRT_MATH_SUPERQUADRICS_H
