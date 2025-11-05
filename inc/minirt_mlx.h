@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/10/31 18:06:32 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/31 20:02:51 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/11/05 20:44:30 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -59,17 +59,21 @@ enum e_camera_mode
 	HIT_OR_MISS,
 	SURFACE_NORMAL,
 };
+struct s_mode_func_params
+{
+	mlx_image_t			*img;
+	struct s_rt_scene	scene;
+	unsigned int		obj;
+	unsigned int		x;
+	unsigned int		y;
+	double				t;
+};
 struct s_camera_mode
 {
 	enum e_camera_mode	mode;
 	void				(*func)(
-			mlx_image_t *,
-			t_line[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-			struct s_rt_scene,
-			unsigned int,
-			unsigned int,
-			unsigned int,
-			double
+			struct s_mode_func_params,
+			t_line[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
 			);
 };
 
@@ -78,23 +82,13 @@ struct s_camera_mode
 
 void
 	hit_or_miss_color(
-		mlx_image_t *img,
-		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-		struct s_rt_scene scene,
-		unsigned int obj,
-		unsigned int x,
-		unsigned int y,
-		double t
+		struct s_mode_func_params p,
+		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
 		);	// FILE: mlx/modes/hit_or_miss.c
 void
 	surface_normal_color(
-		mlx_image_t *img,
-		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-		struct s_rt_scene scene,
-		unsigned int obj,
-		unsigned int x,
-		unsigned int y,
-		double t
+		struct s_mode_func_params p,
+		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
 		);	// FILE: mlx/modes/surface_normal.c
 
 typedef struct s_plane_array_opts
@@ -114,5 +108,26 @@ void
 		unsigned int h,
 		t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
 		);	// FILE: mlx/view_plane.c
+
+struct s_set_pixel_params
+{
+	enum e_camera_mode	mode;
+	mlx_image_t			*img;
+	struct s_rt_scene	scene;
+	unsigned int		x;
+	unsigned int		y;
+};
+
+void
+	set_pixel_value(
+		struct s_set_pixel_params p,
+		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
+		);	// FILE: mlx/set_pixel_value.c
+int	
+	get_viewport(
+		mlx_t **mlx,
+		mlx_image_t **img,
+		t_viewport metadata
+		);	// FILE: mlx/get_viewport.c
 
 #endif // MINIRT_MLX_H

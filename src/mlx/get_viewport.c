@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   e_xyz_to_uv.c                                           :+:    :+:       */
+/*   get_viewport.c                                          :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/10/24 08:24:08 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/24 08:39:11 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/11/05 20:43:20 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/11/05 20:43:42 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,26 +25,37 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <math.h>
-#include <minirt_declarations.h>
-#include <minirt_math.h>
-#include <minirt_math_superquadrics.h>
+#include <MLX42.h>
+#include <minirt_mlx.h>
 
-t_uv
-	sq_e_xyz_uv(
-t_vec3 pw,
-struct s_rt_element_superquadric s
+int
+	get_viewport(
+mlx_t **mlx,
+mlx_image_t **img,
+t_viewport metadata
 )
 {
-	const t_vec3	p = sq_wp_op(pw, s);
-	double			u;
-	double			vx;
-	double			vy;
-
-	u = asin(pow(p.z / s.a3, 1 / s.e1));
-	if (!cos(u))
-		return ((t_uv){.u = u, .v = 0});
-	vx = acos(pow(p.x / (s.a1 * pow(cos(u), s.e1)), s.e2));
-	vy = asin(pow(p.y / (s.a2 * pow(cos(u), s.e1)), s.e2));
-	return ((t_uv){.u = u, .v = copysign(vx, vy)});
+	*mlx = mlx_init(
+			metadata.w,
+			metadata.h,
+			metadata.title,
+			metadata.resizable
+			);
+	if (!*mlx)
+		return (1);
+	*img = mlx_new_image(
+			*mlx,
+			(*mlx)->width,
+			(*mlx)->height
+			);
+	if (!(*img))
+		;
+	else if (mlx_image_to_window(*mlx, *img, 0, 0) != -1)
+		return (0);
+	else
+		mlx_delete_image(*mlx, *img);
+	mlx_terminate(*mlx);
+	*mlx = NULL;
+	*img = NULL;
+	return (1);
 }

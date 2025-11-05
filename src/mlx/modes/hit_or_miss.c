@@ -31,20 +31,13 @@
 
 void
 	hit_or_miss_color(
-mlx_image_t *img,
-t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-struct s_rt_scene scene,
-unsigned int obj,
-unsigned int x,
-unsigned int y,
-double t
+struct s_mode_func_params p,
+t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
 )
 {
 	(void)angles;
-	(void)scene;
-	(void)obj;
-	if (t == t)
-		mlx_put_pixel(img, x, y, HIT_OR_MISS_PIXEL_HIT);
+	if (p.t == p.t)
+		mlx_put_pixel(p.img, p.x, p.y, HIT_OR_MISS_PIXEL_HIT);
 	else
-		mlx_put_pixel(img, x, y, HIT_OR_MISS_PIXEL_MISS);
+		mlx_put_pixel(p.img, p.x, p.y, HIT_OR_MISS_PIXEL_MISS);
 }
