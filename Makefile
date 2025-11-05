@@ -38,12 +38,15 @@ MAKEFLAGS		+=	-r
 all				:	$(NAME)
 
 $(NAME)			:	$(BIN)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	@echo "Linking executable [$@]"
+	@$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(DEPDIR)%.d	:	%.c | $(DEPDIR)
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAG) $<
+	@echo "Generating dependencies [$(notdir $@)]"
+	@$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAG) $<
 $(BINDIR)%.o	:	%.c	| $(BINDIR)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+	@echo "Compiling binary [$(notdir $@)]"
+	@$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 test_%			:	%.o
 	$(CC) $(CPPFLAGS) $(TESTFLAGS) -o $@ $< $(TESTDIR)$(basename $<).c $(LDFLAGS)
