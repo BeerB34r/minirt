@@ -133,8 +133,7 @@ struct s_rt_scene scene
 	unsigned int	i;
 	unsigned int	j;
 
-	if (get_viewport(&mlx, &img,
-			(t_viewport){
+	if (get_viewport(&mlx, &img, (t_viewport){
 			VIEWPORT_WIDTH,
 			VIEWPORT_HEIGHT,
 			VIEWPORT_TITLE,
@@ -147,9 +146,9 @@ struct s_rt_scene scene
 	{
 		j = -1;
 		while (++j < VIEWPORT_HEIGHT)
-		{
 			set_pixel_value(SURFACE_NORMAL, img, angles, scene, i, j);
-		}
 	}
 	mlx_loop(mlx);
+	mlx_delete_image(mlx, img);
+	mlx_terminate(mlx);
 }

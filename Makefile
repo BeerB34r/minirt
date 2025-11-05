@@ -3,6 +3,7 @@ SRCDIR			=	src/ \
 					src/utils/ \
 					src/parsing/ \
 					src/mlx/ \
+					src/mlx/modes/ \
 					src/math/ \
 					src/math/intersection/ \
 					src/math/superquadric \
