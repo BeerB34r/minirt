@@ -30,7 +30,8 @@
 #include <minirt_mlx.h>
 #include <minirt_math.h>
 
-static void
+static
+void
 	view_plane_array(
 t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
 t_plane_array_opts opt
