@@ -95,7 +95,7 @@ struct s_rt_scene scene
 		}))
 		return ;
 	populate_plane_array(scene.camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, angles);
-	render_image(img, SURFACE_NORMAL, angles, scene);
+	render_image(img, HIT_OR_MISS, angles, scene);
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, img);
 	mlx_terminate(mlx);

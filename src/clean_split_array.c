@@ -34,11 +34,10 @@
 const static char	*g_required_singletons[][2] = {
 {"A", "ambient light"},
 {"C", "camera"},
-{"L", "light"}
 };
 #define SINGLETON_IDENTIFIER 0
 #define SINGLETON_DESCRIPTION 1
-#define REQUIRED_COUNT 3
+#define REQUIRED_COUNT 2
 
 static int
 	is_relevant_line(

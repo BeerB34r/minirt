@@ -36,17 +36,18 @@ char **element_fields,
 struct s_rt_scene *scene
 )
 {
-	if (scene->light_defined)
-		ft_dprintf(2, ERR E_DUP, "light");
-	else if (count_fields(element_fields) != LIGHT_FIELDS + 1)
+	struct s_rt_element_light	result;
+
+	if (count_fields(element_fields) != LIGHT_FIELDS + 1)
 		ft_dprintf(2, ERR E_FIELD, "light");
 	else if (
-		!get_vec3(element_fields[1], &scene->light.pos)
-		&& !get_real_limit(element_fields[2], &scene->light.brightness, 0, 1)
-		&& !get_rgba(element_fields[3], &scene->light.color)
+		!get_vec3(element_fields[1], &result.pos)
+		&& !get_real_limit(element_fields[2], &result.brightness, 0, 1)
+		&& !get_rgba(element_fields[3], &result.color)
 	)
 	{
-		scene->light_defined = 1;
+		scene->elements[(scene->element_count)].type = LIGHT;
+		scene->elements[(scene->element_count)++].light = result;
 		return (0);
 	}
 	return (1);

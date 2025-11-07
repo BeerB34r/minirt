@@ -32,7 +32,7 @@
 # include <minirt_utils.h> // subheader for preprocessor functions
 # include <minirt_declarations.h> // subheader for datatypes
 
-# define MANDATORY_SINGLETONS 3
+# define MANDATORY_SINGLETONS 2
 
 //	function prototypes
 

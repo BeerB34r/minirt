@@ -33,11 +33,11 @@
 const static t_element_id	g_singletons[] = {
 {"A", &parse_ambient_light},
 {"C", &parse_camera},
-{"L", &parse_light},
 {NULL, NULL}
 };
 
 const static t_element_id	g_primitives[] = {
+{"l", &parse_light},
 {"sp", &parse_sphere},
 {"pl", &parse_plane},
 {"cy", &parse_cylinder},

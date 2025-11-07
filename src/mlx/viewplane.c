@@ -29,6 +29,7 @@
 #include <minirt_declarations.h>
 #include <minirt_mlx.h>
 #include <minirt_math.h>
+#include <stdio.h>
 
 static
 void
@@ -50,8 +51,7 @@ t_plane_array_opts opt
 					vec3_add(vec3_add(
 							opt.p_1m,
 							vec3_scalar_mul(opt.q_x, i)),
-						vec3_scalar_mul(opt.q_y, j)))
-			};
+						vec3_scalar_mul(opt.q_y, j)))};
 	}
 }
 
@@ -62,9 +62,14 @@ t_norm local_x
 {
 	const t_norm	x = (t_norm){.x = 1, .y = 0, .z = 0};
 	const t_norm	y = (t_norm){.x = 0, .y = 1, .z = 0};
-	const t_norm	k = vec3_normalise(vec3_cross_product(local_x, x));
 	const double	theta = acos(vec3_dot_product(local_x, x));
+	t_norm			k;
 
+	k = vec3_normalise(vec3_cross_product(local_x, x));
+	if (vec3_magnitude(k) == vec3_magnitude(k))
+		;
+	else
+		k = (t_norm){.x = 1, .y = 0, .z = 0};
 	return (vec3_normalise(
 			vec3_add(
 				vec3_scalar_mul(y, cos(theta)),
@@ -75,12 +80,7 @@ t_norm local_x
 					vec3_scalar_mul(
 						vec3_scalar_mul(
 							k, vec3_dot_product(k, y)),
-						1 - cos(theta)
-					)
-				)
-			)
-		)
-	);
+						1 - cos(theta))))));
 }
 
 t_norm
@@ -90,9 +90,14 @@ t_norm local_x
 {
 	const t_norm	x = (t_norm){.x = 1, .y = 0, .z = 0};
 	const t_norm	z = (t_norm){.x = 0, .y = 0, .z = 1};
-	const t_norm	k = vec3_normalise(vec3_cross_product(local_x, x));
 	const double	theta = acos(vec3_dot_product(local_x, x));
+	t_norm			k;
 
+	k = vec3_normalise(vec3_cross_product(local_x, x));
+	if (vec3_magnitude(k) == vec3_magnitude(k))
+		;
+	else
+		k = (t_norm){.x = 1, .y = 0, .z = 0};
 	return (vec3_normalise(
 			vec3_add(
 				vec3_scalar_mul(z, cos(theta)),
@@ -103,12 +108,7 @@ t_norm local_x
 					vec3_scalar_mul(
 						vec3_scalar_mul(
 							k, vec3_dot_product(k, z)),
-						1 - cos(theta)
-					)
-				)
-			)
-		)
-	);
+						1 - cos(theta))))));
 }
 
 void
