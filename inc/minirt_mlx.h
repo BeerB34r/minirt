@@ -72,8 +72,9 @@ struct s_camera_mode
 {
 	enum e_camera_mode	mode;
 	void				(*func)(
-			struct s_mode_func_params,
-			t_line[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
+			struct s_mode_func_params p,
+			t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+			struct s_rgba * color
 			);
 };
 
@@ -83,12 +84,14 @@ struct s_camera_mode
 void
 	hit_or_miss_color(
 		struct s_mode_func_params p,
-		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
+		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+		struct s_rgba *color
 		);	// FILE: mlx/modes/hit_or_miss.c
 void
 	surface_normal_color(
 		struct s_mode_func_params p,
-		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
+		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+		struct s_rgba *color
 		);	// FILE: mlx/modes/surface_normal.c
 
 typedef struct s_plane_array_opts
@@ -109,19 +112,19 @@ void
 		t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
 		);	// FILE: mlx/view_plane.c
 
-struct s_set_pixel_params
+struct s_get_pixel_params
 {
 	enum e_camera_mode	mode;
-	mlx_image_t			*img;
 	struct s_rt_scene	scene;
 	unsigned int		x;
 	unsigned int		y;
 };
 
 void
-	set_pixel_value(
-		struct s_set_pixel_params p,
-		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
+	get_pixel_value(
+		struct s_get_pixel_params p,
+		t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+		struct s_rgba *output
 		);	// FILE: mlx/set_pixel_value.c
 int	
 	get_viewport(

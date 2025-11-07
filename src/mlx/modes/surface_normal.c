@@ -48,18 +48,16 @@ t_norm normal
 void
 	surface_normal_color(
 struct s_mode_func_params p,
-t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
+t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+struct s_rgba *color
 )
 {
 	if (p.t == p.t)
-	{
-		mlx_put_pixel(p.img, p.x, p.y, normal_to_rgba(
+		color->hex = normal_to_rgba(
 				sq_norm(sq_xyz_uv(l_t(angles[p.x][p.y], p.t),
 						p.scene.elements[p.obj].superquadric),
 					p.scene.elements[p.obj].superquadric)
-				)
-			);
-	}
+				);
 	else
-		mlx_put_pixel(p.img, p.x, p.y, PIXEL_TRANSPARENT);
+		color->hex = PIXEL_TRANSPARENT;
 }

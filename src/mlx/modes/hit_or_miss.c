@@ -32,12 +32,13 @@
 void
 	hit_or_miss_color(
 struct s_mode_func_params p,
-t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
+t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+struct s_rgba *color
 )
 {
 	(void)angles;
 	if (p.t == p.t)
-		mlx_put_pixel(p.img, p.x, p.y, HIT_OR_MISS_PIXEL_HIT);
+		color->hex = HIT_OR_MISS_PIXEL_HIT;
 	else
-		mlx_put_pixel(p.img, p.x, p.y, HIT_OR_MISS_PIXEL_MISS);
+		color->hex = HIT_OR_MISS_PIXEL_MISS;
 }

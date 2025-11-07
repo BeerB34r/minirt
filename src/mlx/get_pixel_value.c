@@ -58,15 +58,15 @@ const static
 };
 
 void
-	set_pixel_value(
-struct s_set_pixel_params p,
-t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
+	get_pixel_value(
+struct s_get_pixel_params p,
+t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+struct s_rgba *out
 )
 {
 	const unsigned int	x = p.x;
 	const unsigned int	y = p.y;
 	unsigned int		obj;
-	unsigned int		i;
 	double				t;
 
 	obj = -1;
@@ -74,16 +74,7 @@ t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]
 	while (++obj < p.scene.element_count)
 		if (check_intersection(p.scene.elements[obj], angles[x][y], &t))
 			break ;
-	i = -1;
-	while (++i < CAMERA_MODE_COUNT)
-	{
-		if (p.mode == g_modes[i].mode)
-		{
-			g_modes[i].func((struct s_mode_func_params)
-				{.img = p.img, .scene = p.scene, .obj = obj,
-					.x = x, .y = y, .t = t},
-				angles);
-			return ;
-		}
-	}
+	g_modes[p.mode].func((struct s_mode_func_params){
+		.scene = p.scene, .obj = obj, .x = x, .y = y, .t = t},
+	angles, out);
 }

@@ -58,68 +58,89 @@ unsigned int denominator
 void
 	paint_pixels(
 mlx_image_t *img,
+enum e_camera_mode mode,
+t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+struct s_rt_scene scene,
 int depth
 )
 {
+	const int		max_depth = depth;
+	static int		depth_reached = -1;
 	unsigned int	x;
 	unsigned int	y;
 	unsigned int	i;
 	unsigned int	j;
-	uint32_t		value;
+	struct s_rgba	value;
 
+	if (depth_reached == -1)
+		depth_reached = depth;
 	while (depth >= 0)
 	{
-		while (x)
+		x = -1;
+		while ((++x * (1 << depth)) < VIEWPORT_WIDTH)
 		{
-			while (y)
+			progress_bar(x * (1 << depth), VIEWPORT_WIDTH);
+			y = -1;
+			while ((++y * (1 << depth)) < VIEWPORT_HEIGHT)
 			{
+				get_pixel_value((struct s_get_pixel_params){
+					.mode = mode, .scene = scene,
+					.x = x * (1 << depth), .y = y * (1 << depth)
+				}, angles, &value);
 				i = -1;
-				while (++i < (1 << depth) && (x * (1 << depth)) + i < VIEWPORT_WIDTH)
+				while (++i < (1 << depth)
+					&& (x * (1 << depth)) + i < VIEWPORT_WIDTH)
 				{
 					j = -1;
-					while (++j < (1 << depth) && (y * (1 << depth)) + j < VIEWPORT_HEIGHT)
+					while (++j < (1 << depth)
+						&& (y * (1 << depth)) + j < VIEWPORT_HEIGHT)
 					{
+						if (max_depth == depth
+							|| ((x * (1 << depth)) + i) % (1 << (depth + 1))
+							|| ((y * (1 << depth)) + i) % (1 << (depth + 1)))
+							mlx_put_pixel(img,
+								(x * (1 << depth)) + i, (y * (1 << depth)) + j,
+								value.hex);
 					}
 				}
 			}
 		}
+		progress_bar(VIEWPORT_WIDTH, VIEWPORT_WIDTH);
+		depth--;
+		if (depth == depth_reached - 1)
+		{
+			depth_reached--;
+			return ;
+		}
 	}
 }
 
-static
+struct params
+{
+	mlx_image_t *img;
+	enum e_camera_mode mode;
+	t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];
+	struct s_rt_scene scene;
+	int max_depth;
+};
+
 void
-	render_image(
-mlx_image_t *img,
-enum e_camera_mode mode,
-t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-struct s_rt_scene scene
+	testhook(
+void* param
 )
 {
-	unsigned int	major_axis;
-	unsigned int	x;
-	unsigned int	y;
-	unsigned int	depth;
+	struct params *const	p = param;
+	static int				depth = -2;
 
-	major_axis = VIEWPORT_WIDTH;
-	depth = 0;
-	if (VIEWPORT_HEIGHT > VIEWPORT_WIDTH)
-		major_axis = VIEWPORT_HEIGHT;
-	while ((1 << depth) < major_axis)
-		depth++;
-	ft_printf("depth required for incremental passes: %i (initial chunk: %i)\n",
-		depth, 1 << depth);
-	x = -1;
-	write(STDOUT_FILENO, "Rendering scene...\n", 20);
-	while (++x < VIEWPORT_WIDTH)
+	if (depth == -2)
+		depth = p->max_depth;
+
+	if (depth > -1)
 	{
-		progress_bar(x, VIEWPORT_WIDTH);
-		y = -1;
-		while (++y < VIEWPORT_HEIGHT)
-			set_pixel_value((struct s_set_pixel_params){
-				.mode = mode, .img = img,
-				.scene = scene, .x = x, .y = y}, angles);
+		ft_printf("[%i/%i]\n", p->max_depth - depth, p->max_depth);
+		paint_pixels(p->img, p->mode, p->angles, p->scene, depth);
+		depth--;
 	}
-	progress_bar(x, VIEWPORT_WIDTH);
 }
 
 void
@@ -129,14 +150,28 @@ struct s_rt_scene scene
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img;
-	t_line			angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];
+	int				major_axis;
+	int				depth;
+	/*t_line			angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];*/
+	struct params	p;
 
 	if (get_viewport(&mlx, &img, (t_viewport){
 			VIEWPORT_WIDTH, VIEWPORT_HEIGHT, VIEWPORT_TITLE, VIEWPORT_RESIZABLE
 		}))
 		return ;
-	populate_plane_array(scene.camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, angles);
-	render_image(img, SURFACE_NORMAL, angles, scene);
+	populate_plane_array(scene.camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, p.angles);
+	/*render_image(img, SURFACE_NORMAL, angles, scene);*/
+	major_axis = VIEWPORT_WIDTH;
+	depth = 0;
+	if (VIEWPORT_HEIGHT > VIEWPORT_WIDTH)
+		major_axis = VIEWPORT_HEIGHT;
+	while ((1 << depth) < major_axis)
+		depth++;
+	p.max_depth = depth;
+	p.img = img;
+	p.mode = SURFACE_NORMAL;
+	p.scene = scene;
+	mlx_loop_hook(mlx, testhook, &p);
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, img);
 	mlx_terminate(mlx);
