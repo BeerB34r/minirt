@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/10/31 18:06:32 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/11/05 20:44:30 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/11/07 21:14:38 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -31,7 +31,7 @@
 # define VIEWPORT_HEIGHT 500
 # define VIEWPORT_WIDTH 500
 # define VIEWPORT_TITLE "she trace on my rays"
-# define VIEWPORT_RESIZABLE 1
+# define VIEWPORT_RESIZABLE 0
 
 # define PIXEL_TRANSPARENT 0x00000000
 # define PIXEL_BLACK 0x000000FF
@@ -132,5 +132,28 @@ int
 		mlx_image_t **img,
 		t_viewport metadata
 		);	// FILE: mlx/get_viewport.c
+
+struct s_painter
+{
+	mlx_image_t		*img;
+	uint32_t		hexcolor;
+	unsigned int	x;
+	unsigned int	y;
+	int				depth;
+	bool			first_call;
+};
+struct s_progressive_rendering_params
+{
+	mlx_image_t			*img;
+	enum e_camera_mode	mode;
+	t_line				angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];
+	struct s_rt_scene	scene;
+	int					max_depth;
+	bool				reset;
+};
+void
+	progressive_rendering(
+		void *param
+		);	// FILE: mlx/progressive_rendering.c
 
 #endif // MINIRT_MLX_H

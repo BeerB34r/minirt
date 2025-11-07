@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/10/06 14:58:25 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/11/07 21:18:46 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/11/07 21:21:32 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,11 +25,9 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <minirt_declarations.h>
 #include <minirt_mlx.h>
 #include <MLX42.h>
-#include <unistd.h>
 
 void
 	render_scene(
