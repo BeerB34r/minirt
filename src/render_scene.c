@@ -55,6 +55,37 @@ unsigned int denominator
 	write(STDOUT_FILENO, bar, 32);
 }
 
+void
+	paint_pixels(
+mlx_image_t *img,
+int depth
+)
+{
+	unsigned int	x;
+	unsigned int	y;
+	unsigned int	i;
+	unsigned int	j;
+	uint32_t		value;
+
+	while (depth >= 0)
+	{
+		while (x)
+		{
+			while (y)
+			{
+				i = -1;
+				while (++i < (1 << depth) && (x * (1 << depth)) + i < VIEWPORT_WIDTH)
+				{
+					j = -1;
+					while (++j < (1 << depth) && (y * (1 << depth)) + j < VIEWPORT_HEIGHT)
+					{
+					}
+				}
+			}
+		}
+	}
+}
+
 static
 void
 	render_image(
@@ -64,9 +95,19 @@ t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
 struct s_rt_scene scene
 )
 {
+	unsigned int	major_axis;
 	unsigned int	x;
 	unsigned int	y;
+	unsigned int	depth;
 
+	major_axis = VIEWPORT_WIDTH;
+	depth = 0;
+	if (VIEWPORT_HEIGHT > VIEWPORT_WIDTH)
+		major_axis = VIEWPORT_HEIGHT;
+	while ((1 << depth) < major_axis)
+		depth++;
+	ft_printf("depth required for incremental passes: %i (initial chunk: %i)\n",
+		depth, 1 << depth);
 	x = -1;
 	write(STDOUT_FILENO, "Rendering scene...\n", 20);
 	while (++x < VIEWPORT_WIDTH)
@@ -95,7 +136,7 @@ struct s_rt_scene scene
 		}))
 		return ;
 	populate_plane_array(scene.camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, angles);
-	render_image(img, HIT_OR_MISS, angles, scene);
+	render_image(img, SURFACE_NORMAL, angles, scene);
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, img);
 	mlx_terminate(mlx);
