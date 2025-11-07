@@ -117,29 +117,38 @@ int depth
 
 struct params
 {
-	mlx_image_t *img;
-	enum e_camera_mode mode;
-	t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];
-	struct s_rt_scene scene;
-	int max_depth;
+	mlx_image_t			*img;
+	enum e_camera_mode	mode;
+	t_line				angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];
+	struct s_rt_scene	scene;
+	int					max_depth;
 };
 
 void
 	testhook(
-void* param
+void *param
 )
 {
 	struct params *const	p = param;
-	static int				depth = -2;
+	static bool				done = false;
+	static int				depth = -1;
 
-	if (depth == -2)
+	if (done)
+		return ;
+	else if (depth == -1)
 		depth = p->max_depth;
-
-	if (depth > -1)
-	{
-		ft_printf("[%i/%i]\n", p->max_depth - depth, p->max_depth);
-		paint_pixels(p->img, p->mode, p->angles, p->scene, depth);
+	else
+		write(1, "\033[F\033[F", 7);
+	progress_bar(p->max_depth - depth, p->max_depth + 1);
+	ft_printf("Block size: %ipx\n", 1 << depth);
+	paint_pixels(p->img, p->mode, p->angles, p->scene, depth);
+	if (depth)
 		depth--;
+	else
+	{
+		write(1, "\033[F\033[F", 7);
+		progress_bar(1, 1);
+		done = true;
 	}
 }
 
@@ -152,25 +161,22 @@ struct s_rt_scene scene
 	mlx_image_t		*img;
 	int				major_axis;
 	int				depth;
-	/*t_line			angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];*/
 	struct params	p;
 
-	if (get_viewport(&mlx, &img, (t_viewport){
-			VIEWPORT_WIDTH, VIEWPORT_HEIGHT, VIEWPORT_TITLE, VIEWPORT_RESIZABLE
-		}))
-		return ;
-	populate_plane_array(scene.camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, p.angles);
-	/*render_image(img, SURFACE_NORMAL, angles, scene);*/
 	major_axis = VIEWPORT_WIDTH;
 	depth = 0;
 	if (VIEWPORT_HEIGHT > VIEWPORT_WIDTH)
 		major_axis = VIEWPORT_HEIGHT;
 	while ((1 << depth) < major_axis)
 		depth++;
-	p.max_depth = depth;
-	p.img = img;
-	p.mode = SURFACE_NORMAL;
-	p.scene = scene;
+	if (get_viewport(&mlx, &img, (t_viewport){
+			VIEWPORT_WIDTH, VIEWPORT_HEIGHT, VIEWPORT_TITLE, VIEWPORT_RESIZABLE
+		}))
+		return ;
+	p = (struct params){.max_depth = depth,
+		.img = img, .mode = SURFACE_NORMAL, .scene = scene};
+	populate_plane_array(scene.camera,
+		VIEWPORT_WIDTH, VIEWPORT_HEIGHT, p.angles);
 	mlx_loop_hook(mlx, testhook, &p);
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, img);
