@@ -33,9 +33,5 @@ t_vec3 a,
 double r
 )
 {
-	return ((t_vec3){
-		.x = a.x * r,
-		.y = a.y * r,
-		.z = a.z * r
-	});
+	return ((t_vec3){.v = a.v * r});
 }

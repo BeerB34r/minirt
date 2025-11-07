@@ -70,13 +70,14 @@ struct s_rgba
  */
 typedef union u_vec3
 {
-	double		a[4];
+	double __attribute__	((vector_size(sizeof(double)*4)))	v;
+	double														a[4];
 	struct
 	{
-		double	x;
-		double	y;
-		double	z;
-		double	w; // unused for the most part
+		double		x;
+		double		y;
+		double		z;
+		double		w; // unused for the most part
 	};
 }	t_vec3;
 

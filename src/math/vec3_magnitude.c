@@ -33,9 +33,7 @@ double
 t_vec3 vector
 )
 {
-	return (
-		sqrt((vector.x * vector.x)
-			+ (vector.y * vector.y)
-			+ (vector.z * vector.z))
-	);
+	const t_vec3	v = {.v = vector.v * vector.v};
+
+	return (sqrt(v.x + v.y + v.z));
 }

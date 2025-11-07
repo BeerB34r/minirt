@@ -33,8 +33,7 @@ t_vec3 a,
 t_vec3 b
 )
 {
-	return ((a.x * b.x)
-		+ (a.y * b.y)
-		+ (a.z * b.z)
-	);
+	const t_vec3	v = {.v = a.v * b.v};
+
+	return (v.x + v.y + v.z);
 }

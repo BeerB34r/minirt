@@ -35,9 +35,5 @@ t_vec3 vector
 {
 	const double	magnitude = vec3_magnitude(vector);
 
-	return ((t_norm){
-		.x = vector.x / magnitude,
-		.y = vector.y / magnitude,
-		.z = vector.z / magnitude
-	});
+	return ((t_norm){.v = vector.v / magnitude});
 }

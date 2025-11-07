@@ -39,7 +39,8 @@ const static char	*g_required_singletons[][2] = {
 #define SINGLETON_DESCRIPTION 1
 #define REQUIRED_COUNT 2
 
-static int
+static
+int
 	is_relevant_line(
 char **line
 )
@@ -49,7 +50,8 @@ char **line
 	return (1);
 }
 
-static int
+static
+int
 	count_relevant_lines(
 char ***split_array
 )
@@ -65,7 +67,8 @@ char ***split_array
 	return (count);
 }
 
-static int
+static
+int
 	check_singleton(
 const char *id,
 bool list[REQUIRED_COUNT]
@@ -87,7 +90,8 @@ bool list[REQUIRED_COUNT]
 	return (0);
 }
 
-static int
+static
+int
 	check_required_singletons(
 char ***lines
 )

@@ -33,9 +33,5 @@ t_vec3 a,
 t_vec3 b
 )
 {
-	return ((t_vec3){
-		.x = a.x + b.x,
-		.y = a.y + b.y,
-		.z = a.z + b.z
-	});
+	return ((t_vec3){.v = a.v + b.v});
 }
