@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/10/06 14:58:25 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/11/07 21:21:32 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/11/07 21:27:22 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -28,6 +28,18 @@
 #include <minirt_declarations.h>
 #include <minirt_mlx.h>
 #include <MLX42.h>
+
+static
+bool
+	mlx_hooks(
+mlx_t	*mlx,
+struct s_progressive_rendering_params *progressive_rendering_args
+)
+{
+	if (mlx_loop_hook(mlx, &progressive_rendering, progressive_rendering_args))
+		return (true);
+	return (false);
+}
 
 void
 	render_scene(
@@ -55,7 +67,7 @@ struct s_rt_scene scene
 	p.scene = scene;
 	populate_plane_array(
 		scene.camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, p.angles);
-	if (mlx_loop_hook(mlx, progressive_rendering, &p))
+	if (mlx_hooks(mlx, &p))
 		mlx_loop(mlx);
 	mlx_delete_image(mlx, img);
 	mlx_terminate(mlx);
