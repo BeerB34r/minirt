@@ -52,6 +52,7 @@
 # define E_OOBR "real value %f outside accepted range [%f,%f]\n"
 # define E_UNREC "element identifier \"%s\" unrecognized\n"
 # define E_MISS "required element \"%s\" missing from configuration\n"
+# define E_STRERR "%s\n"
 # define USAGE "USAGE: %s [filename.rt]\n"
 
 #endif // MINIRT_ERROR_H

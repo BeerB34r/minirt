@@ -28,22 +28,9 @@
 #ifndef MINIRT_MLX_H
 # define MINIRT_MLX_H
 
-# define VIEWPORT_HEIGHT 1024
-# define VIEWPORT_WIDTH 1024
-
-# if VIEWPORT_HEIGHT >= 512
-#  undef VIEWPORT_HEIGHT
-#  define VIEWPORT_HEIGHT 511
-#  pragma message "Viewport can't be taller than 511 pixels due to stack limits"
-# endif // OVERFLOW PROTECTION // TODO, FIX
 # ifndef VIEWPORT_HEIGHT
 #  define VIEWPORT_HEIGHT 500
 # endif // VIEWPORT_HEIGHT
-# if VIEWPORT_WIDTH >= 512
-#  undef VIEWPORT_WIDTH
-#  define VIEWPORT_WIDTH 511
-#  pragma message "Viewport can't be wider than 511 pixels due to stack limits"
-# endif // OVERFLOW PROTECTION // TODO, FIX
 # ifndef VIEWPORT_WIDTH
 #  define VIEWPORT_WIDTH 500
 # endif // VIEWPORT_WIDTH
