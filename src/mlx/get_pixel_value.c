@@ -71,8 +71,8 @@ struct s_rgba *out
 
 	obj = -1;
 	t = NAN;
-	while (++obj < p.scene.element_count)
-		if (check_intersection(p.scene.elements[obj], angles[x][y], &t))
+	while (++obj < p.scene->element_count)
+		if (check_intersection(p.scene->elements[obj], angles[x][y], &t))
 			break ;
 	g_modes[p.mode].func((struct s_mode_func_params){
 		.scene = p.scene, .obj = obj, .x = x, .y = y, .t = t},

@@ -28,10 +28,31 @@
 #ifndef MINIRT_MLX_H
 # define MINIRT_MLX_H
 
-# define VIEWPORT_HEIGHT 500
-# define VIEWPORT_WIDTH 500
-# define VIEWPORT_TITLE "she trace on my rays"
-# define VIEWPORT_RESIZABLE 0
+# define VIEWPORT_HEIGHT 1024
+# define VIEWPORT_WIDTH 1024
+
+# if VIEWPORT_HEIGHT >= 512
+#  undef VIEWPORT_HEIGHT
+#  define VIEWPORT_HEIGHT 511
+#  pragma message "Viewport can't be taller than 511 pixels due to stack limits"
+# endif // OVERFLOW PROTECTION // TODO, FIX
+# ifndef VIEWPORT_HEIGHT
+#  define VIEWPORT_HEIGHT 500
+# endif // VIEWPORT_HEIGHT
+# if VIEWPORT_WIDTH >= 512
+#  undef VIEWPORT_WIDTH
+#  define VIEWPORT_WIDTH 511
+#  pragma message "Viewport can't be wider than 511 pixels due to stack limits"
+# endif // OVERFLOW PROTECTION // TODO, FIX
+# ifndef VIEWPORT_WIDTH
+#  define VIEWPORT_WIDTH 500
+# endif // VIEWPORT_WIDTH
+# ifndef VIEWPORT_TITLE
+#  define VIEWPORT_TITLE "she trace on my rays"
+# endif // VIEWPORT_TITLE
+# ifndef VIEWPORT_RESIZABLE
+#  define VIEWPORT_RESIZABLE 0
+# endif // VIEWPORT_RESIZABLE
 
 # define PIXEL_TRANSPARENT 0x00000000
 # define PIXEL_BLACK 0x000000FF
@@ -62,7 +83,7 @@ enum e_camera_mode
 struct s_mode_func_params
 {
 	mlx_image_t			*img;
-	struct s_rt_scene	scene;
+	struct s_rt_scene	*scene;
 	unsigned int		obj;
 	unsigned int		x;
 	unsigned int		y;
@@ -115,7 +136,7 @@ void
 struct s_get_pixel_params
 {
 	enum e_camera_mode	mode;
-	struct s_rt_scene	scene;
+	struct s_rt_scene	*scene;
 	unsigned int		x;
 	unsigned int		y;
 };
@@ -147,7 +168,7 @@ struct s_progressive_rendering_params
 	mlx_image_t			*img;
 	enum e_camera_mode	mode;
 	t_line				angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT];
-	struct s_rt_scene	scene;
+	struct s_rt_scene	*scene;
 	int					max_depth;
 	bool				reset;
 };

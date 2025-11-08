@@ -55,8 +55,8 @@ struct s_rgba *color
 	if (p.t == p.t)
 		color->hex = normal_to_rgba(
 				sq_norm(sq_xyz_uv(l_t(angles[p.x][p.y], p.t),
-						p.scene.elements[p.obj].superquadric),
-					p.scene.elements[p.obj].superquadric)
+						p.scene->elements[p.obj].superquadric),
+					p.scene->elements[p.obj].superquadric)
 				);
 	else
 		color->hex = PIXEL_TRANSPARENT;

@@ -21,7 +21,7 @@ DEPDIR			:=	dep/
 DEPFLAG			=	-MM -MF $@ -MT $@ -MT $(BINDIR)$(addsuffix .o,$(notdir $(basename $<)))
 INC				:=	-Ilib/libft/include -Iinc -Ilib/mlx42/include/MLX42
 VPATH			=	$(SRCDIR)
-CFLAGS			:=	-Wall -Wextra -Werror -ffast-math -O3 -fhonor-infinities -fhonor-nans
+CFLAGS			:=	-Wall -Wextra -Werror -ffast-math -O3 -fhonor-infinities -fhonor-nans -fsanitize=address
 CPPFLAGS		=	$(INC) -g3
 LDFLAGS			:=	-lm lib/libft/libft.a lib/mlx42/build/libmlx42.a -ldl -lglfw -pthread
 CC				:=	cc
@@ -32,7 +32,7 @@ MAKEFLAGS		+=	-r --no-print-directory -j
 .EXTRA_PREREQS	=	$(firstword $(MAKEFILE_LIST))
 .DEFAULT_GOAL	:=	all
 .PRECIOUS		:	$(BINDIR) $(DEPDIR)
-.PHONY			:	debug clean fclean re all clangd line unline
+.PHONY			:	debug clean fclean re all clangd line unline bypass
 
 -include	$(DEP)
 
@@ -71,6 +71,9 @@ line			:
 	@echo ""
 unline			:
 	@echo -n "\033[F"
+
+bypass			: $(SRC)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $(NAME) $^ $(LDFLAGS)
 
 clangd			: | unline
 	+@$(MAKE) fclean

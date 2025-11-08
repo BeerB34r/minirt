@@ -25,14 +25,10 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <minirt_declarations.h>
 #include <minirt_parse.h>
-#include <minirt_math.h>
-#include <minirt_math_superquadrics.h>
-#include <stdio.h>
 
-void	render_scene(struct s_rt_scene scene);
+void	render_scene(struct s_rt_scene *scene);
 
 /**
  * entrypoint to the program
@@ -51,7 +47,7 @@ char **av
 
 	if (!rval)
 	{
-		render_scene(scene);
+		render_scene(&scene);
 		free_scene(scene);
 	}
 	return (rval);

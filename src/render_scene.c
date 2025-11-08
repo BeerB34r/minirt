@@ -43,7 +43,7 @@ struct s_progressive_rendering_params *progressive_rendering_args
 
 void
 	render_scene(
-struct s_rt_scene scene
+struct s_rt_scene *scene
 )
 {
 	mlx_t									*mlx;
@@ -66,7 +66,7 @@ struct s_rt_scene scene
 	p.mode = SURFACE_NORMAL;
 	p.scene = scene;
 	populate_plane_array(
-		scene.camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, p.angles);
+		scene->camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, p.angles);
 	if (mlx_hooks(mlx, &p))
 		mlx_loop(mlx);
 	mlx_delete_image(mlx, img);
