@@ -125,4 +125,6 @@ double
 		t_element object,
 		t_line line
 		);	// FILE: math/intersection/stlfile.c
+
+double sphere_int(t_line line, struct s_rt_element_sphere object);
 #endif // MINIRT_MATH_H

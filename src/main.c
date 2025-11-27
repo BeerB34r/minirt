@@ -37,18 +37,14 @@
 
 void	render_scene(struct s_rt_scene *scene);
 
-static
-int
-	ensure_stack_limit(void)
-{
+static int	ensure_stack_limit(void) {
 	struct rlimit	rl;
 	int				rv;
 
 	if (VIEWPORT_HEIGHT < 512 && VIEWPORT_WIDTH < 512)
 		return (0);
 	rv = getrlimit(RLIMIT_STACK, &rl);
-	if (rv)
-	{
+	if (rv) {
 		ft_dprintf(STDERR_FILENO, ERR E_STRERR, strerror(errno));
 		return (rv);
 	}
@@ -56,8 +52,7 @@ int
 	{
 		rl.rlim_cur = RLIM_INFINITY;
 		rv = setrlimit(RLIMIT_STACK, &rl);
-		if (rv)
-		{
+		if (rv) {
 			ft_dprintf(STDERR_FILENO, ERR E_STRERR, strerror(errno));
 			return (rv);
 		}
@@ -71,20 +66,14 @@ int
  * @param ac commandline argument count
  * @param av commandline arguments
  */
-int
-	main(
-int ac,
-char **av
-)
-{
+int	main(int ac, char **av) {
 	const int			stack_rval = ensure_stack_limit();
 	struct s_rt_scene	scene;
 	const int			parse_rval = minirt_parse(ac, av, &scene);
 
 	if (stack_rval)
 		return (stack_rval);
-	if (!parse_rval)
-	{
+	if (!parse_rval) {
 		render_scene(&scene);
 		free_scene(scene);
 	}

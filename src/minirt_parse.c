@@ -30,13 +30,7 @@
 #include <minirt_utils.h>
 #include <minirt_error.h>
 
-int
-	minirt_parse(
-int ac,
-char **av,
-struct s_rt_scene *scene
-)
-{
+int	minirt_parse(int ac, char **av, struct s_rt_scene *scene) {
 	char				**file_array;
 	char				***split_file;
 	int					rval;

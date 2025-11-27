@@ -28,32 +28,20 @@
 #include <MLX42.h>
 #include <minirt_mlx.h>
 
-int
-	get_viewport(
-mlx_t **mlx,
-mlx_image_t **img,
-t_viewport metadata
-)
-{
-	*mlx = mlx_init(
-			metadata.w,
-			metadata.h,
-			metadata.title,
-			metadata.resizable
-			);
-	if (!*mlx)
+int	get_viewport(mlx_t **mlx, mlx_image_t **img, t_viewport metadata) {
+	*mlx = mlx_init(metadata.w, metadata.h, metadata.title, metadata.resizable);
+	if (!*mlx) {
 		return (1);
-	*img = mlx_new_image(
-			*mlx,
-			(*mlx)->width,
-			(*mlx)->height
-			);
-	if (!(*img))
-		;
-	else if (mlx_image_to_window(*mlx, *img, 0, 0) != -1)
+	}
+	*img = mlx_new_image(*mlx, (*mlx)->width, (*mlx)->height);
+	if (!(*img)) {
+		; // return 1 here as well?
+	}
+	else if (mlx_image_to_window(*mlx, *img, 0, 0) != -1) {
 		return (0);
-	else
+	} else {
 		mlx_delete_image(*mlx, *img);
+	}
 	mlx_terminate(*mlx);
 	*mlx = NULL;
 	*img = NULL;

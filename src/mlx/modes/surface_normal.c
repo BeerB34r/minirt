@@ -32,21 +32,34 @@
 #include <minirt_math_superquadrics.h>
 #include <minirt_mlx.h>
 
+// Takes a normalized vector and converts it an RGBA value to visualize
 static uint32_t normal_to_rgba(t_norm normal) {
-  return (((int)trunc(normal.x * 255 * 0.5 + 127) << 24) +
-          ((int)trunc(normal.y * 255 * 0.5 + 127) << 16) +
-          ((int)trunc(normal.z * 255 * 0.5 + 127) << 8) + (255 << 0));
+    uint8_t r = (uint8_t)round(normal.x * 0.5 * 255 + 127);
+    uint8_t g = (uint8_t)round(normal.y * 0.5 * 255 + 127);
+    uint8_t b = (uint8_t)round(normal.z * 0.5 * 255 + 127);
+    uint8_t a = 255;
+    return (r << 24) | (g << 16) | (b << 8) | a;
 }
 
-// TODO: generalise norm-acquisition
+// Returns the surface normal at a hit point for any object type
+t_vec3 get_normal_at_hit(struct s_rt_element obj, t_vec3 point) {
+	if (obj.type == SPHERE) {
+        return vec3_normalise(vec3_sub(point, obj.sphere.pos));
+	} else if (obj.type == SUPERQUADRIC) {
+		return sq_norm(sq_xyz_uv(point, obj.superquadric), obj.superquadric);
+    }
+    return (t_vec3){0,1,0}; // just in case
+}
+
+// Computes pixel color based on surface normal
 void surface_normal_color(struct s_mode_func_params p,
-                          t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-                          struct s_rgba *color) {
-  if (p.t == p.t)
-    color->hex =
-        normal_to_rgba(sq_norm(sq_xyz_uv(l_t(angles[p.x][p.y], p.t),
-                                         p.scene->elements[p.obj].superquadric),
-                               p.scene->elements[p.obj].superquadric));
-  else
-    color->hex = PIXEL_TRANSPARENT;
+							t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+							struct s_rgba *color) {
+	if (!(p.t == p.t)) {
+		color->hex = PIXEL_TRANSPARENT;
+		return ;
+	}
+	t_vec3 intersection_point = l_t(angles[p.x][p.y], p.t);
+	t_vec3 normal = get_normal_at_hit(p.scene->elements[p.obj], intersection_point);
+	color->hex = normal_to_rgba(normal);
 }

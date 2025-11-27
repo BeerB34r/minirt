@@ -29,46 +29,40 @@
 #include <minirt_mlx.h>
 #include <MLX42.h>
 
-static
-bool
-	mlx_hooks(
-mlx_t	*mlx,
-struct s_progressive_rendering_params *progressive_rendering_args
-)
-{
-	if (mlx_loop_hook(mlx, &progressive_rendering, progressive_rendering_args))
+static bool	mlx_hooks(mlx_t	*mlx, struct s_progressive_rendering_params *progressive_rendering_args) {
+	if (mlx_loop_hook(mlx, &progressive_rendering, progressive_rendering_args)) {
 		return (true);
+	}
 	return (false);
 }
 
-void
-	render_scene(
-struct s_rt_scene *scene
-)
-{
+void	render_scene(struct s_rt_scene *scene) {
 	mlx_t									*mlx;
 	mlx_image_t								*img;
 	int										major_axis;
 	int										depth;
 	struct s_progressive_rendering_params	p;
 
-	major_axis = VIEWPORT_WIDTH;
-	if (VIEWPORT_HEIGHT > VIEWPORT_WIDTH)
+	major_axis = VIEWPORT_WIDTH;				// Determine major axis
+	if (VIEWPORT_HEIGHT > VIEWPORT_WIDTH) {
 		major_axis = VIEWPORT_HEIGHT;
+	}
 	depth = 0;
-	while ((1 << depth) < major_axis)
+	while ((1 << depth) < major_axis) {
 		depth++;
+	}
 	if (get_viewport(&mlx, &img, (t_viewport){VIEWPORT_WIDTH, VIEWPORT_HEIGHT,
-			VIEWPORT_TITLE, VIEWPORT_RESIZABLE}))
+			VIEWPORT_TITLE, VIEWPORT_RESIZABLE})) {
 		return ;
+	}
 	p.max_depth = depth;
 	p.img = img;
 	p.mode = SURFACE_NORMAL;
 	p.scene = scene;
-	populate_plane_array(
-		scene->camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, p.angles);
-	if (mlx_hooks(mlx, &p))
+	populate_plane_array(scene->camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, p.angles);
+	if (mlx_hooks(mlx, &p)) {
 		mlx_loop(mlx);
+	}
 	mlx_delete_image(mlx, img);
 	mlx_terminate(mlx);
 }

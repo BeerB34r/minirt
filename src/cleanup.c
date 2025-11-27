@@ -29,11 +29,7 @@
 #include <minirt_parse.h>
 #include <stdlib.h>
 
-void
-	free_noop(
-struct s_rt_element element
-)
-{
+void	free_noop(struct s_rt_element element) {
 	(void)element;
 }
 

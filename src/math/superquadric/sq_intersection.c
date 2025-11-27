@@ -29,12 +29,7 @@
 #include <minirt_declarations.h>
 #include <minirt_math_superquadrics.h>
 
-double
-	sq_int(
-t_line lw,
-struct s_rt_element_superquadric s
-)
-{
+double sq_int(t_line lw, struct s_rt_element_superquadric s) { 
 	if (s.subtype == ELLIPSOID)
 		return (sq_e_int(lw, s));
 	else if (s.subtype == HYPERBOLOID1)

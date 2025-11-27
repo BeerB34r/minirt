@@ -28,27 +28,17 @@
 #include <math.h>
 #include <minirt_math.h>
 #include <minirt_declarations.h>
+#include <stdio.h>
 
-static double
-	compute_nabla(
-t_line line,
-t_vec3 c,
-double r
-)
+static double compute_discriminant(t_line line, t_vec3 c, double r)
 {
-	return (
-		vec3_dot_product(line.normal, vec3_sub(line.origin, c))
-		- vec3_dot_product(vec3_sub(line.origin, c), vec3_sub(line.origin, c))
-		- (r * r)
-	);
+    t_vec3 L = vec3_sub(line.origin, c);
+    double b = vec3_dot_product(line.normal, L);
+    double c_term = vec3_dot_product(L, L) - r*r;
+    double discriminant = b*b - c_term;
+    return discriminant;
 }
-
-static double
-	get_min_greater_than_0(
-double a,
-double b
-)
-{
+static double get_min_greater_than_0(double a, double b) {
 	const double	min = fmin(a, b);
 	const double	max = fmax(a, b);
 
@@ -59,21 +49,12 @@ double b
 	return (NAN);
 }
 
-double
-	closest_sphere_intersection(
-t_element object,
-t_line line
-)
-{
-	const t_vec3	c = object.sphere.pos;
-	const double	r = object.sphere.radius;
-	const double	nabla = compute_nabla(line, c, r);
-	const double	add = -vec3_dot_product(line.normal,
-			vec3_sub(line.origin, c))
-		+ sqrt(nabla);
-	const double	sub = -vec3_dot_product(line.normal,
-			vec3_sub(line.origin, c))
-		- sqrt(nabla);
+double sphere_int(t_line line, struct s_rt_element_sphere object) {
+	const t_vec3	c = object.pos;
+	const double	r = object.radius;
+	const double	nabla = compute_discriminant(line, c, r);
+	const double	add = -vec3_dot_product(line.normal, vec3_sub(line.origin, c)) + sqrt(nabla);
+	const double	sub = -vec3_dot_product(line.normal, vec3_sub(line.origin, c)) - sqrt(nabla);
 
 	if (nabla < 0)
 		return (NAN);
