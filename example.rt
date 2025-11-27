@@ -41,4 +41,4 @@ sq h2 1,1,1 0,0,0,0 3 5 3 5 2 2 2 1 255,0,0
 tri -42.0,0.0,42.0 0.0,42.0,-42.0 42.0,-42.0,0.0 0,42,255
 
 # binary stereolithography file, filename
-stl hornet_60k_faces.stl
+# stl hornet_60k_faces.stl

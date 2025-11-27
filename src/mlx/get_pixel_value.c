@@ -27,42 +27,32 @@
 
 #include <math.h>
 #include <minirt_declarations.h>
-#include <minirt_mlx.h>
-#include <minirt_math_superquadrics.h>
 #include <minirt_math.h>
+#include <minirt_math_superquadrics.h>
+#include <minirt_mlx.h>
 
-static
-int
-	check_intersection(
-struct s_rt_element object,
-t_line line,
-double *t
-)
+static int	check_intersection(struct s_rt_element object, t_line line, double *t)
 {
-	double			res;
+	double	result;
 
 	if (object.type == SUPERQUADRIC)
 	{
-		res = sq_int(line, object.superquadric);
-		if (res == res)
-			*t = res;
-		return (res == res);
+		result = sq_int(line, object.superquadric);
+		if (result == result)
+			*t = result;
+		return (result == result);
 	}
 	return (0);
 }
 
-const static
-	struct s_camera_mode g_modes[] = {
-{HIT_OR_MISS, hit_or_miss_color},
-{SURFACE_NORMAL, surface_normal_color}
+static const struct s_camera_mode	g_modes[] = {
+	{HIT_OR_MISS,		hit_or_miss_color},
+	{SURFACE_NORMAL,	surface_normal_color}
 };
 
-void
-	get_pixel_value(
-struct s_get_pixel_params p,
-t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-struct s_rgba *out
-)
+void	get_pixel_value(struct s_get_pixel_params p,
+						t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+						struct s_rgba *out)
 {
 	const unsigned int	x = p.x;
 	const unsigned int	y = p.y;
@@ -73,8 +63,16 @@ struct s_rgba *out
 	t = NAN;
 	while (++obj < p.scene->element_count)
 		if (check_intersection(p.scene->elements[obj], angles[x][y], &t))
-			break ;
-	g_modes[p.mode].func((struct s_mode_func_params){
-		.scene = p.scene, .obj = obj, .x = x, .y = y, .t = t},
-	angles, out);
+			break;
+	g_modes[p.mode].func(
+		(struct s_mode_func_params){
+			.scene = p.scene,
+			.obj = obj,
+			.x = x,
+			.y = y,
+			.t = t
+		},
+		angles,
+		out
+	);
 }

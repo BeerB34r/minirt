@@ -1,0 +1,16 @@
+A 0.1 0,42,255
+
+# camera, vec3 pos - norm orientation - int FOV {0,1,2,...180}
+C -42.0,0.0,42.0 0.0,1.0,0.0 42
+
+# light, vec3 pos - real brightness [0.0,1.0] - RGB
+l -42.0,0.0,42.0 0.42 0,42,255
+
+# sphere, vec3 pos - real radius - RGB
+sp -42.0,0.0,42.0 4.2 0,42,255
+
+# # plane, vec3 pos - norm orientation - RGB
+# pl -42.0,0.0,42.0 0.0,0.0,1.0 0,42,255
+
+# # cylinder, vec3 pos - norm orientation - real radius - real height - RGB
+# cy -42.0,0.0,42.0 0.0,0.0,1.0 42.0 42.0 0,42,255

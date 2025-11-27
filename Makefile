@@ -26,7 +26,7 @@ CPPFLAGS		=	$(INC) -g3
 LDFLAGS			:=	-lm lib/libft/libft.a lib/mlx42/build/libmlx42.a -ldl -lglfw -pthread
 CC				:=	cc
 RM				:=	rm -fr
-NAME			:=	minirt_parser
+NAME			:=	minirt
 
 MAKEFLAGS		+=	-r --no-print-directory -j
 .EXTRA_PREREQS	=	$(firstword $(MAKEFILE_LIST))

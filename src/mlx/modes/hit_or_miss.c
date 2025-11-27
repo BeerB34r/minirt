@@ -25,20 +25,16 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#include <minirt_mlx.h>
-#include <minirt_declarations.h>
 #include <MLX42.h>
+#include <minirt_declarations.h>
+#include <minirt_mlx.h>
 
-void
-	hit_or_miss_color(
-struct s_mode_func_params p,
-t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-struct s_rgba *color
-)
-{
-	(void)angles;
-	if (p.t == p.t)
-		color->hex = HIT_OR_MISS_PIXEL_HIT;
-	else
-		color->hex = HIT_OR_MISS_PIXEL_MISS;
+void hit_or_miss_color(struct s_mode_func_params p,
+                       t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+                       struct s_rgba *color) {
+  (void)angles;
+  if (p.t == p.t)
+    color->hex = HIT_OR_MISS_PIXEL_HIT;
+  else
+    color->hex = HIT_OR_MISS_PIXEL_MISS;
 }
