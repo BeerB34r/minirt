@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   render_scene.c                                          :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/10/06 14:58:25 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/11/07 21:27:22 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   render_scene.c                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/10/06 14:58:25 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/01 16:58:14 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -57,7 +57,7 @@ void	render_scene(struct s_rt_scene *scene) {
 	}
 	p.max_depth = depth;
 	p.img = img;
-	p.mode = SURFACE_NORMAL;
+	p.mode = DEFAULT;
 	p.scene = scene;
 	populate_plane_array(scene->camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, p.angles);
 	if (mlx_hooks(mlx, &p)) {

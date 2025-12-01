@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   surface_normal.c                                        :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/10/31 20:31:08 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/31 20:34:38 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   surface_normal.c                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/10/31 20:31:08 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/01 16:40:39 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -42,20 +42,6 @@ static uint32_t normal_to_rgba(t_norm normal) {
 }
 
 // Returns the surface normal at a hit point for any object type
-t_vec3 get_normal_at_hit(struct s_rt_element obj, t_vec3 point) {
-	if (obj.type == SPHERE) {
-        return vec3_normalise(vec3_sub(point, obj.sphere.pos));
-	} else if (obj.type == SUPERQUADRIC) {
-		return sq_norm(sq_xyz_uv(point, obj.superquadric), obj.superquadric);
-    } else if (obj.type == PLANE) {
-		return (obj.plane.normal);
-	} else if (obj.type == TRIANGLE) {
-		return (obj.triangle.normal);
-	} else if (obj.type == CYLINDER) {
-		return (cylinder_normal(obj.cylinder, point));
-	}
-    return (t_vec3){0,0,1}; // just in case
-}
 
 // Computes pixel color based on surface normal
 void surface_normal_color(struct s_mode_func_params p,
@@ -66,6 +52,6 @@ void surface_normal_color(struct s_mode_func_params p,
 	 	return ;
 	 }
 	t_vec3 intersection_point = l_t(angles[p.x][p.y], p.t);
-	t_vec3 normal = get_normal_at_hit(p.scene->elements[p.obj], intersection_point);
+	t_vec3 normal = get_normal(p.scene->elements[p.obj], intersection_point);
 	color->hex = normal_to_rgba(normal);
 }

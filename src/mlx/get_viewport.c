@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   get_viewport.c                                          :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/11/05 20:43:20 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/11/05 20:43:42 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   get_viewport.c                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/11/05 20:43:20 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/01 16:29:57 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -35,7 +35,7 @@ int	get_viewport(mlx_t **mlx, mlx_image_t **img, t_viewport metadata) {
 	}
 	*img = mlx_new_image(*mlx, (*mlx)->width, (*mlx)->height);
 	if (!(*img)) {
-		; // return 1 here as well?
+		return (0); // return 1 here as well?
 	}
 	else if (mlx_image_to_window(*mlx, *img, 0, 0) != -1) {
 		return (0);

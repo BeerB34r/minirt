@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   set_pixel_value.c                                       :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/11/05 19:11:13 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/11/05 19:14:35 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   get_pixel_value.c                                  :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/11/05 19:11:13 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/01 16:59:17 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -58,7 +58,8 @@ static int	check_intersection(struct s_rt_element object, t_line line, double *t
 
 static const struct s_camera_mode	g_modes[] = {
 	{HIT_OR_MISS,		hit_or_miss_color},
-	{SURFACE_NORMAL,	surface_normal_color}
+	{SURFACE_NORMAL,	surface_normal_color},
+	{DEFAULT,			default_color}
 };
 
 void	get_pixel_value(struct s_get_pixel_params p, t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT], struct s_rgba *out) {

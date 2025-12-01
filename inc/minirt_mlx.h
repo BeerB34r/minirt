@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   minirt_mlx.h                                            :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/10/31 18:06:32 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/11/07 21:14:38 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   minirt_mlx.h                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/01 16:59:36 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -64,6 +64,7 @@ typedef struct s_viewport_metadata {
 enum e_camera_mode {
   HIT_OR_MISS,
   SURFACE_NORMAL,
+  DEFAULT
 };
 struct s_mode_func_params {
   mlx_image_t *img;
@@ -133,5 +134,9 @@ struct s_progressive_rendering_params {
   bool reset;
 };
 void progressive_rendering(void *param); // FILE: mlx/progressive_rendering.c
+t_vec3 get_normal(struct s_rt_element obj, t_vec3 point);
+void	default_color(struct s_mode_func_params p,
+							t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+							struct s_rgba *color);
 
 #endif // MINIRT_MLX_H
