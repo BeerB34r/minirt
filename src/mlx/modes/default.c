@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/01 16:19:52 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/01 17:03:56 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/01 17:32:53 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 #include <minirt_math.h>
 #include <minirt_math_superquadrics.h>
 #include <minirt_mlx.h>
+#include <stdio.h>
 
-
+#define ITERATIONS 10
 
 void	default_color(struct s_mode_func_params p,
 							t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
@@ -26,10 +27,11 @@ void	default_color(struct s_mode_func_params p,
 	 	color->hex = PIXEL_TRANSPARENT;
 	 	return ;
 	}
-    // struct s_rt_element *obj = &p.scene->elements[p.obj];
+    struct s_rt_element *obj = &p.scene->elements[p.obj];
+
     (void)angles;
-    color->r = (char)255;
-    color->g = (char)0;
-    color->b = (char)0;
-    color->a = (char)255; // add lighting
+	color->hex = (obj->colour.r << 16) | (obj->colour.g << 8) | obj->colour.b; 
+    // color->r = obj->colour.r;
+    // color->g = obj->colour.g;
+    // color->b = obj->colour.b;
 }
