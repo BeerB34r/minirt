@@ -47,18 +47,24 @@ t_vec3 get_normal_at_hit(struct s_rt_element obj, t_vec3 point) {
         return vec3_normalise(vec3_sub(point, obj.sphere.pos));
 	} else if (obj.type == SUPERQUADRIC) {
 		return sq_norm(sq_xyz_uv(point, obj.superquadric), obj.superquadric);
-    }
-    return (t_vec3){0,1,0}; // just in case
+    } else if (obj.type == PLANE) {
+		return (obj.plane.normal);
+	} else if (obj.type == TRIANGLE) {
+		return (obj.triangle.normal);
+	} else if (obj.type == CYLINDER) {
+		return (cylinder_normal(obj.cylinder, point));
+	}
+    return (t_vec3){0,0,1}; // just in case
 }
 
 // Computes pixel color based on surface normal
 void surface_normal_color(struct s_mode_func_params p,
 							t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
 							struct s_rgba *color) {
-	if (!(p.t == p.t)) {
-		color->hex = PIXEL_TRANSPARENT;
-		return ;
-	}
+	 if (!(p.t == p.t)) {
+	 	color->hex = PIXEL_TRANSPARENT;
+	 	return ;
+	 }
 	t_vec3 intersection_point = l_t(angles[p.x][p.y], p.t);
 	t_vec3 normal = get_normal_at_hit(p.scene->elements[p.obj], intersection_point);
 	color->hex = normal_to_rgba(normal);

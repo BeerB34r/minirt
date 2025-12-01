@@ -111,8 +111,8 @@ struct s_get_pixel_params {
 };
 
 void get_pixel_value(struct s_get_pixel_params p,
-                     t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-                     struct s_rgba *output); // FILE: mlx/set_pixel_value.c
+                     t_line (*angles)[VIEWPORT_HEIGHT],
+                     struct s_rgba *out);
 int get_viewport(mlx_t **mlx, mlx_image_t **img,
                  t_viewport metadata); // FILE: mlx/get_viewport.c
 

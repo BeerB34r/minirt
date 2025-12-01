@@ -127,4 +127,8 @@ double
 		);	// FILE: math/intersection/stlfile.c
 
 double sphere_int(t_line line, struct s_rt_element_sphere object);
+double plane_int(t_line line, struct s_rt_element_plane object);
+double triangle_int(t_line line, struct s_rt_element_triangle object);
+double	cylinder_int(t_line line, struct s_rt_element_cylinder cyl);
+t_vec3 cylinder_normal(struct s_rt_element_cylinder cyl, t_vec3 int_point);
 #endif // MINIRT_MATH_H

@@ -29,6 +29,7 @@
 #include <unistd.h>
 #include <minirt_declarations.h>
 #include <minirt_mlx.h>
+#include <stdio.h>
 
 static
 void
@@ -102,6 +103,7 @@ int depth
 		y = -1;
 		while ((++y * (1 << depth)) < VIEWPORT_HEIGHT)
 		{
+
 			get_pixel_value((struct s_get_pixel_params){
 				.mode = p->mode, .scene = p->scene,
 				.x = x * (1 << depth),
