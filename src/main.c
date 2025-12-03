@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   main.c                                                  :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/09/18 16:07:32 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/18 16:12:06 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/09/18 16:07:32 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/03 15:33:14 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -34,6 +34,8 @@
 #include <string.h>
 #include <sys/resource.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <debug.h>
 
 void	render_scene(struct s_rt_scene *scene);
 
@@ -70,12 +72,19 @@ int	main(int ac, char **av) {
 	const int			stack_rval = ensure_stack_limit();
 	struct s_rt_scene	scene;
 	const int			parse_rval = minirt_parse(ac, av, &scene);
-
+	debug_fp = fopen("debug.txt", "a");
+	if (debug_fp == NULL) {
+		perror("Failed to open file\n");
+		return 1;
+	}
+	setvbuf(debug_fp, NULL, _IONBF, 0);
 	if (stack_rval)
 		return (stack_rval);
 	if (!parse_rval) {
 		render_scene(&scene);
 		free_scene(scene);
 	}
+	fflush(debug_fp);
+	fclose(debug_fp);
 	return (parse_rval);
 }

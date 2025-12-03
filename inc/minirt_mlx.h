@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/01 16:59:36 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/03 14:28:22 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@
 #define MINIRT_MLX_H
 
 #ifndef VIEWPORT_HEIGHT
-#define VIEWPORT_HEIGHT 500
+#define VIEWPORT_HEIGHT 1000
 #endif // VIEWPORT_HEIGHT
 #ifndef VIEWPORT_WIDTH
-#define VIEWPORT_WIDTH 500
+#define VIEWPORT_WIDTH 1000
 #endif // VIEWPORT_WIDTH
 #ifndef VIEWPORT_TITLE
 #define VIEWPORT_TITLE "miniRT"
@@ -138,5 +138,8 @@ t_vec3 get_normal(struct s_rt_element obj, t_vec3 point);
 void	default_color(struct s_mode_func_params p,
 							t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
 							struct s_rgba *color);
+						
+
+int find_closest_intersection(t_scene *scene, t_line ray, unsigned int *out_obj, double *out_t);
 
 #endif // MINIRT_MLX_H

@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/01 16:51:52 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/03 15:48:16 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ struct s_rgba
 		uint32_t	hex; //< Full 32 bit representation of a given RGBA value
 		struct
 		{
-			char	r; //< red channel
-			char	g; //< green channel
-			char	b; //< blue channel
-			char	a; //< alpha channel
+			unsigned char	r; //< red channel
+			unsigned char	g; //< green channel
+			unsigned char	b; //< blue channel
+			unsigned char	a; //< alpha channel
 		};
 	};
 };
@@ -97,8 +97,9 @@ typedef union u_uv
 typedef struct s_line
 {
 	t_vec3	origin;
-	t_norm	normal;
+	t_vec3	dir;
 }	t_line;
+
 
 //	elements of a scene
 
@@ -232,5 +233,14 @@ typedef struct s_element_identifier
 	char	*name;
 	int		(*func)(char **, struct s_rt_scene *);
 }	t_element_id;
+
+typedef struct s_hit {
+	t_element obj;
+	t_vec3 point;
+	t_norm normal;
+	t_line ray;
+} t_hit;
+
+
 
 #endif // MINIRT_DECLARATIONS_H

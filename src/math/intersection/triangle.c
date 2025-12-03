@@ -9,7 +9,7 @@ double triangle_int(t_line line, struct s_rt_element_triangle tri) {
 	const double EPSILON = 1e-8; // potentially make this a universal constant
 	t_vec3 E1 = vec3_sub(tri.v2, tri.v1);
 	t_vec3 E2 = vec3_sub(tri.v3, tri.v1);
-	t_vec3 P = vec3_cross_product(line.normal, E2);
+	t_vec3 P = vec3_cross_product(line.dir, E2);
 	double det = vec3_dot_product(E1, P);
 
 	if (fabs(det) < EPSILON) {
@@ -22,7 +22,7 @@ double triangle_int(t_line line, struct s_rt_element_triangle tri) {
         return (NAN);
 
     t_vec3 Q = vec3_cross_product(T, E1);
-    double v = vec3_dot_product(line.normal, Q) * inv_det;
+    double v = vec3_dot_product(line.dir, Q) * inv_det;
     if (v < 0.0 || u + v > 1.0)
         return (NAN);
 

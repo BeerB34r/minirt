@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   parse_sphere.c                                          :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/09/19 21:15:06 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 21:19:50 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   parse_sphere.c                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/09/19 21:15:06 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/02 14:05:26 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -47,6 +47,7 @@ struct s_rt_scene *scene
 	)
 	{
 		scene->elements[(scene->element_count)].type = SPHERE;
+		scene->elements[(scene->element_count)].colour = result.color;
 		scene->elements[(scene->element_count)++].sphere = result;
 		return (0);
 	}

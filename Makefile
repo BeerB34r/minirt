@@ -21,7 +21,7 @@ DEPDIR			:=	dep/
 DEPFLAG			=	-MM -MF $@ -MT $@ -MT $(BINDIR)$(addsuffix .o,$(notdir $(basename $<)))
 INC				:=	-Ilib/libft/include -Iinc -Ilib/mlx42/include/MLX42
 VPATH			=	$(SRCDIR)
-CFLAGS			:=	-Wall -Wextra -Werror -ffast-math -O3 -fhonor-infinities -fhonor-nans -fsanitize=address
+CFLAGS			:=	-Wall -Wextra -Werror -fhonor-infinities -fhonor-nans -fsanitize=address # -ffast-math -O3
 CPPFLAGS		=	$(INC) -g3
 LDFLAGS			:=	-lm lib/libft/libft.a lib/mlx42/build/libmlx42.a -ldl -lglfw -pthread
 CC				:=	cc

@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   viewplane.c                                             :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/10/31 19:08:55 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/31 19:12:05 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   viewplane.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/10/31 19:08:55 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/03 14:48:57 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -39,7 +39,7 @@ static void view_plane_array(t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT], t_pl
 	while (++i < opt.w) {
 		j = -1;
 		while (++j < opt.h) {
-			array[i][j] = (t_line){.origin = opt.origin, .normal = vec3_normalise(vec3_add(vec3_add(opt.p_1m, vec3_scalar_mul(opt.q_x, i)), vec3_scalar_mul(opt.q_y, j)))};
+			array[i][j] = (t_line){.origin = opt.origin, .dir = vec3_normalise(vec3_add(vec3_add(opt.p_1m, vec3_scalar_mul(opt.q_x, i)), vec3_scalar_mul(opt.q_y, j)))};
 		}
 	}
 }

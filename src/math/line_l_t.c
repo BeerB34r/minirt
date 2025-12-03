@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   line_l_t.c                                              :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/10/28 19:39:26 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/28 19:41:44 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   line_l_t.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/10/28 19:39:26 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/03 14:42:55 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -28,11 +28,7 @@
 #include <minirt_math.h>
 #include <minirt_declarations.h>
 
-t_vec3
-	l_t(
-t_line l,
-double t
-)
+t_vec3	l_t(t_line l, double t)
 {
-	return (vec3_add(l.origin, vec3_scalar_mul(l.normal, t)));
+	return (vec3_add(l.origin, vec3_scalar_mul(l.dir, t)));
 }

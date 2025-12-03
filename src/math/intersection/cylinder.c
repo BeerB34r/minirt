@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   cylinder.c                                              :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/09/23 19:08:39 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/23 19:09:24 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   cylinder.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/09/23 19:08:39 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/03 14:44:06 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -34,7 +34,6 @@
 
 t_vec3 cylinder_normal(struct s_rt_element_cylinder cyl, t_vec3 int_point) {
     t_vec3 axis = vec3_normalise(cyl.axis);
-
     t_vec3 delta = vec3_sub(int_point, cyl.pos);
     double d = vec3_dot_product(delta, axis);
 
@@ -65,7 +64,7 @@ double cylinder_int(t_line line, struct s_rt_element_cylinder cyl)
 
     t_vec3 delta = vec3_sub(line.origin, cyl.pos);
 
-    t_vec3 a = vec3_sub(line.normal, vec3_scalar_mul(axis, vec3_dot_product(line.normal, axis)));
+    t_vec3 a = vec3_sub(line.dir, vec3_scalar_mul(axis, vec3_dot_product(line.dir, axis)));
     t_vec3 b = vec3_sub(delta, vec3_scalar_mul(axis, vec3_dot_product(delta, axis)));
 
     double A = vec3_dot_product(a, a);
@@ -83,7 +82,7 @@ double cylinder_int(t_line line, struct s_rt_element_cylinder cyl)
 
     double t_side = (t0 > EPSILON) ? t0 : ((t1 > EPSILON) ? t1 : NAN);
 
-    t_vec3 P = vec3_add(line.origin, vec3_scalar_mul(line.normal, t_side));
+    t_vec3 P = vec3_add(line.origin, vec3_scalar_mul(line.dir, t_side));
 
     if (cyl.height > 0.0) {
         double d = vec3_dot_product(vec3_sub(P, cyl.pos), axis);
@@ -91,29 +90,29 @@ double cylinder_int(t_line line, struct s_rt_element_cylinder cyl)
             t_side = NAN;
         }
     }
-    t_vec3 cap_bottom = cyl.pos;
-    double denom = vec3_dot_product(line.normal, vec3_scalar_mul(axis, -1));
     double t_bottom = NAN;
-    if (fabs(denom) > EPSILON) {
-        double t_cap = vec3_dot_product(vec3_sub(cap_bottom, line.origin), vec3_scalar_mul(axis, -1)) / denom;
-        if (t_cap > EPSILON) {
-            t_vec3 P = vec3_add(line.origin, vec3_scalar_mul(line.normal, t_cap));
-            t_vec3 v = vec3_sub(P, cap_bottom);
-            if (vec3_dot_product(v, v) <= cyl.radius * cyl.radius) t_bottom = t_cap;
-        }
-    }
-
+	t_vec3 cap_bottom = cyl.pos;
+	double denom = vec3_dot_product(line.dir, axis);
+	if (fabs(denom) > EPSILON) {
+ 	   double t_cap = vec3_dot_product(vec3_sub(cap_bottom, line.origin), axis) / denom;
+  	  if (t_cap > EPSILON) {
+  	      t_vec3 P = vec3_add(line.origin, vec3_scalar_mul(line.dir, t_cap));
+   	     t_vec3 v = vec3_sub(P, cap_bottom);
+   	     if (vec3_dot_product(v, v) <= cyl.radius * cyl.radius) t_bottom = t_cap;
+  	  }
+	}
     t_vec3 cap_top = vec3_add(cyl.pos, vec3_scalar_mul(axis, cyl.height));
-    denom = vec3_dot_product(line.normal, axis);
+    denom = vec3_dot_product(line.dir, axis);
     double t_top = NAN;
     if (fabs(denom) > EPSILON) {
         double t_cap = vec3_dot_product(vec3_sub(cap_top, line.origin), axis) / denom;
         if (t_cap > EPSILON) {
-            t_vec3 P = vec3_add(line.origin, vec3_scalar_mul(line.normal, t_cap));
+            t_vec3 P = vec3_add(line.origin, vec3_scalar_mul(line.dir, t_cap));
             t_vec3 v = vec3_sub(P, cap_top);
             if (vec3_dot_product(v, v) <= cyl.radius * cyl.radius) t_top = t_cap;
         }
     }
+
 
     double t_final = NAN;
     if (!isnan(t_side)) t_final = t_side;

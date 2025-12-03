@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   plane.c                                                 :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/09/23 18:46:49 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/23 19:08:31 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   plane.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/09/23 18:46:49 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/03 14:49:37 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -33,14 +33,14 @@
 double plane_int(t_line line, struct s_rt_element_plane pl) {
 	double			d;
 
-	if (vec3_dot_product(line.normal, pl.normal) == 0) {
+	if (vec3_dot_product(line.dir, pl.normal) == 0) {
 		if (vec3_dot_product(vec3_sub(pl.pos, line.origin), pl.normal) == 0) {
 			return (0);
 		}
 		return (NAN);
 	}
 	d = vec3_dot_product(vec3_sub(pl.pos, line.origin), pl.normal)
-		/ vec3_dot_product(line.normal, pl.normal);
+		/ vec3_dot_product(line.dir, pl.normal);
 	if (d >= 0) {
 		return (d);
 	}
