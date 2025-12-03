@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/11/07 21:03:33 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 15:21:02 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/03 16:46:02 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,7 @@ void progressive_rendering(void *param) {
 	struct s_progressive_rendering_params *const	p = param;
 	static bool										done = false;
 	static int										depth = -1;
-	FILE *fp = fopen("debug.txt", "w");
-	if (fp == NULL) {
-		perror("Failed to open file\n");
-		return ;
-	}
+
 	if (p->reset) {
 		done = false;
 		depth = -1;
@@ -148,6 +144,6 @@ void progressive_rendering(void *param) {
 	write(1, "\033[F\033[F", 7);
 	progress_bar(1, 1);
 	done = true;
-	fclose(fp);
+
 
 }

@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 19:08:39 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 14:44:06 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/03 16:58:02 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 #include <minirt_declarations.h>
 #include <stdio.h>
 
-#define EPSILON 1e-6
 
 t_vec3 cylinder_normal(struct s_rt_element_cylinder cyl, t_vec3 int_point) {
     t_vec3 axis = vec3_normalise(cyl.axis);

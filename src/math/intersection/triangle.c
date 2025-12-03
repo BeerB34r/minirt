@@ -1,12 +1,24 @@
-// incorporate this.
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   triangle.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/12/03 16:58:17 by alkuijte      #+#    #+#                 */
+/*   Updated: 2025/12/03 16:58:33 by alkuijte      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <math.h>
 #include <minirt_math.h>
 #include <minirt_declarations.h>
 #include <stdio.h>
 
-double triangle_int(t_line line, struct s_rt_element_triangle tri) {
-	const double EPSILON = 1e-8; // potentially make this a universal constant
+ // potentially make EPSILON this a universal constant
+
+double	triangle_int(t_line line, struct s_rt_element_triangle tri)
+{
 	t_vec3 E1 = vec3_sub(tri.v2, tri.v1);
 	t_vec3 E2 = vec3_sub(tri.v3, tri.v1);
 	t_vec3 P = vec3_cross_product(line.dir, E2);
@@ -31,4 +43,3 @@ double triangle_int(t_line line, struct s_rt_element_triangle tri) {
         return (NAN);
     return (res);
 }
-

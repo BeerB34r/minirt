@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 19:08:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 14:48:57 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/03 16:56:18 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,21 @@
 #include <minirt_math.h>
 #include <stdio.h>
 
-static void view_plane_array(t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT], t_plane_array_opts opt) {
+static void	view_plane_array(t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+							t_plane_array_opts opt)
+{
 	unsigned int	i;
 	unsigned int	j;
 
 	i = -1;
-	while (++i < opt.w) {
+	while (++i < opt.w)
+	{
 		j = -1;
-		while (++j < opt.h) {
-			array[i][j] = (t_line){.origin = opt.origin, .dir = vec3_normalise(vec3_add(vec3_add(opt.p_1m, vec3_scalar_mul(opt.q_x, i)), vec3_scalar_mul(opt.q_y, j)))};
-		}
+		while (++j < opt.h)
+			array[i][j] = (t_line){.origin = opt.origin,\
+			.dir = vec3_normalise(vec3_add(\
+			vec3_add(opt.p_1m, vec3_scalar_mul(opt.q_x, i)), \
+			vec3_scalar_mul(opt.q_y, j)))};
 	}
 }
 
@@ -72,7 +77,8 @@ t_norm local_x
 						1 - cos(theta))))));
 }
 
-t_norm	local_z(t_norm local_x) {
+t_norm	local_z(t_norm local_x)
+{
 	const t_norm	x = (t_norm){.x = 1, .y = 0, .z = 0};
 	const t_norm	z = (t_norm){.x = 0, .y = 0, .z = 1};
 	const double	theta = acos(vec3_dot_product(local_x, x));
@@ -96,8 +102,9 @@ t_norm	local_z(t_norm local_x) {
 						1 - cos(theta))))));
 }
 
-void	populate_plane_array(struct s_rt_element_camera c, unsigned int w, unsigned int h,
-								t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]) {
+void	populate_plane_array(struct s_rt_element_camera c, unsigned int w,
+							unsigned int h,
+							t_line array[VIEWPORT_WIDTH][VIEWPORT_HEIGHT]) {
 	const double	theta = c.fov * (M_PI / 180);
 	const double	g_y = tan(theta / 2) * ((h - 1.0) / (w - 1.0));
 	const t_vec3	q_x = vec3_scalar_mul(local_z(c.orientation),
