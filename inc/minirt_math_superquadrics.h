@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   minirt_math_superquadrics.h                             :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/10/01 17:07:16 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/31 18:04:12 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   minirt_math_superquadrics.h                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/10/01 17:07:16 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/04 14:54:16 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -60,11 +60,8 @@ t_line
 		t_line lw,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/worldspace_to_objectspace.c
-double
-	sq_int(
-		t_line lw,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/sq_intersection.c
+
+int sq_int(t_line ray, const void *data, double *t);
 t_norm
 	sq_norm(
 		t_uv uv,
@@ -92,11 +89,12 @@ t_norm
 		t_uv uv,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/ellipsoid/e_norm.c
-double
+int
 	sq_e_int(
 		t_line lw,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/ellipsoid/e_intersection.c
+		struct s_rt_element_superquadric s,
+		double *t
+	    );	// FILE: math/superquadric/ellipsoid/e_intersection.c
 double
 	sq_e_derivative(
 		t_line l,
@@ -119,11 +117,12 @@ t_norm
 		t_uv uv,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/hyperboloid1/h1_norm.c
-double
+int
 	sq_h1_int(
 		t_line lw,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/hyperboloid1/h1_intersection.c
+		struct s_rt_element_superquadric s,
+		double *t
+	    );;	// FILE: math/superquadric/hyperboloid1/h1_intersection.c
 double
 	sq_h1_derivative(
 		t_line l,
@@ -146,11 +145,12 @@ t_norm
 		t_uv uv,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/hyperboloid2/h2_norm.c
-double
+int
 	sq_h2_int(
 		t_line lw,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/hyperboloid2/h2_intersection.c
+		struct s_rt_element_superquadric s,
+		double *t
+	    );	// FILE: math/superquadric/hyperboloid2/h2_intersection.c
 double
 	sq_h2_derivative(
 		t_line l,
@@ -173,11 +173,12 @@ t_norm
 		t_uv uv,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/toroid/t_norm.c
-double
+int
 	sq_t_int(
 		t_line lw,
-		struct s_rt_element_superquadric s
-		);	// FILE: math/superquadric/toroid/t_intersection.c
+		struct s_rt_element_superquadric s,
+		double *t
+	    );	// FILE: math/superquadric/toroid/t_intersection.c
 double
 	sq_t_derivative(
 		t_line l,

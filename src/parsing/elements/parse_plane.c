@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:20:42 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 13:54:26 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 15:06:02 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #include <libft.h>
 #include <minirt_utils.h>
 #include <minirt_declarations.h>
+#include <minirt_math.h>
 #include <minirt_error.h>
 
 int
@@ -50,6 +51,8 @@ struct s_rt_scene *scene
 		scene->elements[(scene->element_count)].material.colour = result.color;
 		scene->elements[(scene->element_count)].material.reflectivity = DEFAULT_REFLECTIVITY;
 		scene->elements[(scene->element_count)].material.ior = DEFAULT_IOR;
+		scene->elements[(scene->element_count)].intersect = plane_int;
+		scene->elements[(scene->element_count)].data = &scene->elements[(scene->element_count)].plane;
 		scene->elements[(scene->element_count)++].plane = result;
 		return (0);
 	}

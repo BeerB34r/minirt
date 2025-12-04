@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   h1_intersection.c                                       :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/10/27 17:27:20 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/10/27 18:54:23 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   h1_intersection.c                                  :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/10/27 17:27:20 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/04 15:00:05 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -68,22 +68,24 @@ double n
 	return (round(n * pow(10, exponent)) / pow(10, exponent));
 }
 
-double
+int
 	sq_h1_int(
 t_line lw,
-struct s_rt_element_superquadric s
+struct s_rt_element_superquadric s, double *t
 )
 {
 	size_t			i;
-	double			t;
+	double			f_t;
 
-	t = initial_guess(lw.origin, s);
+	f_t = initial_guess(lw.origin, s);
 	i = -1;
 	while (++i < MAX_NEWTON_ITER)
 	{
-		t = newton_iter(lw, t, s);
-		if (approx(sq_h1_io(l_t(lw, t), s)) == 1)
-			return (t);
+		f_t = newton_iter(lw, f_t, s);
+		if (approx(sq_h1_io(l_t(lw, f_t), s)) == 1) {
+			*t = f_t;
+			return (1);
+		}
 	}
-	return (NAN);
+	return (0);
 }

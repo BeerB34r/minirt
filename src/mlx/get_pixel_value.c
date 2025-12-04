@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/11/05 19:11:13 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 13:16:00 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 15:09:50 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,40 +32,13 @@
 #include <minirt_mlx.h>
 #include <stdio.h>
 
-static int	check_intersection(const struct s_rt_element *object,
-			t_line line, double *t)
+static inline int check_intersection(const struct s_rt_element *obj,
+                                     t_line ray, double *t)
 {
-	double	result;
-
-	result = NAN;
-	switch (object->type)
-	{
-		case SUPERQUADRIC:
-			result = sq_int(line, object->superquadric);
-			break;
-		case SPHERE:
-			result = sphere_int(line, object->sphere);
-			break;
-		case PLANE:
-			result = plane_int(line, object->plane);
-			break;
-		case TRIANGLE:
-			result = triangle_int(line, object->triangle);
-			break;
-		case CYLINDER:
-			result = cylinder_int(line, object->cylinder);
-			break;
-		default:
-			break;
-	}
-	if (result == result)
-	{
-		*t = result;
-		return (1);
-	}
-	return (0);
+    if (!obj->intersect || !obj->data)
+        return 0;
+    return obj->intersect(ray, obj->data, t);
 }
-
 static const struct s_camera_mode	g_modes[] = {
 {HIT_OR_MISS, hit_or_miss_color},
 {SURFACE_NORMAL, surface_normal_color},

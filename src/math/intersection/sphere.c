@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 16:13:08 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 14:47:24 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 14:34:21 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,34 @@
 #include <minirt_declarations.h>
 #include <stdio.h>
 
-static double compute_discriminant(t_line line, t_vec3 c, double r)
+int sphere_int(t_line ray, const void *data, double *t)
 {
-    t_vec3 L = vec3_sub(line.origin, c);
-    double b = vec3_dot_product(line.dir, L);
-    double c_term = vec3_dot_product(L, L) - r*r;
-    double disc = b*b - c_term;
-    return disc;
-}
+    if (!data) {
+        fprintf(stderr, "sphere_int called with NULL data\n");
+        return 0;
+    }
+    const struct s_rt_element_sphere *sp = (const struct s_rt_element_sphere *)data;
 
-static double get_min_greater_than_0(double a, double b) {
-	const double	min = fmin(a, b);
-	const double	max = fmax(a, b);
+    t_vec3 L = vec3_sub(ray.origin, sp->pos);
+    double b = vec3_dot_product(ray.dir, L);
+    double c_term = vec3_dot_product(L, L) - sp->radius * sp->radius;
+    double disc = b * b - c_term;
 
-	if (min >= 0)
-		return (min);
-	if (max >= 0)
-		return (max);
-	return (NAN);
-}
+    if (disc < 0.0)
+        return 0;
 
-double sphere_int(t_line line, struct s_rt_element_sphere sp) {
-	const double	disc = compute_discriminant(line, sp.pos, sp.radius);
-	const double	add = -vec3_dot_product(line.dir, vec3_sub(line.origin, sp.pos)) + sqrt(disc);
-	const double	sub = -vec3_dot_product(line.dir, vec3_sub(line.origin, sp.pos)) - sqrt(disc);
+    double sqrt_disc = sqrt(disc);
+    double t0 = -b - sqrt_disc;
+    double t1 = -b + sqrt_disc;
 
-	if (disc < 0)
-		return (NAN);
-	return (get_min_greater_than_0(add, sub));
+    double t_final;
+    if (t0 > EPSILON)
+        t_final = t0;
+    else if (t1 > EPSILON)
+        t_final = t1;
+    else
+        return 0;
+
+    *t = t_final;
+    return 1;
 }

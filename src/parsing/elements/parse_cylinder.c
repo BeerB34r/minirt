@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:22:24 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 13:54:48 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 15:06:10 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@
 #include <libft.h>
 #include <minirt_utils.h>
 #include <minirt_declarations.h>
+#include <minirt_math.h>
 #include <minirt_error.h>
+
 
 int
 	parse_cylinder(
@@ -52,6 +54,8 @@ struct s_rt_scene *scene
 		scene->elements[(scene->element_count)].material.colour = result.color;
 		scene->elements[(scene->element_count)].material.reflectivity = DEFAULT_REFLECTIVITY;
 		scene->elements[(scene->element_count)].material.ior = DEFAULT_IOR;
+		scene->elements[(scene->element_count)].intersect = cylinder_int;
+		scene->elements[(scene->element_count)].data = &scene->elements[(scene->element_count)].cylinder;
 		scene->elements[(scene->element_count)++].cylinder = result;
 		return (0);
 	}

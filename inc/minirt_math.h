@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 15:38:31 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 19:04:58 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 14:32:38 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,10 @@ double
 		t_line line
 		);	// FILE: math/intersection/stlfile.c
 
-double sphere_int(t_line line, struct s_rt_element_sphere object);
-double plane_int(t_line line, struct s_rt_element_plane object);
-double triangle_int(t_line line, struct s_rt_element_triangle object);
-double	cylinder_int(t_line line, struct s_rt_element_cylinder cyl);
+// Intersections
+int sphere_int(t_line ray, const void *type, double *t);
+int plane_int(t_line ray, const void *type, double *t);
+int triangle_int(t_line ray, const void *type, double *t);
+int cylinder_int(t_line ray, const void *type, double *t);
 t_vec3 cylinder_normal(struct s_rt_element_cylinder cyl, t_vec3 int_point);
 #endif // MINIRT_MATH_H

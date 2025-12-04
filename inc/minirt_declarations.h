@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 13:52:58 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 14:41:30 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # include <stdint.h> // required for prototyping s_rgba.hex
 # include <stdbool.h> // required for prototyping s_rt_scene
 
-#define DEFAULT_REFLECTIVITY 0.5f
-#define DEFAULT_IOR 1.5f
+# define DEFAULT_REFLECTIVITY 0.5f
+# define DEFAULT_IOR 1.5f
 
 enum e_element_type
 {
@@ -103,12 +103,13 @@ typedef struct s_line
 	t_vec3	dir;
 }	t_line;
 
-typedef struct s_hit {
-    t_vec3 point;
-    t_vec3 normal;
-    double t;
-    struct s_rt_element *obj;
-} t_hit;
+typedef struct s_hit
+{
+	t_vec3				point;
+	t_vec3				normal;
+	double				t;
+	struct s_rt_element *obj;
+}	t_hit;
 
 //	elements of a scene
 
@@ -213,6 +214,8 @@ typedef struct s_material {
 	float	ior;
 } t_material;
 
+typedef int (*t_intersect_fn)(t_line ray, const void *data, double *t);
+
 typedef struct s_rt_element
 {
 	enum e_element_type	type;
@@ -229,6 +232,8 @@ typedef struct s_rt_element
 		struct s_rt_element_superquadric	superquadric;
 	};
 	struct s_material material;
+	t_intersect_fn	intersect;
+    const void *data;
 }	t_element;
 
 typedef struct s_rt_scene
