@@ -18,6 +18,8 @@ SRCDIR			:=	src/ \
 					src/mlx/modes/ \
 					src/mlx/modes/debug/ \
 					src/mlx/modes/default/ \
+					src/mlx/modes/default/colour/ \
+					src/mlx/modes/default/lighting/ \
 					src/parsing/ \
 					src/parsing/elements/ \
 					src/parsing/utils/ \
@@ -31,7 +33,7 @@ DEPDIR			:=	dep/
 DEPFLAG			=	-MM -MF $@ -MT $@ -MT $(BINDIR)$(addsuffix .o,$(notdir $(basename $<)))
 INC				:=	-Ilib/libft/include -Iinc -Ilib/mlx42/include/MLX42
 VPATH			=	$(SRCDIR)
-CFLAGS			:=	-Wall -Wextra -Werror -fhonor-infinities -fhonor-nans # fsanitize=address # -ffast-math -O3
+CFLAGS			:=	-Wall -Wextra -Werror -fhonor-infinities -fhonor-nans -g # fsanitize=address # -ffast-math -O3
 CPPFLAGS		=	$(INC) -g3
 LDFLAGS			:=	-lm lib/libft/libft.a lib/mlx42/build/libmlx42.a -ldl -lglfw -pthread
 CC				:=	cc
