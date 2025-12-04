@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 15:48:16 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 13:01:20 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 
 # include <stdint.h> // required for prototyping s_rgba.hex
 # include <stdbool.h> // required for prototyping s_rt_scene
+
+#define DEFAULT_REFLECTIVITY 0.5f
+#define DEFAULT_IOR 1.5f
 
 enum e_element_type
 {
@@ -214,6 +217,8 @@ typedef struct s_rt_element
 		struct s_rt_element_superquadric	superquadric;
 	};
 	struct s_rgba					colour;
+	float	reflectivity;
+	float	ior;
 }	t_element;
 
 typedef struct s_rt_scene

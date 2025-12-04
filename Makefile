@@ -1,16 +1,26 @@
 SRC				!=	cat src.list
 SRCDIR			:=	src/ \
-					src/utils/ \
-					src/parsing/ \
+					src/cleanup/ \
+					src/math/ \
+					src/math/intersection/ \
+					src/math/superquadratic/ \
 					src/mlx/ \
 					src/mlx/modes/ \
 					src/math/ \
 					src/math/intersection/ \
-					src/math/superquadric \
-					src/math/superquadric/ellipsoid/ \
-					src/math/superquadric/hyperboloid1 \
-					src/math/superquadric/hyperboloid2 \
-					src/math/superquadric/toroid \
+					src/math/intersection/superquadric \
+					src/math/intersection/superquadric/ellipsoid/ \
+					src/math/intersection/superquadric/hyperboloid1 \
+					src/math/intersection/superquadric/hyperboloid2 \
+					src/math/intersection/superquadric/toroid \
+					src/math/vector/ \
+					src/mlx/ \
+					src/mlx/modes/ \
+					src/mlx/modes/debug/ \
+					src/mlx/modes/default/ \
+					src/parsing/ \
+					src/parsing/elements/ \
+					src/parsing/utils/ \
 
 TESTDIR			:=	test/
 TESTFLAGS		:=	-g3

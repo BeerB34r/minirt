@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 15:38:31 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 16:57:56 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/03 19:04:58 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include <minirt_declarations.h> // function prototypes
 
 //	//	mathematical constants (for some fucking reason???????)
-# define EPSILON 1e-6;
+# define EPSILON 1.0e-6
 
 //	//	trigonometric interface (for some fucking reason????)
 double	

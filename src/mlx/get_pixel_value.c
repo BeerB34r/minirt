@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/11/05 19:11:13 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 16:44:53 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 13:16:00 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 #include <minirt_math_superquadrics.h>
 #include <minirt_mlx.h>
 #include <stdio.h>
-#include <debug.h>
 
 static int	check_intersection(const struct s_rt_element *object,
 			t_line line, double *t)

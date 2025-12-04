@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 16:28:54 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 12:56:20 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 #define PIXEL_RED 0xFF0000FF
 #define PIXEL_BLU 0x0000FFFF
 #define PIXEL_GRE 0x00FF00FF
-#define PIXEL_BG 0xFFB3E6FF
+#define PIXEL_BG 0xFFB3E632
 
 #define CAMERA_MODE_COUNT 2
 

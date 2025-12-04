@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   parse_stlfile.c                                         :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/09/20 12:45:35 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/20 14:27:38 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   parse_stlfile.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/09/20 12:45:35 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/03 19:07:47 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -80,7 +80,7 @@ struct s_rt_element_stlfile *store
 			.r = ((store->triangles[i].attr >> 0) & 0b1111) * 8,
 			.g = ((store->triangles[i].attr >> 4) & 0b1111) * 8,
 			.b = ((store->triangles[i].attr >> 8) & 0b1111) * 8,
-			.a = 0
+			.a = 255
 		};
 		store->triangles[i].normal = vec3_normalise(store->triangles[i].normal);
 		i++;
