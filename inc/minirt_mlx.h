@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 12:56:20 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 15:33:28 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ enum e_camera_mode {
 struct s_mode_func_params {
   mlx_image_t *img;
   struct s_rt_scene *scene;
-  unsigned int obj;
+  struct s_hit hit;
   unsigned int x;
   unsigned int y;
   double t;
@@ -134,6 +134,7 @@ struct s_progressive_rendering_params {
   int max_depth;
   bool reset;
 };
+
 void progressive_rendering(void *param); // FILE: mlx/progressive_rendering.c
 t_vec3 get_normal(struct s_rt_element obj, t_vec3 point);
 void	default_color(struct s_mode_func_params p,
@@ -141,6 +142,5 @@ void	default_color(struct s_mode_func_params p,
 							struct s_rgba *color);
 						
 
-int find_closest_intersection(t_scene *scene, t_line ray, unsigned int *out_obj, double *out_t);
-
+int find_closest_intersection(t_scene *scene, t_line ray, t_hit *final_hit);
 #endif // MINIRT_MLX_H

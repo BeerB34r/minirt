@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/01 16:19:52 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/04 13:56:16 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 15:44:45 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,46 +46,44 @@ double fresnel_schlick(double cosx, double ior)
 
 // }
 
-uint32_t	recursive_default_colour(struct	s_rt_scene *scene, \
-									t_line ray, int depth)
+uint32_t recursive_default_colour(struct s_rt_scene *scene,
+                                  t_line ray, int depth)
 {
-	// t_vec3 local;
-	unsigned int	obj_i;
-	double			t;
-	float			reflect_weight;
+    if (depth >= MAX_DEPTH)
+        return PIXEL_BG;
+
+    t_hit hit;
+    if (!find_closest_intersection(scene, ray, &hit))
+        return PIXEL_BG;
+
+    struct s_rt_element *obj = hit.obj;
+
+    // 1. compute hit point + normal
+    t_vec3 hit_point = vec3_add(ray.origin, vec3_scalar_mul(ray.dir, hit.t));
+    t_vec3 normal = get_normal(*obj, hit_point);
+    if (vec3_dot_product(ray.dir, normal) > 0)
+        normal = vec3_scalar_mul(normal, -1);
+
+    // 2-5. compute lighting here (diffuse, specular, shadows, object color)
+    // (placeholder for compute_lighting function)
+   // t_vec3 local_colour = {0, 0, 0}; // replace with actual lighting
+
+    // 6. compute reflection ray
     t_line reflected_ray;
-	struct s_rt_element *obj;
+    reflected_ray.origin = vec3_add(hit_point, vec3_scalar_mul(normal, EPSILON));
+    reflected_ray.dir = vec3_normalise(reflect(ray.dir, normal));
 
-	if (depth >= MAX_DEPTH)
-		return (PIXEL_BG);
-	if (!find_closest_intersection(scene, ray, &obj_i, &t))
-		return (PIXEL_BG);	
-	obj = &scene->elements[obj_i];
+    // 7. recursively compute reflection
+    double cos_theta = -vec3_dot_product(ray.dir, normal);
+    double fresnel = fresnel_schlick(cos_theta, obj->material.ior);
+    float reflect_weight = obj->material.reflectivity * fresnel;
 
-	// t_vec3 local = compute_lighting(scene, &hit, vec3_scalar_mul(ray.dir, -1));
+    uint32_t reflected_color = recursive_default_colour(scene, reflected_ray, depth + 1);
 
-	// 1. compute hit point + normal
-		t_vec3 hit_point = vec3_add(ray.origin, vec3_scalar_mul(ray.dir, t));
-    	t_vec3 normal = get_normal(scene->elements[obj_i], hit_point);
-		if (vec3_dot_product(ray.dir, normal) > 0)
- 	    	normal = vec3_scalar_mul(normal, -1);
-    // 2. compute diffuse
-
-    // 3. compute shadows
-    // 4. compute specular
-    // 5. compute object shading color
-    // 6. compute reflection_ray
-    	reflected_ray.origin = vec3_add(hit_point, vec3_scalar_mul(normal, EPSILON));
-    	reflected_ray.dir = reflect(ray.dir, normal);
-    	reflected_ray.dir = vec3_normalise(reflected_ray.dir);
-	// 7. recursively compute reflection
-    // 8. fresnel blend reflection into shading color
-		double cos_theta = -vec3_dot_product(ray.dir, normal);
-		double fresnel = fresnel_schlick(cos_theta, obj->material.ior);
-		reflect_weight = obj->material.reflectivity * fresnel;
-	
-    return blend_colour(obj->material.colour.hex, recursive_default_colour(scene, reflected_ray, depth + 1), reflect_weight);
+    // 8. blend reflection into shading color
+    return blend_colour(obj->material.colour.hex, reflected_color, reflect_weight);
 }
+
 
 void	default_color(struct s_mode_func_params p,
                    t_line	angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],

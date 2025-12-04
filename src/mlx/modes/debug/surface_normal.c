@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 20:31:08 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 16:43:09 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 15:38:21 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,11 @@ static uint32_t	normal_to_rgba(t_norm normal)
 }
 
 // Computes pixel color based on surface normal
-void	surface_normal_color(struct s_mode_func_params p,
-							t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-							struct s_rgba *color)
+void surface_normal_color(struct s_mode_func_params p,
+                          t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+                          struct s_rgba *color)
 {
-	t_vec3	intersection_point;
-	t_vec3	normal;
-
-	intersection_point = l_t(angles[p.x][p.y], p.t);
-	normal = get_normal(p.scene->elements[p.obj], intersection_point);
-	color->hex = normal_to_rgba(normal);
+    t_vec3 intersection_point = l_t(angles[p.x][p.y], p.hit.t);
+    t_vec3 normal = get_normal(*(p.hit.obj), intersection_point); 
+    color->hex = normal_to_rgba(normal);
 }
