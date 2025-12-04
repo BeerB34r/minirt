@@ -173,6 +173,7 @@ struct s_rt_element_triangle
 };
 # define TRIANGLE_FIELDS 4
 
+# define PIXEL_STL_TRI_FALLBACK 0xD3BC8DFF
 struct s_rt_element_stlfile
 {
 	uint8_t							header[80];
@@ -242,8 +243,8 @@ typedef struct s_rt_scene
 	struct s_rt_element_ambient_light	ambient_light;
 	bool								camera_defined;
 	struct s_rt_element_camera			camera;
-	bool								light_defined;
-	struct s_rt_element_light			light;
+	unsigned int						light_count;
+	struct s_rt_element_light			*lights;
 	unsigned int						element_count;
 	struct s_rt_element					*elements;
 }	t_scene;

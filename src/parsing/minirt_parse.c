@@ -29,6 +29,127 @@
 #include <minirt_parse.h>
 #include <minirt_utils.h>
 #include <minirt_error.h>
+#include <unistd.h>
+
+static unsigned int
+	count_element_type(
+enum e_element_type type,
+struct s_rt_element *elements,
+unsigned int element_count
+)
+{
+	unsigned int	type_count;
+	unsigned int	i;
+
+	i = -1;
+	type_count = 0;
+	while (++i < element_count)
+		if (elements[i].type == type)
+			type_count++;
+	return (type_count);
+}
+
+static int
+	extract_lights(
+struct s_rt_scene *scene
+)
+{
+	unsigned int	i;
+	unsigned int	j;
+
+	scene->light_count = count_element_type(
+			LIGHT, scene->elements, scene->element_count);
+	if (!scene->light_count)
+		return (0);
+	scene->lights = ft_calloc(scene->light_count,
+			sizeof(struct s_rt_element_light));
+	if (!scene->lights)
+	{
+		ft_dprintf(STDERR_FILENO, ERR E_OOM);
+		return (1);
+	}
+	i = -1;
+	j = 0;
+	while (++i < scene->element_count)
+		if (scene->elements[i].type == LIGHT)
+			scene->lights[j++] = scene->elements[i].light;
+	return (0);
+}
+
+static void
+	intersperse_tris(
+struct s_rt_element *new_elements,
+struct s_rt_element *old_elements,
+unsigned int old_element_count
+)
+{
+	struct s_rt_element_stlfile	current;
+	unsigned int				i;
+	unsigned int				j;
+	unsigned int				offset;
+
+	i = -1;
+	offset = 0;
+	while (i < old_element_count)
+	{
+		if (old_elements[i].type != STLFILE)
+		{
+			new_elements[i + offset] = old_elements[i];
+			continue ;
+		}
+		current = old_elements[i].stlfile;
+		j = -1;
+		while (++j < current.tri_count)
+			new_elements[i + ++offset].triangle = current.triangles[j];
+	}
+}
+
+static int
+	flatten_stls(
+struct s_rt_scene *scene
+)
+{
+	const unsigned int	stl_count = count_element_type(
+		STLFILE, scene->elements, scene->element_count);
+	struct s_rt_element	*new_elements;
+	unsigned int		tri_count;
+	unsigned int		i;
+
+	if (!stl_count)
+		return (0);
+	i = -1;
+	tri_count = 0;
+	while (++i < scene->element_count)
+		if (scene->elements[i].type == STLFILE)
+			tri_count += scene->elements[i].stlfile.tri_count;
+	new_elements = ft_calloc(scene->element_count - stl_count + tri_count,
+		sizeof(struct s_rt_element));
+	if (!new_elements)
+	{
+		ft_dprintf(STDERR_FILENO, ERR E_OOM);
+		return (1);
+	}
+	intersperse_tris(new_elements, scene->elements, scene->element_count);
+	free_scene(*scene);
+	scene->elements = new_elements;
+	scene->element_count += tri_count - stl_count;
+	return (0);
+}
+
+static int
+	flatten(
+int parse_return,
+struct s_rt_scene *scene
+)
+{
+	if (parse_return)
+		return (parse_return);
+	if (extract_lights(scene))
+		return (1);
+	if (flatten_stls(scene))
+		return (1);
+	return (0);
+}
 
 int	minirt_parse(int ac, char **av, struct s_rt_scene *scene) {
 	char				**file_array;
@@ -52,7 +173,7 @@ int	minirt_parse(int ac, char **av, struct s_rt_scene *scene) {
 		free_split_array(split_file);
 		return (4);
 	}
-	rval = parse_scene(scene, split_file);
+	rval = flatten(parse_scene(scene, split_file), scene);
 	free_split_array(split_file);
 	return (5 * rval);
 }

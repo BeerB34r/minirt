@@ -76,12 +76,13 @@ struct s_rt_element_stlfile *store
 			ft_dprintf(STDERR_FILENO, ERR E_BADR, filename);
 			return (1);
 		}
-		store->triangles[i].color = (struct s_rgba){
-			.r = ((store->triangles[i].attr >> 0) & 0b1111) * 8,
-			.g = ((store->triangles[i].attr >> 4) & 0b1111) * 8,
-			.b = ((store->triangles[i].attr >> 8) & 0b1111) * 8,
-			.a = 255
-		};
+		store->triangles[i].color.hex = 
+			((((store->triangles[i].attr >> 0) & 0b1111) * 8) << 24)
+			+ ((((store->triangles[i].attr >> 4) & 0b1111) * 8) << 16)
+			+ ((((store->triangles[i].attr >> 8) & 0b1111) * 8) << 8)
+			+ 0xFF;
+		if (store->triangles[i].color.hex == 0x000000FF)
+			store->triangles[i].color.hex = PIXEL_STL_TRI_FALLBACK;
 		store->triangles[i].normal = vec3_normalise(store->triangles[i].normal);
 		i++;
 	}
