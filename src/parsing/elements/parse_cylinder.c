@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:22:24 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 13:00:41 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 13:54:48 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ struct s_rt_scene *scene
 	)
 	{
 		scene->elements[(scene->element_count)].type = CYLINDER;
-		scene->elements[(scene->element_count)].colour = result.color;
-		scene->elements[(scene->element_count)].reflectivity = DEFAULT_REFLECTIVITY;
-		scene->elements[(scene->element_count)].ior = DEFAULT_IOR;
+		scene->elements[(scene->element_count)].material.colour = result.color;
+		scene->elements[(scene->element_count)].material.reflectivity = DEFAULT_REFLECTIVITY;
+		scene->elements[(scene->element_count)].material.ior = DEFAULT_IOR;
 		scene->elements[(scene->element_count)++].cylinder = result;
 		return (0);
 	}

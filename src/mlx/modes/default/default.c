@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/01 16:19:52 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/04 13:03:25 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 13:56:16 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,27 @@ double fresnel_schlick(double cosx, double ior)
     return r0 + (1 - r0) * pow(1 - cosx, 5);
 }
 
+// t_vec3 compute_lighting(struct s_rt_scene *scene, t_hit *hit, t_vec3 view_dir) {
+
+// }
+
 uint32_t	recursive_default_colour(struct	s_rt_scene *scene, \
 									t_line ray, int depth)
 {
+	// t_vec3 local;
 	unsigned int	obj_i;
 	double			t;
 	float			reflect_weight;
     t_line reflected_ray;
 	struct s_rt_element *obj;
+
 	if (depth >= MAX_DEPTH)
 		return (PIXEL_BG);
 	if (!find_closest_intersection(scene, ray, &obj_i, &t))
 		return (PIXEL_BG);	
 	obj = &scene->elements[obj_i];
+
+	// t_vec3 local = compute_lighting(scene, &hit, vec3_scalar_mul(ray.dir, -1));
 
 	// 1. compute hit point + normal
 		t_vec3 hit_point = vec3_add(ray.origin, vec3_scalar_mul(ray.dir, t));
@@ -73,10 +81,10 @@ uint32_t	recursive_default_colour(struct	s_rt_scene *scene, \
 	// 7. recursively compute reflection
     // 8. fresnel blend reflection into shading color
 		double cos_theta = -vec3_dot_product(ray.dir, normal);
-		double fresnel = fresnel_schlick(cos_theta, obj->ior);
-		reflect_weight = obj->reflectivity * fresnel;
+		double fresnel = fresnel_schlick(cos_theta, obj->material.ior);
+		reflect_weight = obj->material.reflectivity * fresnel;
 	
-    return blend_colour(obj->colour.hex, recursive_default_colour(scene, reflected_ray, depth + 1), reflect_weight);
+    return blend_colour(obj->material.colour.hex, recursive_default_colour(scene, reflected_ray, depth + 1), reflect_weight);
 }
 
 void	default_color(struct s_mode_func_params p,

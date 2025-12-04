@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 13:01:20 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 13:52:58 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,12 @@ typedef struct s_line
 	t_vec3	dir;
 }	t_line;
 
+typedef struct s_hit {
+    t_vec3 point;
+    t_vec3 normal;
+    double t;
+    struct s_rt_element *obj;
+} t_hit;
 
 //	elements of a scene
 
@@ -201,6 +207,12 @@ struct s_rt_element_superquadric
 };
 # define SUPERQUADRIC_FIELDS 12
 
+typedef struct s_material {
+	struct s_rgba					colour;
+	float	reflectivity;
+	float	ior;
+} t_material;
+
 typedef struct s_rt_element
 {
 	enum e_element_type	type;
@@ -216,9 +228,7 @@ typedef struct s_rt_element
 		struct s_rt_element_stlfile			stlfile;
 		struct s_rt_element_superquadric	superquadric;
 	};
-	struct s_rgba					colour;
-	float	reflectivity;
-	float	ior;
+	struct s_material material;
 }	t_element;
 
 typedef struct s_rt_scene
@@ -238,13 +248,6 @@ typedef struct s_element_identifier
 	char	*name;
 	int		(*func)(char **, struct s_rt_scene *);
 }	t_element_id;
-
-typedef struct s_hit {
-	t_element obj;
-	t_vec3 point;
-	t_norm normal;
-	t_line ray;
-} t_hit;
 
 
 

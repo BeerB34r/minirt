@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:25:50 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 13:00:31 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/04 13:55:21 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ struct s_rt_scene *scene
 	result.e2 = result.e2p / result.e2q;
 	result.a4 = result.a / sqrt(pow(result.a1, 2) + pow(result.a2, 2));
 	scene->elements[(scene->element_count)].type = SUPERQUADRIC;
-	scene->elements[(scene->element_count)].colour = result.color;
-	scene->elements[(scene->element_count)].reflectivity = DEFAULT_REFLECTIVITY;
-	scene->elements[(scene->element_count)].ior = DEFAULT_IOR;
+	scene->elements[(scene->element_count)].material.colour = result.color;
+	scene->elements[(scene->element_count)].material.reflectivity = DEFAULT_REFLECTIVITY;
+	scene->elements[(scene->element_count)].material.ior = DEFAULT_IOR;
 	scene->elements[(scene->element_count)++].superquadric = result;
 	return (0);
 }
