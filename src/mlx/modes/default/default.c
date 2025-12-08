@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/01 16:19:52 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/04 16:55:34 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 15:34:53 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,33 +42,50 @@
 //     return r0 + (1 - r0) * pow(1 - cosx, 5);
 // }
 
-uint32_t trace_ray(struct s_rt_scene *scene,
+t_vec4 trace_ray(struct s_rt_scene *scene,
                                   t_line ray, int depth)
 {
 	t_hit	hit;
-	uint32_t final_colour;
+	t_vec4 bg = hex_to_vec4(PIXEL_BG);
 
     if (depth >= MAX_DEPTH)
-        return PIXEL_BG;
+        return bg;
 
     if (!find_closest_intersection(scene, ray, &hit))
-        return PIXEL_BG;
+        return bg;
 
     hit.point = vec3_add(ray.origin, vec3_scalar_mul(ray.dir, hit.t));
     hit.normal = get_normal(*hit.obj, hit.point);
     if (vec3_dot_product(ray.dir, hit.normal) > 0) {
         hit.normal = vec3_scalar_mul(hit.normal, -1);
 	}
-	final_colour = vec4_to_hex(shade(scene, &hit, ray, depth));
-    return (final_colour);
+	t_vec4 local_colour = shade(scene, &hit, ray);
+    float refl = hit.obj->material.abso_reflectivity;
+    if (refl > 0.0f && depth + 1 < MAX_DEPTH)
+    {
+        t_vec3 I = vec3_normalise(ray.dir);
+        t_vec3 R = reflect(I, hit.normal);
+
+        t_line reflection_ray;
+        reflection_ray.origin = vec3_add(hit.point,
+                                         vec3_scalar_mul(hit.normal, EPSILON));
+        reflection_ray.dir = R;
+
+        t_vec4 reflected = trace_ray(scene, reflection_ray, depth + 1);
+
+        local_colour = blend_colour(local_colour, reflected, refl);
+    }
+
+    return local_colour;
 }
 
 
-void	default_color(struct s_mode_func_params p,
+void	default_colour(struct s_mode_func_params p,
                    t_line	angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-                   struct	s_rgba *color)
+                   struct	s_rgba *colour)
 {
-	color->hex = trace_ray(p.scene, angles[p.x][p.y], 0);
+    t_vec4 float_colour = trace_ray(p.scene, angles[p.x][p.y], 0);
+    colour->hex = vec4_to_hex(float_colour);
 }
 
 // TODO add refraction, ambient occlusion, soft shadows, sky gradient BG

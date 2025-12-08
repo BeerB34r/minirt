@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/11/05 19:11:13 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 15:47:18 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 14:03:45 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static inline int check_intersection(const struct s_rt_element *obj,
 }
 
 static const struct s_camera_mode	g_modes[] = {
-{HIT_OR_MISS, hit_or_miss_color},
-{SURFACE_NORMAL, surface_normal_color},
-{DEFAULT, default_color}
+{HIT_OR_MISS, hit_or_miss_colour},
+{SURFACE_NORMAL, surface_normal_colour},
+{DEFAULT, default_colour}
 };
 
 int find_closest_intersection(t_scene *scene, t_line ray, t_hit *out_hit)

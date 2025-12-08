@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 16:49:56 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 15:29:16 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@
 #define PIXEL_RED 0xFF0000FF
 #define PIXEL_BLU 0x0000FFFF
 #define PIXEL_GRE 0x00FF00FF
-#define PIXEL_BG 0xFFB3E632
+//#define PIXEL_BG 0xFFB3E632
+#define PIXEL_BG 0x000000FF
 
 #define CAMERA_MODE_COUNT 2
 
@@ -79,18 +80,18 @@ struct s_camera_mode {
   enum e_camera_mode mode;
   void (*func)(struct s_mode_func_params p,
                t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-               struct s_rgba *color);
+               struct s_rgba *colour);
 };
 
 #define HIT_OR_MISS_PIXEL_HIT PIXEL_WHITE
 #define HIT_OR_MISS_PIXEL_MISS PIXEL_BLACK
 
-void hit_or_miss_color(struct s_mode_func_params p,
+void hit_or_miss_colour(struct s_mode_func_params p,
                        t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-                       struct s_rgba *color); // FILE: mlx/modes/hit_or_miss.c
-void surface_normal_color(
+                       struct s_rgba *colour); // FILE: mlx/modes/hit_or_miss.c
+void surface_normal_colour(
     struct s_mode_func_params p, t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-    struct s_rgba *color); // FILE: mlx/modes/surface_normal.c
+    struct s_rgba *colour); // FILE: mlx/modes/surface_normal.c
 
 typedef struct s_plane_array_opts {
   t_vec3 origin;
@@ -120,7 +121,7 @@ int get_viewport(mlx_t **mlx, mlx_image_t **img,
 
 struct s_painter {
   mlx_image_t *img;
-  uint32_t hexcolor;
+  uint32_t hexcolour;
   unsigned int x;
   unsigned int y;
   int depth;
@@ -137,9 +138,9 @@ struct s_progressive_rendering_params {
 
 void progressive_rendering(void *param); // FILE: mlx/progressive_rendering.c
 t_vec3 get_normal(struct s_rt_element obj, t_vec3 point);
-void	default_color(struct s_mode_func_params p,
+void	default_colour(struct s_mode_func_params p,
 							t_line angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-							struct s_rgba *color);
+							struct s_rgba *colour);
 						
 
 int find_closest_intersection(t_scene *scene, t_line ray, t_hit *final_hit);
@@ -147,6 +148,10 @@ t_vec4	compute_ambient(struct s_rt_element_ambient_light ambient, t_vec4 colour)
 t_vec4	fresnel_blend(t_vec4 col_a, t_vec4 col_b, float iot);
 
 uint32_t vec4_to_hex(t_vec4 c);
-t_vec4 hex_to_vec4(uint32_t hex);
-t_vec4 shade(struct s_rt_scene *scene, t_hit *hit, t_line ray, int depth);
+t_vec4 	hex_to_vec4(uint32_t hex);
+t_vec4 shade(struct s_rt_scene *scene, t_hit *hit, t_line ray);
+t_vec4 blend_colour(t_vec4 a, t_vec4 b, double r);
+t_vec4 get_light_col(struct s_rt_element_light light);
+t_vec4 compute_diffuse(t_vec4 light_col, t_vec4 material_col, double diff_refl, double dotLN);
+t_vec4	compute_specular(t_vec4 light_col, t_material *material, t_vec3 N, t_vec3 V, t_vec3 L, double dotLN);
 #endif // MINIRT_MLX_H

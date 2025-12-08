@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 20:29:49 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 16:55:19 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 14:03:51 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@
 #include <minirt_declarations.h>
 #include <minirt_mlx.h>
 
-void	hit_or_miss_color(struct s_mode_func_params p,
+void	hit_or_miss_colour(struct s_mode_func_params p,
 						t_line	angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-						struct s_rgba *color)
+						struct s_rgba *colour)
 {
 	(void)angles;
 	if (p.t == p.t)
-		color->hex = HIT_OR_MISS_PIXEL_HIT;
+		colour->hex = HIT_OR_MISS_PIXEL_HIT;
 	else
-		color->hex = HIT_OR_MISS_PIXEL_MISS;
+		colour->hex = HIT_OR_MISS_PIXEL_MISS;
 }

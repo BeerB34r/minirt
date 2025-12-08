@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   parse_ambient_light.c                                   :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/09/19 19:10:55 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 20:59:02 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   parse_ambient_light.c                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/09/19 19:10:55 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/08 15:11:28 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -43,9 +43,10 @@ struct s_rt_scene *scene
 		ft_dprintf(2, ERR E_FIELD, "ambient light");
 	else if (
 		!get_real_limit(element_fields[1], &scene->ambient_light.ratio, 0, 1)
-		&& !get_rgba(element_fields[2], &scene->ambient_light.color)
+		&& !get_rgba(element_fields[2], &scene->ambient_light.colour)
 	)
 	{
+	//	scene->ambient_light.colour.hex = (scene->ambient_light.colour.hex & 0xFFFFFF00) | (0x00); // please fix this mats
 		scene->ambient_light_defined = 1;
 		return (0);
 	}

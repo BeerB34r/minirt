@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/05/08 08:46:59 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 15:47:08 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 15:07:05 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 int
 	get_rgba(
 const char *str,
-struct s_rgba *color
+struct s_rgba *colour
 )
 {
 	char **const	split = ft_split(str, ',');
@@ -55,9 +55,8 @@ struct s_rgba *color
 	free_array(split);
 	if (err)
 		return (1);
-	*color = (struct s_rgba){
+	*colour = (struct s_rgba){
 		.hex = (r << 24) + (g << 16) + (b << 8) + 0xFF
 	};
-	ft_printf("col: %d %d %d\n", r, g, b);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 14:41:30 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 14:03:09 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@
 # include <stdint.h> // required for prototyping s_rgba.hex
 # include <stdbool.h> // required for prototyping s_rt_scene
 
-# define DEFAULT_REFLECTIVITY 0.5f
-# define DEFAULT_IOR 1.5f
+# define DEFAULT_AMBI_REFLECTIVITY 0.15f
+# define DEFAULT_DIFF_REFLECTIVITY 0.7f
+# define DEFAULT_SPEC_REFLECTIVITY 0.2f
+# define DEFAULT_ABSO_REFLECTIVITY 0.3f
+# define DEFAULT_SHININESS		   50
 
 enum e_element_type
 {
@@ -116,7 +119,7 @@ typedef struct s_hit
 struct s_rt_element_ambient_light
 {
 	double			ratio;
-	struct s_rgba	color;
+	struct s_rgba	colour;
 };
 # define AMBIENT_LIGHTING_FIELDS 2
 
@@ -132,7 +135,7 @@ struct s_rt_element_light
 {
 	t_vec3			pos;
 	double			brightness;
-	struct s_rgba	color;
+	struct s_rgba	colour;
 };
 # define LIGHT_FIELDS 3
 
@@ -140,7 +143,7 @@ struct s_rt_element_sphere
 {
 	t_vec3			pos;
 	double			radius;
-	struct s_rgba	color;
+	struct s_rgba	colour;
 };
 # define SPHERE_FIELDS 3
 
@@ -148,7 +151,7 @@ struct s_rt_element_plane
 {
 	t_vec3			pos;
 	t_norm			normal;
-	struct s_rgba	color;
+	struct s_rgba	colour;
 };
 # define PLANE_FIELDS 3
 
@@ -158,7 +161,7 @@ struct s_rt_element_cylinder
 	t_norm			axis;
 	double			radius;
 	double			height;
-	struct s_rgba	color;
+	struct s_rgba	colour;
 };
 # define CYLINDER_FIELDS 5
 
@@ -168,7 +171,7 @@ struct s_rt_element_triangle
 	t_vec3			v1;
 	t_vec3			v2;
 	t_vec3			v3;
-	struct s_rgba	color;
+	struct s_rgba	colour;
 	uint16_t		attr; // only relevant for stlfile derived tris
 };
 # define TRIANGLE_FIELDS 4
@@ -205,14 +208,17 @@ struct s_rt_element_superquadric
 	double				a3;
 	double				a4;	// TORUS EXCLUSIVE
 	double				a;	// TORUS EXCLUSIVE
-	struct s_rgba		color;
+	struct s_rgba		colour;
 };
 # define SUPERQUADRIC_FIELDS 12
 
 typedef struct s_material {
 	struct s_rgba					colour;
-	float	reflectivity;
-	float	ior;
+	float	spec_reflectivity;
+	float	diff_reflectivity;
+	float	ambi_reflectivity;
+	float	abso_reflectivity;
+	float	shininess;
 } t_material;
 
 typedef int (*t_intersect_fn)(t_line ray, const void *data, double *t);

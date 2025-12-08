@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/20 12:45:35 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 19:07:47 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 14:04:25 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ struct s_rt_element_stlfile *store
 			ft_dprintf(STDERR_FILENO, ERR E_BADR, filename);
 			return (1);
 		}
-		store->triangles[i].color.hex = 
+		store->triangles[i].colour.hex = 
 			((((store->triangles[i].attr >> 0) & 0b1111) * 8) << 24)
 			+ ((((store->triangles[i].attr >> 4) & 0b1111) * 8) << 16)
 			+ ((((store->triangles[i].attr >> 8) & 0b1111) * 8) << 8)
 			+ 0xFF;
-		if (store->triangles[i].color.hex == 0x000000FF)
-			store->triangles[i].color.hex = PIXEL_STL_TRI_FALLBACK;
+		if (store->triangles[i].colour.hex == 0x000000FF)
+			store->triangles[i].colour.hex = PIXEL_STL_TRI_FALLBACK;
 		store->triangles[i].normal = vec3_normalise(store->triangles[i].normal);
 		i++;
 	}

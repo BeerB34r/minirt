@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/11/07 21:03:33 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/03 16:46:02 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 14:03:47 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ struct s_painter p
 					p.img,
 					(p.x * (1 << p.depth)) + i,
 					(p.y * (1 << p.depth)) + j,
-					p.hexcolor
+					p.hexcolour
 					);
 		}
 	}
@@ -111,7 +111,7 @@ int depth
 				p->angles,
 				&value);
 			painter((struct s_painter){.img = p->img, .depth = depth,
-				.x = x, .y = y, .hexcolor = value.hex,
+				.x = x, .y = y, .hexcolour = value.hex,
 				.first_call = p->max_depth == depth});
 		}
 	}
