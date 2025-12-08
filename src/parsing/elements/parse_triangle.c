@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:34:30 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 17:46:37 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 19:20:21 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,27 +51,27 @@ struct s_rt_scene *scene
 )
 {
 	struct s_rt_element_triangle	result;
+	struct s_rt_element				*obj;
 
 	if (count_fields(element_fields) != TRIANGLE_FIELDS + 1)
 		ft_dprintf(2, ERR E_FIELD, "triangle");
-	else if (
-		!get_vec3(element_fields[1], &result.v1)
-		&& !get_vec3(element_fields[2], &result.v2)
-		&& !get_vec3(element_fields[3], &result.v3)
-		&& !get_rgba(element_fields[4], &result.colour)
-	)
+	else if (!get_vec3(element_fields[1], &result.v1) && !get_vec3(
+			element_fields[2], &result.v2) && !get_vec3(element_fields[3],
+			&result.v3) && !get_rgba(element_fields[4], &result.colour))
 	{
-		scene->elements[(scene->element_count)].type = TRIANGLE;
+		obj = &scene->elements[(scene->element_count)];
 		set_triangle_normal(&result);
-		scene->elements[(scene->element_count)].material.colour = result.colour;
-		scene->elements[(scene->element_count)].material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
-		scene->elements[(scene->element_count)].material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
-		scene->elements[(scene->element_count)].material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
-		scene->elements[(scene->element_count)].material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
-		scene->elements[(scene->element_count)].material.shininess = DEFAULT_SHININESS;
-		scene->elements[(scene->element_count)].intersect = triangle_int;
-		scene->elements[(scene->element_count)].data = &scene->elements[(scene->element_count)].triangle;
-		scene->elements[(scene->element_count)++].triangle = result;
+		obj->type = TRIANGLE;
+		obj->material.colour = result.colour;
+		obj->material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
+		obj->material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
+		obj->material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
+		obj->material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
+		obj->material.shininess = DEFAULT_SHININESS;
+		obj->intersect = triangle_int;
+		obj->data = &obj->triangle;
+		obj->triangle = result;
+		scene->element_count += 1;
 		return (0);
 	}
 	return (1);
