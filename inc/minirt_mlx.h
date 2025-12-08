@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 15:29:16 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 16:20:53 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,9 +144,9 @@ void	default_colour(struct s_mode_func_params p,
 						
 
 int find_closest_intersection(t_scene *scene, t_line ray, t_hit *final_hit);
-t_vec4	compute_ambient(struct s_rt_element_ambient_light ambient, t_vec4 colour);
+t_vec4	compute_ambient(struct s_rt_element_ambient_light ambient, t_material material);
 t_vec4	fresnel_blend(t_vec4 col_a, t_vec4 col_b, float iot);
-
+void clamp_colour(t_vec4 *colour);
 uint32_t vec4_to_hex(t_vec4 c);
 t_vec4 	hex_to_vec4(uint32_t hex);
 t_vec4 shade(struct s_rt_scene *scene, t_hit *hit, t_line ray);

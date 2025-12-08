@@ -51,7 +51,7 @@ get_options(){
 	local -A opt_str
 	local binname=$0
 	opt_str["v"]="\t-v | --verbose\n\t\tprints all tests, even ones that pass\n"
-	opt_str["b"]="\t-b<file> | --binary=<file>\n\t\tspecify what binary to test the .rt scenes with (default: \"./minirt_parser\")\n"
+	opt_str["b"]="\t-b<file> | --binary=<file>\n\t\tspecify what binary to test the .rt scenes with (default: \"./minirt\")\n"
 	opt_str["g"]="\t-g | --grayscale\n\t-n | --no-color\n\t\tturn off colored outputs\n"
 	opt_str["h"]="\t-h[opt] | --help=[opt]\n\t\tdisplay usage and available options\n\t\tif [opt] is provided, instead display detailed option description\n"
 	opt_str["generic"]="Usage: ${binname} [-b<file> | --binary <file>] [-v | --verbose] [-g | --grayscale | -n | --no-color] [-h[opt] | --help [opt]]\n"
@@ -102,7 +102,7 @@ default(){
 
 	# could be changed by user
 	verbose=${verbose:=false}
-	binary=${binary:="./minirt_parser"}
+	binary=${binary:="./minirt"}
 	color=${color:=true}
 	if [ ${color} = true ]; then
 		fail_string="${RED}${BOLD}[FAIL]${OFF}"

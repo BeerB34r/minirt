@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 14:03:09 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 18:50:16 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,13 @@
 # include <stdint.h> // required for prototyping s_rgba.hex
 # include <stdbool.h> // required for prototyping s_rt_scene
 
-# define DEFAULT_AMBI_REFLECTIVITY 0.15f
-# define DEFAULT_DIFF_REFLECTIVITY 0.7f
-# define DEFAULT_SPEC_REFLECTIVITY 0.2f
-# define DEFAULT_ABSO_REFLECTIVITY 0.3f
+# define DEFAULT_AMBI_REFLECTIVITY 0.3f
+# define DEFAULT_DIFF_REFLECTIVITY 0.9f
+# define DEFAULT_SPEC_REFLECTIVITY 0.6f
+# define DEFAULT_ABSO_REFLECTIVITY 0.1f
 # define DEFAULT_SHININESS		   50
+# define EXPOSURE				   1.5f
+# define MAX_DEPTH				   1
 
 enum e_element_type
 {
@@ -176,7 +178,7 @@ struct s_rt_element_triangle
 };
 # define TRIANGLE_FIELDS 4
 
-# define PIXEL_STL_TRI_FALLBACK 0xD3BC8DFF
+# define PIXEL_STL_TRI_FALLBACK 0xFFBC8DFF
 struct s_rt_element_stlfile
 {
 	uint8_t							header[80];

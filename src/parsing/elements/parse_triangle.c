@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:34:30 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 14:04:34 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 17:46:37 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ struct s_rt_scene *scene
 		scene->elements[(scene->element_count)].material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
 		scene->elements[(scene->element_count)].material.shininess = DEFAULT_SHININESS;
 		scene->elements[(scene->element_count)].intersect = triangle_int;
-	scene->elements[(scene->element_count)].data = &scene->elements[(scene->element_count)].triangle;
+		scene->elements[(scene->element_count)].data = &scene->elements[(scene->element_count)].triangle;
 		scene->elements[(scene->element_count)++].triangle = result;
 		return (0);
 	}

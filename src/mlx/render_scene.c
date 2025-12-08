@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/06 14:58:25 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 15:48:55 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 18:08:16 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	render_scene(struct s_rt_scene *scene) {
 	p.max_depth = depth;
 	p.img = img;
 //	p.mode = HIT_OR_MISS;
-//	p.mode = SURFACE_NORMAL;
+	//p.mode = SURFACE_NORMAL;
 	 p.mode = DEFAULT;
 	p.scene = scene;
 	populate_plane_array(scene->camera, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, p.angles);

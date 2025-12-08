@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/11/05 19:11:13 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 14:03:45 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 18:11:26 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,8 @@ int find_closest_intersection(t_scene *scene, t_line ray, t_hit *out_hit)
             }
         }
     }
-
     if (!hit_obj)
         return 0;
-
     out_hit->obj = hit_obj;
     out_hit->t = t_min;
     return 1;

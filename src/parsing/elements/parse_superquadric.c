@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:25:50 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 14:04:27 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 17:34:06 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,11 @@ struct s_rt_scene *scene
 	result.a4 = result.a / sqrt(pow(result.a1, 2) + pow(result.a2, 2));
 	scene->elements[(scene->element_count)].type = SUPERQUADRIC;
 	scene->elements[(scene->element_count)].material.colour = result.colour;
-		scene->elements[(scene->element_count)].material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
-		scene->elements[(scene->element_count)].material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
-		scene->elements[(scene->element_count)].material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
-		scene->elements[(scene->element_count)].material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
-		scene->elements[(scene->element_count)].material.shininess = DEFAULT_SHININESS;
+	scene->elements[(scene->element_count)].material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
+	scene->elements[(scene->element_count)].material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
+	scene->elements[(scene->element_count)].material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
+	scene->elements[(scene->element_count)].material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
+	scene->elements[(scene->element_count)].material.shininess = DEFAULT_SHININESS;
 	scene->elements[(scene->element_count)].intersect = sq_int;
 	scene->elements[(scene->element_count)].data = &scene->elements[(scene->element_count)].superquadric;
 	scene->elements[(scene->element_count)++].superquadric = result;

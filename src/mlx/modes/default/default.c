@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/01 16:19:52 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/08 15:34:53 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 18:10:14 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #include <minirt_math_superquadrics.h>
 #include <minirt_mlx.h>
 #include <stdio.h>
-
-#define MAX_DEPTH 25
 
 // uint32_t	blend_colour(uint32_t col_a, uint32_t col_b, float weight)
 // {
@@ -59,7 +57,7 @@ t_vec4 trace_ray(struct s_rt_scene *scene,
     if (vec3_dot_product(ray.dir, hit.normal) > 0) {
         hit.normal = vec3_scalar_mul(hit.normal, -1);
 	}
-	t_vec4 local_colour = shade(scene, &hit, ray);
+	t_vec4 colour = shade(scene, &hit, ray);
     float refl = hit.obj->material.abso_reflectivity;
     if (refl > 0.0f && depth + 1 < MAX_DEPTH)
     {
@@ -73,10 +71,10 @@ t_vec4 trace_ray(struct s_rt_scene *scene,
 
         t_vec4 reflected = trace_ray(scene, reflection_ray, depth + 1);
 
-        local_colour = blend_colour(local_colour, reflected, refl);
+        colour = blend_colour(colour, reflected, refl);
     }
-
-    return local_colour;
+	colour = vec3_scalar_mul(colour, EXPOSURE);
+    return colour;
 }
 
 

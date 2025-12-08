@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/04 13:31:52 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/08 15:28:54 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/08 18:31:32 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,24 +99,31 @@ function compute_lighting(scene, hit, view_dir):
 // L = direction to light
 t_vec4 shade(struct s_rt_scene *scene, t_hit *hit, t_line ray)
 {
-	t_vec4 colour = {0.0f, 0.0f, 0.0f, 1.0f};
+
 	unsigned int i;
+	i = -1;
 	t_vec3 N = vec3_normalise(hit->normal);
     t_vec3 V = vec3_normalise(vec3_flip(ray.dir));
 	t_material material = hit->obj->material;
-	t_vec4 material_col = hex_to_vec4(material.colour.hex);
-	// AMBIENT
-	vec3_add_inplace(&colour, compute_ambient(scene->ambient_light, colour)); // potentially flip
-	i = -1;
+	t_vec4 colour = {0.0f, 0.0f, 0.0f, 1.0f};
+	t_vec4 base_colour = hex_to_vec4(material.colour.hex);
+
+	// AMBIENT TERM
+	t_vec4	ambient_term = compute_ambient(scene->ambient_light, material);
+	vec3_add_inplace(&colour, ambient_term);
+
 	while (++i < scene->light_count)
 	{
 		struct s_rt_element_light light = scene->lights[i];
 		t_vec4 light_col = get_light_col(light);
 		t_vec3 L = vec3_normalise(vec3_sub(light.pos, hit->point));
 		double dotLN = fmaxf(vec3_dot_product(L, N), 0.0f);
-		vec3_add_inplace(&colour, compute_diffuse(light_col, material_col, material.diff_reflectivity, dotLN));
-		vec3_add_inplace(&colour, compute_specular(light_col, &material, N, V, L, dotLN));
+		t_vec4 diffuse_term = compute_diffuse(light_col, base_colour, material.diff_reflectivity, dotLN);
+		vec3_add_inplace(&colour, diffuse_term);
+		t_vec4 specular_term = compute_specular(light_col, &material, N, V, L, dotLN);
+		vec3_add_inplace(&colour, specular_term);
 	}
-//	clamp_colour(&colour);
+//	colour = (t_vec4){1.0f, 0.0f, 0.0f, 1.0f};
+	clamp_colour(&colour);
 	return (colour);
 }

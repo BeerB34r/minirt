@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   minirt_parse.c                                          :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/04/22 19:07:54 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 21:11:45 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   minirt_parse.c                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/04/22 19:07:54 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/08 18:29:56 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -30,6 +30,8 @@
 #include <minirt_utils.h>
 #include <minirt_error.h>
 #include <unistd.h>
+#include <minirt_math.h>
+#include <stdio.h>
 
 static unsigned int
 	count_element_type(
@@ -87,10 +89,11 @@ unsigned int old_element_count
 	unsigned int				i;
 	unsigned int				j;
 	unsigned int				offset;
-
+	printf("this functio nis being called\n");
 	i = -1;
 	offset = 0;
-	while (i < old_element_count)
+
+	while (++i < old_element_count)
 	{
 		if (old_elements[i].type != STLFILE)
 		{
@@ -100,7 +103,23 @@ unsigned int old_element_count
 		current = old_elements[i].stlfile;
 		j = -1;
 		while (++j < current.tri_count)
+		{
 			new_elements[i + ++offset].triangle = current.triangles[j];
+			new_elements[i + offset].material.colour.hex = 
+				((((current.triangles[j].attr >> 0) & 0b1111) * 8) << 24)
+				+ ((((current.triangles[j].attr >> 4) & 0b1111) * 8) << 16)
+				+ ((((current.triangles[j].attr >> 8) & 0b1111) * 8) << 8)
+				+ 0xFF;
+			if (new_elements[i + offset].material.colour.hex == 0x000000FF)
+				new_elements[i + offset].material.colour.hex = PIXEL_STL_TRI_FALLBACK;
+			new_elements[i + offset].material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
+			new_elements[i + offset].material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
+			new_elements[i + offset].material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
+			new_elements[i + offset].material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
+			new_elements[i + offset].material.shininess = DEFAULT_SHININESS;
+			new_elements[i + offset].intersect = triangle_int;
+			new_elements[i + offset].data = &new_elements[i + offset].triangle;
+		}
 	}
 }
 
