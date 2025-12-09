@@ -33,14 +33,9 @@
 int	plane_int(t_line ray, const void *data, double *t)
 {
 	const t_rt_element_plane	*pl = (const t_rt_element_plane *)data;
-	double							denom;
-	double							d;
+	double						denom;
+	double						d;
 
-	if (!data)
-	{
-		fprintf(stderr, "plane_int called with NULL data\n");
-		return (0);
-	}
 	denom = vec3_dot_product(ray.dir, pl->normal);
 	if (fabs(denom) < EPSILON)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/27 17:27:20 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 14:49:26 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 12:57:53 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ double n
 	return (round(n * pow(10, exponent)) / pow(10, exponent));
 }
 
-int   sq_t_int(t_line lw, struct s_rt_element_superquadric s, double *t)
+int	sq_t_int(t_line lw, struct s_rt_element_superquadric s, double *t)
 {
 	size_t			i;
 	double			f_t;

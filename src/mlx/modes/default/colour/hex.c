@@ -24,7 +24,7 @@ t_vec4	hex_to_vec4(uint32_t hex)
 
 	colour.x = ((hex >> 24) & 0xFF) / 255.0f;
 	colour.y = ((hex >> 16) & 0xFF) / 255.0f;
-	colour.z = ((hex >> 8)  & 0xFF) / 255.0f;
+	colour.z = ((hex >> 8) & 0xFF) / 255.0f;
 	colour.w = (hex & 0xFF) / 255.0f;
 	return (colour);
 }

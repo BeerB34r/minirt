@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/09 12:27:22 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 15:46:38 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@
 # define DEFAULT_AMBI_REFLECTIVITY 0.3f
 # define DEFAULT_DIFF_REFLECTIVITY 0.9f
 # define DEFAULT_SPEC_REFLECTIVITY 0.6f
-# define DEFAULT_ABSO_REFLECTIVITY 0.1f
+# define DEFAULT_ABSO_REFLECTIVITY 0.8f
 # define DEFAULT_SHININESS		   50
 # define EXPOSURE				   1.5f
-# define MAX_DEPTH				   1
+# define MAX_DEPTH				   25
 
 enum e_element_type
 {
@@ -112,6 +112,7 @@ typedef struct s_hit
 {
 	t_vec3				point;
 	t_vec3				normal;
+	t_line				ray;
 	double				t;
 	struct s_rt_element	*obj;
 }	t_hit;
@@ -263,5 +264,59 @@ typedef struct s_element_identifier
 	char	*name;
 	int		(*func)(char **, struct s_rt_scene *);
 }	t_element_id;
+
+typedef struct s_tri_work
+{
+	t_vec3	e1;
+	t_vec3	e2;
+	t_vec3	p;
+	t_vec3	q;
+	double	u;
+	double	v;
+	double	det;
+	double	inv_det;
+}	t_tri_work;
+
+typedef struct s_cyl_work
+{
+	t_vec3	axis;
+	t_vec3	delta;
+	t_vec3	a;
+	t_vec3	b;
+	t_vec3	p;
+	t_vec3	v;
+	double	a_coef;
+	double	b_coef;
+	double	c_coef;
+	double	disc;
+	double	t_side;
+	double	t_bottom;
+	double	t_top;
+	double	denom;
+	double	t_cap;
+	double	t_final;
+	double	d;
+}	t_cyl_work;
+
+typedef struct s_shade_input
+{
+	t_rt_element_light	light;
+	t_vec4				base_colour;
+	t_material			mat;
+	t_vec3				view_dir;
+	t_vec3				n;
+	t_vec3				l;
+	double				dot_ln;
+}	t_shade_input;
+
+typedef struct s_trace_work
+{
+	struct s_rt_scene	*scene;
+	t_line				ray;
+	int					depth;
+	t_vec4				bg;
+	t_vec4				colour;
+	t_hit				hit;
+}	t_trace_work;
 
 #endif // MINIRT_DECLARATIONS_H

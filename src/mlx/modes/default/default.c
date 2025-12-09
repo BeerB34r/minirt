@@ -18,73 +18,65 @@
 #include <minirt_mlx.h>
 #include <stdio.h>
 
-// uint32_t	blend_colour(uint32_t col_a, uint32_t col_b, float weight)
-// {
-// 	return (((unsigned int)(((col_a >> 24) & 0xFF) * (1.0f - weight)
-// 			+ ((col_b >> 24) & 0xFF) * weight) << 24)
-// 		| ((unsigned int)(((col_a >> 16) & 0xFF) * (1.0f - weight)
-// 			+ ((col_b >> 16) & 0xFF) * weight) << 16)
-// 		| ((unsigned int)(((col_a >> 8) & 0xFF) * (1.0f - weight)
-// 			+ ((col_b >> 8) & 0xFF) * weight) << 8)
-// 		| 0xFF);
-// }
-
-// t_vec4	reflect(t_vec4 v, t_vec4 n) {
-// 	return (vec3_sub(v, vec3_scalar_mul(n, 2.0f * vec3_dot_product(v, n))));
-// }
-
-// double fresnel_schlick(double cosx, double ior)
-// {
-//	 double r0 = (1 - ior) / (1 + ior);
-//	 r0 = r0 * r0;
-//	 return r0 + (1 - r0) * pow(1 - cosx, 5);
-// }
-
-t_vec4	trace_ray(struct s_rt_scene *scene,
+t_trace_work	create_trace_work(struct s_rt_scene *scene,
 								t_line ray, int depth)
 {
-	t_hit	hit;
-	t_vec4	bg;
-	t_vec4	colour;
-	t_vec3	i;
-	t_vec3	r;
-	t_vec4	reflected;
-	t_line	reflection_ray;
-	float	refl;
+	t_trace_work	w;
 
-	bg = hex_to_vec4(PIXEL_BG);
-	if (depth >= MAX_DEPTH)
-		return (bg);
-	if (!find_closest_intersection(scene, ray, &hit))
-		return (bg);
-	hit.point = vec3_add(ray.origin, vec3_scalar_mul(ray.dir, hit.t));
-	hit.normal = get_normal(*hit.obj, hit.point);
-	if (vec3_dot_product(ray.dir, hit.normal) > 0)
-		hit.normal = vec3_scalar_mul(hit.normal, -1);
-	colour = shade(scene, &hit, ray);
-	refl = hit.obj->material.abso_reflectivity;
-	if (refl > 0.0f && depth + 1 < MAX_DEPTH)
-	{
-		i = vec3_normalise(ray.dir);
-		r = reflect(i, hit.normal);
-		reflection_ray.origin = vec3_add(hit.point,
-				vec3_scalar_mul(hit.normal, EPSILON));
-		reflection_ray.dir = r;
-		reflected = trace_ray(scene, reflection_ray, depth + 1);
-		colour = blend_colour(colour, reflected, refl);
-	}
-	colour = vec3_scalar_mul(colour, EXPOSURE);
-	return (colour);
+	w.scene = scene;
+	w.ray = ray;
+	w.depth = depth;
+	w.bg = hex_to_vec4(PIXEL_BG);
+	w.hit.t = 0.0f;
+	return (w);
+}
+
+t_vec4	trace_ray(t_trace_work *w);
+
+static void	handle_reflection(t_trace_work *w)
+{
+	t_vec3			i;
+	t_vec3			r;
+	t_line			reflected_ray;
+	t_trace_work	w_refl;
+	t_vec4			refl_col;
+
+	i = vec3_normalise(w->ray.dir);
+	r = reflect(i, w->hit.normal);
+	reflected_ray.origin = vec3_add(
+			w->hit.point, vec3_scalar_mul(w->hit.normal, EPSILON));
+	reflected_ray.dir = r;
+	w_refl = create_trace_work(w->scene, reflected_ray, w->depth + 1);
+	refl_col = trace_ray(&w_refl);
+	w->colour = blend_colour(
+			w->colour, refl_col, w->hit.obj->material.abso_reflectivity);
+}
+
+t_vec4	trace_ray(t_trace_work *w)
+{
+	if (w->depth >= MAX_DEPTH)
+		return (w->bg);
+	if (!find_closest_intersection(w->scene, w->ray, &w->hit))
+		return (w->bg);
+	w->hit.ray = w->ray;
+	w->hit.point = vec3_add(
+			w->ray.origin, vec3_scalar_mul(w->ray.dir, w->hit.t));
+	w->hit.normal = get_normal(*w->hit.obj, w->hit.point);
+	if (vec3_dot_product(w->ray.dir, w->hit.normal) > 0)
+		w->hit.normal = vec3_scalar_mul(w->hit.normal, -1);
+	w->colour = shade(w->scene, &w->hit);
+	if (w->hit.obj->material.abso_reflectivity > 0.0f)
+		handle_reflection(w);
+	w->colour = vec3_scalar_mul(w->colour, EXPOSURE);
+	return (w->colour);
 }
 
 void	default_colour(struct s_mode_func_params p,
 					t_line	angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
 					struct	s_rgba *colour)
 {
-	t_vec4	float_colour;
+	t_trace_work	w;
 
-	float_colour = trace_ray(p.scene, angles[p.x][p.y], 0);
-	colour->hex = vec4_to_hex(float_colour);
+	w = create_trace_work(p.scene, angles[p.x][p.y], 0);
+	colour->hex = vec4_to_hex(trace_ray(&w));
 }
-
-// TODO add refraction, ambient occlusion, soft shadows, sky gradient BG

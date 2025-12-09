@@ -15,42 +15,54 @@
 #include <minirt_declarations.h>
 #include <stdio.h>
 
+static int	tri_step_det(t_line ray,
+				const t_rt_element_triangle *tri, t_tri_work *w)
+{
+	w->e1 = vec3_sub(tri->v2, tri->v1);
+	w->e2 = vec3_sub(tri->v3, tri->v1);
+	w->p = vec3_cross_product(ray.dir, w->e2);
+	w->det = vec3_dot_product(w->e1, w->p);
+	if (fabs(w->det) < EPSILON)
+		return (0);
+	w->inv_det = 1.0 / w->det;
+	return (1);
+}
+
+static int	tri_step_uv(t_line ray,
+		const t_rt_element_triangle *tri, t_tri_work *w)
+{
+	t_vec3	t;
+
+	t = vec3_sub(ray.origin, tri->v1);
+	w->u = vec3_dot_product(t, w->p) * w->inv_det;
+	if (w->u < 0.0 || w->u > 1.0)
+		return (0);
+	w->q = vec3_cross_product(t, w->e1);
+	w->v = vec3_dot_product(ray.dir, w->q) * w->inv_det;
+	if (w->v < 0.0 || w->u + w->v > 1.0)
+		return (0);
+	return (1);
+}
+
+static int	tri_step_t(t_tri_work *w, double *t)
+{
+	double	hit;
+
+	hit = vec3_dot_product(w->e2, w->q) * w->inv_det;
+	if (hit < EPSILON)
+		return (0);
+	*t = hit;
+	return (1);
+}
+
 int	triangle_int(t_line ray, const void *data, double *t)
 {
-	const t_rt_element_triangle	*tri = (const t_rt_element_triangle *)data;
-	double								det;
-	double								inv_det;
-	double								u;
-	double								v;
-	double								res;
-	t_vec3								e1;
-	t_vec3								e2;
-	t_vec3								p;
-	t_vec3								q;
+	const t_rt_element_triangle	*tri = data;
+	t_tri_work					w;
 
-	if (!data)
-	{
-		fprintf(stderr, "triangle_int called with NULL data\n");
+	if (!tri_step_det(ray, tri, &w))
 		return (0);
-	}
-	e1 = vec3_sub(tri->v2, tri->v1);
-	e2 = vec3_sub(tri->v3, tri->v1);
-	p = vec3_cross_product(ray.dir, e2);
-	det = vec3_dot_product(e1, p);
-	if (fabs(det) < EPSILON)
+	if (!tri_step_uv(ray, tri, &w))
 		return (0);
-	inv_det = 1.0 / det;
-	t_vec3 T = vec3_sub(ray.origin, tri->v1);
-	u = vec3_dot_product(T, p) * inv_det;
-	if (u < 0.0 || u > 1.0)
-		return (0);
-	q = vec3_cross_product(T, e1);
-	v = vec3_dot_product(ray.dir, q) * inv_det;
-	if (v < 0.0 || u + v > 1.0)
-		return (0);
-	res = vec3_dot_product(e2, q) * inv_det;
-	if (res < EPSILON)
-		return (0);
-	*t = res;
-	return (1);
+	return (tri_step_t(&w, t));
 }

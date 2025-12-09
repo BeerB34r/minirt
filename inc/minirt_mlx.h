@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/09 12:56:23 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 15:01:17 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,8 +203,7 @@ t_vec4
 t_vec4	
 	shade(
 		struct s_rt_scene *scene,
-		t_hit *hit,
-		t_line ray
+		t_hit *hit
 		);
 t_vec4	
 	blend_colour(
@@ -219,17 +218,11 @@ t_vec4
 t_vec4	
 	compute_diffuse(
 		t_vec4 light_col,
-		t_vec4 material_col,
-		double diff_refl,
-		double dotLN
+		t_shade_input in
 		);
 t_vec4	
 	compute_specular(
 		t_vec4 light_col,
-		t_material *material,
-		t_vec3 N,
-		t_vec3 V,
-		t_vec3 L,
-		double dotLN
+		t_shade_input in
 		);
 #endif // MINIRT_MLX_H

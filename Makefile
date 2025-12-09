@@ -7,11 +7,12 @@ SRCDIR			:=	src/ \
 					src/mlx/modes/ \
 					src/math/ \
 					src/math/intersection/ \
-					src/math/intersection/superquadric \
+					src/math/intersection/cylinder/ \
+					src/math/intersection/superquadric/ \
 					src/math/intersection/superquadric/ellipsoid/ \
-					src/math/intersection/superquadric/hyperboloid1 \
-					src/math/intersection/superquadric/hyperboloid2 \
-					src/math/intersection/superquadric/toroid \
+					src/math/intersection/superquadric/hyperboloid1/ \
+					src/math/intersection/superquadric/hyperboloid2/ \
+					src/math/intersection/superquadric/toroid/ \
 					src/math/vector/ \
 					src/mlx/ \
 					src/mlx/modes/ \

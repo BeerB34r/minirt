@@ -33,35 +33,23 @@
 int	sphere_int(t_line ray, const void *data, double *t)
 {
 	const t_rt_element_sphere	*sp = (const t_rt_element_sphere *)data;
-	t_vec3								l;
-	double								b;
-	double								c_term;
-	double								disc;
-	double								sqrt_disc;
-	double								t0;
-	double								t1;
-	double								t_final;
+	t_vec3						l;
+	double						b;
+	double						c_term;
+	double						disc;
 
-	if (!data)
-	{
-		fprintf(stderr, "sphere_int called with NULL data\n");
-		return (0);
-	}
 	l = vec3_sub(ray.origin, sp->pos);
 	b = vec3_dot_product(ray.dir, l);
 	c_term = vec3_dot_product(l, l) - sp->radius * sp->radius;
 	disc = b * b - c_term;
 	if (disc < 0.0)
 		return (0);
-	sqrt_disc = sqrt(disc);
-	t0 = -b - sqrt_disc;
-	t1 = -b + sqrt_disc;
-	if (t0 > EPSILON)
-		t_final = t0;
-	else if (t1 > EPSILON)
-		t_final = t1;
+	disc = sqrt(disc);
+	if ((-b - disc) > EPSILON)
+		*t = (-b - disc);
+	else if ((-b + disc) > EPSILON)
+		*t = (-b + disc);
 	else
 		return (0);
-	*t = t_final;
 	return (1);
 }

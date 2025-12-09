@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 15:38:31 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/09 12:21:58 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 14:02:36 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,5 +175,21 @@ void
 t_vec3	
 	vec3_zero(
 		);
-
+void	
+	cyl_solve_side(
+		t_line ray,
+		const t_rt_element_cylinder *cyl,
+		t_cyl_work *w
+		);
+t_vec3	
+	cylinder_normal(
+		struct s_rt_element_cylinder cyl,
+		t_vec3 int_point
+		);
+void	
+	cyl_solve_caps(
+		t_line ray,
+		const t_rt_element_cylinder *cyl,
+		t_cyl_work *w
+		);
 #endif // MINIRT_MATH_H
