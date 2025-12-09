@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 15:38:31 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 14:13:57 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 12:21:58 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,52 @@ double
 		);	// FILE: math/intersection/stlfile.c
 
 // Intersections
-int sphere_int(t_line ray, const void *type, double *t);
-int plane_int(t_line ray, const void *type, double *t);
-int triangle_int(t_line ray, const void *type, double *t);
-int cylinder_int(t_line ray, const void *type, double *t);
-t_vec3 cylinder_normal(struct s_rt_element_cylinder cyl, t_vec3 int_point);
-t_vec3 reflect(t_vec3 I, t_vec3 N);
-t_vec3 vec3_flip(t_vec3 v);
-void	vec3_add_inplace(t_vec3 *a, t_vec3 b);
-t_vec3 vec3_zero(void);
+int		
+	sphere_int(
+		t_line ray,
+		const void *type,
+		double *t
+		);
+int		
+	plane_int(
+		t_line ray,
+		const void *type,
+		double *t
+		);
+int		
+	triangle_int(
+		t_line ray,
+		const void *type,
+		double *t
+		);
+int		
+	cylinder_int(
+		t_line ray,
+		const void *type,
+		double *t
+		);
+t_vec3	
+	cylinder_normal(
+		struct s_rt_element_cylinder cyl,
+		t_vec3 int_point
+		);
+t_vec3	
+	reflect(
+		t_vec3 I,
+		t_vec3 N
+		);
+
+t_vec3	
+	vec3_flip(
+		t_vec3 v
+		);
+void	
+	vec3_add_inplace(
+		t_vec3 *a,
+		t_vec3 b
+		);
+t_vec3	
+	vec3_zero(
+		);
+
 #endif // MINIRT_MATH_H

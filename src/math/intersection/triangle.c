@@ -17,7 +17,7 @@
 
 int	triangle_int(t_line ray, const void *data, double *t)
 {
-	const struct s_rt_element_triangle	*tri = (const struct s_rt_element_triangle *)data;
+	const t_rt_element_triangle	*tri = (const t_rt_element_triangle *)data;
 	double								det;
 	double								inv_det;
 	double								u;

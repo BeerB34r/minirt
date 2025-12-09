@@ -32,7 +32,7 @@
 
 int	plane_int(t_line ray, const void *data, double *t)
 {
-	const struct s_rt_element_plane	*pl = (const struct s_rt_element_plane *)data;
+	const t_rt_element_plane	*pl = (const t_rt_element_plane *)data;
 	double							denom;
 	double							d;
 

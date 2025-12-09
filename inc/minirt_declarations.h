@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 18:50:16 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 12:27:22 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ typedef struct s_hit
 	t_vec3				point;
 	t_vec3				normal;
 	double				t;
-	struct s_rt_element *obj;
+	struct s_rt_element	*obj;
 }	t_hit;
 
 //	elements of a scene
@@ -133,41 +133,41 @@ struct s_rt_element_camera
 };
 # define CAMERA_FIELDS 3
 
-struct s_rt_element_light
+typedef struct s_rt_element_light
 {
 	t_vec3			pos;
 	double			brightness;
 	struct s_rgba	colour;
-};
+}	t_rt_element_light;
 # define LIGHT_FIELDS 3
 
-struct s_rt_element_sphere
+typedef struct s_rt_element_sphere
 {
 	t_vec3			pos;
 	double			radius;
 	struct s_rgba	colour;
-};
+}	t_rt_element_sphere;
 # define SPHERE_FIELDS 3
 
-struct s_rt_element_plane
+typedef struct s_rt_element_plane
 {
 	t_vec3			pos;
 	t_norm			normal;
 	struct s_rgba	colour;
-};
+}	t_rt_element_plane;
 # define PLANE_FIELDS 3
 
-struct s_rt_element_cylinder
+typedef struct s_rt_element_cylinder
 {
 	t_vec3			pos;
 	t_norm			axis;
 	double			radius;
 	double			height;
 	struct s_rgba	colour;
-};
+}	t_rt_element_cylinder;
 # define CYLINDER_FIELDS 5
 
-struct s_rt_element_triangle
+typedef struct s_rt_element_triangle
 {
 	t_norm			normal; // precomputed, not given by user
 	t_vec3			v1;
@@ -175,10 +175,10 @@ struct s_rt_element_triangle
 	t_vec3			v3;
 	struct s_rgba	colour;
 	uint16_t		attr; // only relevant for stlfile derived tris
-};
+}	t_rt_element_triangle;
 # define TRIANGLE_FIELDS 4
-
 # define PIXEL_STL_TRI_FALLBACK 0xFFBC8DFF
+
 struct s_rt_element_stlfile
 {
 	uint8_t							header[80];
@@ -214,16 +214,17 @@ struct s_rt_element_superquadric
 };
 # define SUPERQUADRIC_FIELDS 12
 
-typedef struct s_material {
-	struct s_rgba					colour;
-	float	spec_reflectivity;
-	float	diff_reflectivity;
-	float	ambi_reflectivity;
-	float	abso_reflectivity;
-	float	shininess;
-} t_material;
+typedef struct s_material
+{
+	struct s_rgba	colour;
+	float			spec_reflectivity;
+	float			diff_reflectivity;
+	float			ambi_reflectivity;
+	float			abso_reflectivity;
+	float			shininess;
+}	t_material;
 
-typedef int (*t_intersect_fn)(t_line ray, const void *data, double *t);
+typedef int		(*t_intersect_fn)(t_line ray, const void *data, double *t);
 
 typedef struct s_rt_element
 {
@@ -240,9 +241,9 @@ typedef struct s_rt_element
 		struct s_rt_element_stlfile			stlfile;
 		struct s_rt_element_superquadric	superquadric;
 	};
-	struct s_material material;
-	t_intersect_fn	intersect;
-    const void *data;
+	struct s_material	material;
+	t_intersect_fn		intersect;
+	const void			*data;
 }	t_element;
 
 typedef struct s_rt_scene
@@ -262,7 +263,5 @@ typedef struct s_element_identifier
 	char	*name;
 	int		(*func)(char **, struct s_rt_scene *);
 }	t_element_id;
-
-
 
 #endif // MINIRT_DECLARATIONS_H

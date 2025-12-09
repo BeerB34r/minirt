@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/01 17:07:16 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 14:54:16 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 12:16:13 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,12 @@ t_line
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/worldspace_to_objectspace.c
 
-int sq_int(t_line ray, const void *data, double *t);
+int	
+	sq_int(
+		t_line ray,
+		const void *data,
+		double *t
+		); // FILE: math/intersection/superquadric/sq_int.c
 t_norm
 	sq_norm(
 		t_uv uv,
@@ -89,12 +94,12 @@ t_norm
 		t_uv uv,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/ellipsoid/e_norm.c
-int
+int	
 	sq_e_int(
 		t_line lw,
 		struct s_rt_element_superquadric s,
 		double *t
-	    );	// FILE: math/superquadric/ellipsoid/e_intersection.c
+		);	// FILE: math/superquadric/ellipsoid/e_intersection.c
 double
 	sq_e_derivative(
 		t_line l,
@@ -117,12 +122,12 @@ t_norm
 		t_uv uv,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/hyperboloid1/h1_norm.c
-int
+int	
 	sq_h1_int(
 		t_line lw,
 		struct s_rt_element_superquadric s,
 		double *t
-	    );;	// FILE: math/superquadric/hyperboloid1/h1_intersection.c
+		);	// FILE: math/superquadric/hyperboloid1/h1_intersection.c
 double
 	sq_h1_derivative(
 		t_line l,
@@ -145,12 +150,12 @@ t_norm
 		t_uv uv,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/hyperboloid2/h2_norm.c
-int
+int	
 	sq_h2_int(
 		t_line lw,
 		struct s_rt_element_superquadric s,
 		double *t
-	    );	// FILE: math/superquadric/hyperboloid2/h2_intersection.c
+		);	// FILE: math/superquadric/hyperboloid2/h2_intersection.c
 double
 	sq_h2_derivative(
 		t_line l,
@@ -173,12 +178,12 @@ t_norm
 		t_uv uv,
 		struct s_rt_element_superquadric s
 		);	// FILE: math/superquadric/toroid/t_norm.c
-int
+int	
 	sq_t_int(
 		t_line lw,
 		struct s_rt_element_superquadric s,
 		double *t
-	    );	// FILE: math/superquadric/toroid/t_intersection.c
+		);	// FILE: math/superquadric/toroid/t_intersection.c
 double
 	sq_t_derivative(
 		t_line l,

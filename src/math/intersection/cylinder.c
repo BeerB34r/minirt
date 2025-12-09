@@ -61,7 +61,7 @@ t_vec3	cylinder_normal(struct s_rt_element_cylinder cyl, t_vec3 int_point)
 
 int	cylinder_int(t_line ray, const void *data, double *t)
 {
-	const struct s_rt_element_cylinder	*cyl = (const struct s_rt_element_cylinder *)data;
+	const t_rt_element_cylinder	*cyl = (const t_rt_element_cylinder *)data;
 	t_vec3								axis;
 	t_vec3								delta;
 	t_vec3								a;

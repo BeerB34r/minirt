@@ -32,7 +32,7 @@
 
 int	sphere_int(t_line ray, const void *data, double *t)
 {
-	const struct s_rt_element_sphere	*sp = (const struct s_rt_element_sphere *)data;
+	const t_rt_element_sphere	*sp = (const t_rt_element_sphere *)data;
 	t_vec3								l;
 	double								b;
 	double								c_term;
