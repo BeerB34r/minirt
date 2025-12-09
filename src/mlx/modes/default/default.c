@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   default.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/12/01 16:19:52 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/08 18:10:14 by alkuijte      ########   odam.nl         */
-/*                                                                            */
+/*																			*/
+/*														::::::::			*/
+/*   default.c										  :+:	:+:			*/
+/*													 +:+					*/
+/*   By: alkuijte <alkuijte@student.codam.nl>		 +#+					 */
+/*												   +#+					  */
+/*   Created: 2025/12/01 16:19:52 by alkuijte	  #+#	#+#				 */
+/*   Updated: 2025/12/08 18:10:14 by alkuijte	  ########   odam.nl		 */
+/*																			*/
 /* ************************************************************************** */
 
 #include <MLX42.h>
@@ -35,55 +35,56 @@
 
 // double fresnel_schlick(double cosx, double ior)
 // {
-//     double r0 = (1 - ior) / (1 + ior);
-//     r0 = r0 * r0;
-//     return r0 + (1 - r0) * pow(1 - cosx, 5);
+//	 double r0 = (1 - ior) / (1 + ior);
+//	 r0 = r0 * r0;
+//	 return r0 + (1 - r0) * pow(1 - cosx, 5);
 // }
 
-t_vec4 trace_ray(struct s_rt_scene *scene,
-                                  t_line ray, int depth)
+t_vec4	trace_ray(struct s_rt_scene *scene,
+								t_line ray, int depth)
 {
 	t_hit	hit;
-	t_vec4 bg = hex_to_vec4(PIXEL_BG);
+	t_vec4	bg;
+	t_vec4	colour;
+	t_vec3	i;
+	t_vec3	r;
+	t_vec4	reflected;
+	t_line	reflection_ray;
+	float	refl;
 
-    if (depth >= MAX_DEPTH)
-        return bg;
-
-    if (!find_closest_intersection(scene, ray, &hit))
-        return bg;
-
-    hit.point = vec3_add(ray.origin, vec3_scalar_mul(ray.dir, hit.t));
-    hit.normal = get_normal(*hit.obj, hit.point);
-    if (vec3_dot_product(ray.dir, hit.normal) > 0) {
-        hit.normal = vec3_scalar_mul(hit.normal, -1);
+	bg = hex_to_vec4(PIXEL_BG);
+	if (depth >= MAX_DEPTH)
+		return (bg);
+	if (!find_closest_intersection(scene, ray, &hit))
+		return (bg);
+	hit.point = vec3_add(ray.origin, vec3_scalar_mul(ray.dir, hit.t));
+	hit.normal = get_normal(*hit.obj, hit.point);
+	if (vec3_dot_product(ray.dir, hit.normal) > 0)
+		hit.normal = vec3_scalar_mul(hit.normal, -1);
+	colour = shade(scene, &hit, ray);
+	refl = hit.obj->material.abso_reflectivity;
+	if (refl > 0.0f && depth + 1 < MAX_DEPTH)
+	{
+		i = vec3_normalise(ray.dir);
+		r = reflect(i, hit.normal);
+		reflection_ray.origin = vec3_add(hit.point,
+				vec3_scalar_mul(hit.normal, EPSILON));
+		reflection_ray.dir = r;
+		reflected = trace_ray(scene, reflection_ray, depth + 1);
+		colour = blend_colour(colour, reflected, refl);
 	}
-	t_vec4 colour = shade(scene, &hit, ray);
-    float refl = hit.obj->material.abso_reflectivity;
-    if (refl > 0.0f && depth + 1 < MAX_DEPTH)
-    {
-        t_vec3 I = vec3_normalise(ray.dir);
-        t_vec3 R = reflect(I, hit.normal);
-
-        t_line reflection_ray;
-        reflection_ray.origin = vec3_add(hit.point,
-                                         vec3_scalar_mul(hit.normal, EPSILON));
-        reflection_ray.dir = R;
-
-        t_vec4 reflected = trace_ray(scene, reflection_ray, depth + 1);
-
-        colour = blend_colour(colour, reflected, refl);
-    }
 	colour = vec3_scalar_mul(colour, EXPOSURE);
-    return colour;
+	return (colour);
 }
 
-
 void	default_colour(struct s_mode_func_params p,
-                   t_line	angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
-                   struct	s_rgba *colour)
+					t_line	angles[VIEWPORT_WIDTH][VIEWPORT_HEIGHT],
+					struct	s_rgba *colour)
 {
-    t_vec4 float_colour = trace_ray(p.scene, angles[p.x][p.y], 0);
-    colour->hex = vec4_to_hex(float_colour);
+	t_vec4	float_colour;
+
+	float_colour = trace_ray(p.scene, angles[p.x][p.y], 0);
+	colour->hex = vec4_to_hex(float_colour);
 }
 
 // TODO add refraction, ambient occlusion, soft shadows, sky gradient BG

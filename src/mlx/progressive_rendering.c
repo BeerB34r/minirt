@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/11/07 21:03:33 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 14:03:47 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 11:01:12 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int depth
 		y = -1;
 		while ((++y * (1 << depth)) < VIEWPORT_HEIGHT)
 		{
-
 			get_pixel_value((struct s_get_pixel_params){
 				.mode = p->mode, .scene = p->scene,
 				.x = x * (1 << depth),
@@ -118,32 +117,30 @@ int depth
 	progress_bar(VIEWPORT_WIDTH, VIEWPORT_WIDTH);
 }
 
-void progressive_rendering(void *param) {
+void	progressive_rendering(void *param)
+{
 	struct s_progressive_rendering_params *const	p = param;
 	static bool										done = false;
 	static int										depth = -1;
 
-	if (p->reset) {
+	if (p->reset)
+	{
 		done = false;
 		depth = -1;
 		p->reset = false;
 	}
-	if (done) {
+	if (done)
 		return ;
-	} else if (depth < 0) {
+	else if (depth < 0)
 		depth = p->max_depth;
-	} else {
+	else
 		write(1, "\033[F\033[F", 7);
-	}
 	progress_bar(p->max_depth - depth, p->max_depth + 1);
 	ft_printf("Block size: %ipx\n", 1 << depth);
 	painters_blueprint(p, depth);
-	if (depth--) {
+	if (depth--)
 		return ;
-	}
 	write(1, "\033[F\033[F", 7);
 	progress_bar(1, 1);
 	done = true;
-
-
 }

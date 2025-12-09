@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/27 17:27:20 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 15:00:05 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 10:53:18 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ struct s_rt_element_superquadric s, double *t
 	while (++i < MAX_NEWTON_ITER)
 	{
 		f_t = newton_iter(lw, f_t, s);
-		if (approx(sq_h1_io(l_t(lw, f_t), s)) == 1) {
+		if (approx(sq_h1_io(l_t(lw, f_t), s)) == 1)
+		{
 			*t = f_t;
 			return (1);
 		}

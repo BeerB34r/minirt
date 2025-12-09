@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/27 17:27:20 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/04 14:58:07 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 10:53:49 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ double n
 	return (round(n * pow(10, exponent)) / pow(10, exponent));
 }
 
-int   sq_h2_int(t_line lw,struct s_rt_element_superquadric s, double *t)
+int	sq_h2_int(t_line lw, struct s_rt_element_superquadric s, double *t)
 {
 	size_t			i;
 	double			f_t;
@@ -78,7 +78,8 @@ int   sq_h2_int(t_line lw,struct s_rt_element_superquadric s, double *t)
 	while (++i < MAX_NEWTON_ITER)
 	{
 		f_t = newton_iter(lw, f_t, s);
-		if (approx(sq_h2_io(l_t(lw, f_t), s)) == 1) {
+		if (approx(sq_h2_io(l_t(lw, f_t), s)) == 1)
+		{
 			*t = f_t;
 			return (1);
 		}

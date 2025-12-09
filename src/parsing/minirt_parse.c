@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/22 19:07:54 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 18:29:56 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/09 11:50:07 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,15 @@ static void
 	intersperse_tris(
 struct s_rt_element *new_elements,
 struct s_rt_element *old_elements,
-unsigned int old_element_count
-)
+unsigned int old_element_count)
 {
 	struct s_rt_element_stlfile	current;
 	unsigned int				i;
 	unsigned int				j;
 	unsigned int				offset;
-	printf("this functio nis being called\n");
+
 	i = -1;
 	offset = 0;
-
 	while (++i < old_element_count)
 	{
 		if (old_elements[i].type != STLFILE)
@@ -129,7 +127,7 @@ struct s_rt_scene *scene
 )
 {
 	const unsigned int	stl_count = count_element_type(
-		STLFILE, scene->elements, scene->element_count);
+			STLFILE, scene->elements, scene->element_count);
 	struct s_rt_element	*new_elements;
 	unsigned int		tri_count;
 	unsigned int		i;
@@ -142,7 +140,7 @@ struct s_rt_scene *scene
 		if (scene->elements[i].type == STLFILE)
 			tri_count += scene->elements[i].stlfile.tri_count;
 	new_elements = ft_calloc(scene->element_count - stl_count + tri_count,
-		sizeof(struct s_rt_element));
+			sizeof(struct s_rt_element));
 	if (!new_elements)
 	{
 		ft_dprintf(STDERR_FILENO, ERR E_OOM);
@@ -170,7 +168,8 @@ struct s_rt_scene *scene
 	return (0);
 }
 
-int	minirt_parse(int ac, char **av, struct s_rt_scene *scene) {
+int	minirt_parse(int ac, char **av, struct s_rt_scene *scene)
+{
 	char				**file_array;
 	char				***split_file;
 	int					rval;

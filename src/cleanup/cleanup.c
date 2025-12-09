@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   cleanup.c                                               :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/05/20 18:19:49 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 21:02:25 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   cleanup.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/05/20 18:19:49 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/09 11:15:21 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -29,7 +29,8 @@
 #include <minirt_parse.h>
 #include <stdlib.h>
 
-void	free_noop(struct s_rt_element element) {
+void	free_noop(struct s_rt_element element)
+{
 	(void)element;
 }
 
