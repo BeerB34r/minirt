@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 12:50:01 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 13:20:02 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,17 @@ typedef union u_uv
 	};
 }	t_uv;
 
+typedef union u_tuple
+{
+	int	a[2];
+	struct
+	{
+		int	x;
+		int	y;
+	};
+}	t_tuple;
+
+
 typedef struct s_line
 {
 	t_vec3	origin;
@@ -116,6 +127,7 @@ typedef struct s_hit
 	t_line				ray;
 	double				t;
 	struct s_rt_element	*obj;
+	t_uv				uv;
 }	t_hit;
 
 //	elements of a scene
