@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:34:30 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 15:37:26 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 15:43:48 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ struct s_rt_scene *scene
 			.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY,
 			.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY,
 			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
-			.shininess = DEFAULT_SHININESS, .texture = NULL};
+			.shininess = DEFAULT_SHININESS,
+			.texture = mlx_load_png("./textures/cat.png")};
 		obj->intersect = triangle_int;
 		obj->data = &obj->triangle;
 		obj->triangle = result;
