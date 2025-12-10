@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 13:02:26 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 13:15:23 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,8 @@ void
 	get_sphere_uv(
 		double *u,
 		double *v,
-		t_vec3	p
+		t_vec3	p,
+		t_rt_element_sphere sphere
 		);
 t_vec4	
 	get_texture_pixel_value(
