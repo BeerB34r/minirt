@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/09 15:46:38 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 12:50:01 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,15 @@
 
 # include <stdint.h> // required for prototyping s_rgba.hex
 # include <stdbool.h> // required for prototyping s_rt_scene
+# include <MLX42.h> // required for uv
 
 # define DEFAULT_AMBI_REFLECTIVITY 0.3f
 # define DEFAULT_DIFF_REFLECTIVITY 0.9f
 # define DEFAULT_SPEC_REFLECTIVITY 0.6f
-# define DEFAULT_ABSO_REFLECTIVITY 0.8f
-# define DEFAULT_SHININESS		   50
+# define DEFAULT_ABSO_REFLECTIVITY 0.1f
+# define DEFAULT_SHININESS		   0.1f
 # define EXPOSURE				   1.5f
-# define MAX_DEPTH				   25
+# define MAX_DEPTH				   250
 
 enum e_element_type
 {
@@ -223,6 +224,7 @@ typedef struct s_material
 	float			ambi_reflectivity;
 	float			abso_reflectivity;
 	float			shininess;
+	mlx_texture_t	*texture;
 }	t_material;
 
 typedef int		(*t_intersect_fn)(t_line ray, const void *data, double *t);

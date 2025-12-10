@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 15:38:31 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/09 14:02:36 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 10:49:35 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 
 //	//	mathematical constants (for some fucking reason???????)
 # define EPSILON 1.0e-6
+# define PI 3.1415926535f
 
 //	//	trigonometric interface (for some fucking reason????)
 double	

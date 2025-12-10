@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/09 15:01:17 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 13:02:26 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,8 @@ int
 t_vec4	
 	compute_ambient(
 		struct s_rt_element_ambient_light ambient,
-		t_material material
+		float mat_ambi_refl,
+		t_vec4 mat_col
 		);
 void	
 	clamp_colour(
@@ -224,5 +225,16 @@ t_vec4
 	compute_specular(
 		t_vec4 light_col,
 		t_shade_input in
+		);
+void	
+	get_sphere_uv(
+		double *u,
+		double *v,
+		t_vec3	p
+		);
+t_vec4	
+	get_texture_pixel_value(
+		mlx_texture_t *texture,
+		t_hit *hit
 		);
 #endif // MINIRT_MLX_H

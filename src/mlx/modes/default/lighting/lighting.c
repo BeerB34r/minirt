@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/09 14:25:35 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/09 14:57:53 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 12:58:43 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,13 @@ t_vec4	shade(struct s_rt_scene *scene, t_hit *hit)
 
 	colour = (t_vec4){0.0f, 0.0f, 0.0f, 1.0f};
 	material = hit->obj->material;
-	base_colour = hex_to_vec4(material.colour.hex);
+	if (material.texture)
+		base_colour = get_texture_pixel_value(material.texture, hit);
+	else
+		base_colour = hex_to_vec4(material.colour.hex);
 	view_dir = vec3_normalise(vec3_flip(hit->ray.dir));
-	vec3_add_inplace(&colour, compute_ambient(scene->ambient_light, material));
+	vec3_add_inplace(&colour, compute_ambient(
+			scene->ambient_light, material.ambi_reflectivity, base_colour));
 	i = -1;
 	while (++i < scene->light_count)
 		shade_light(hit, make_shade_input(scene->lights[i],

@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:15:06 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 19:24:06 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 13:03:57 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 #include <minirt_declarations.h>
 #include <minirt_math.h>
 #include <minirt_error.h>
+#include <MLX42.h>
 
 int
 	parse_sphere(
@@ -54,6 +55,7 @@ struct s_rt_scene *scene
 		obj->material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
 		obj->material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
 		obj->material.shininess = DEFAULT_SHININESS;
+		obj->material.texture = mlx_load_png("./textures/globe.png");
 		obj->intersect = sphere_int;
 		obj->data = &obj->sphere;
 		obj->sphere = result;

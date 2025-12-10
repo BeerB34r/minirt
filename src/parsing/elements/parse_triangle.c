@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:34:30 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 19:20:21 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 12:51:24 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ struct s_rt_scene *scene
 		obj->material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
 		obj->material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
 		obj->material.shininess = DEFAULT_SHININESS;
+		obj->material.texture = NULL;
 		obj->intersect = triangle_int;
 		obj->data = &obj->triangle;
 		obj->triangle = result;
