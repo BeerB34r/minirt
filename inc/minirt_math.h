@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 15:38:31 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 10:49:35 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 15:30:14 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,64 +94,35 @@ t_vec3
 		t_line l,
 		double t
 		);	// FILE: math/line_l_t.c
-//	//	line intersection functions
-//	returns a real number d equal to the distance from the lines origin to the
-//	point of intersection, or NAN if there is no intersection
-double	
-	closest_sphere_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/sphere.c
-double	
-	closest_plane_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/plane.c
-double	
-	closest_cylinder_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/cylinder.c
-double	
-	closest_superquadric_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/superquadric.c
-double	
-	closest_triangle_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/triangle.c
-double	
-	closest_stlfile_intersection(
-		t_element object,
-		t_line line
-		);	// FILE: math/intersection/stlfile.c
 
 // Intersections
 int		
 	sphere_int(
 		t_line ray,
 		const void *type,
-		double *t
+		double *t,
+		t_uv *uv
 		);
 int		
 	plane_int(
 		t_line ray,
 		const void *type,
-		double *t
+		double *t,
+		t_uv *uv
 		);
 int		
 	triangle_int(
 		t_line ray,
 		const void *type,
-		double *t
+		double *t,
+		t_uv *uv
 		);
 int		
 	cylinder_int(
 		t_line ray,
 		const void *type,
-		double *t
+		double *t,
+		t_uv *uv
 		);
 t_vec3	
 	cylinder_normal(
@@ -192,5 +163,11 @@ void
 		t_line ray,
 		const t_rt_element_cylinder *cyl,
 		t_cyl_work *w
+		);
+t_vec3	
+	get_local_point(
+		t_line ray,
+		double t,
+		t_vec3 pos
 		);
 #endif // MINIRT_MATH_H

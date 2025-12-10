@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:22:24 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 19:26:23 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 15:38:43 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ struct s_rt_scene *scene
 	{
 		obj = &scene->elements[(scene->element_count)];
 		obj->type = CYLINDER;
-		obj->material.colour = result.colour;
-		obj->material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
-		obj->material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
-		obj->material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
-		obj->material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
-		obj->material.shininess = DEFAULT_SHININESS;
+		obj->material = (t_material){.colour = result.colour,
+			.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY,
+			.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY,
+			.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY,
+			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
+			.shininess = DEFAULT_SHININESS, .texture = NULL};
 		obj->intersect = cylinder_int;
 		obj->data = &obj->cylinder;
 		obj->cylinder = result;

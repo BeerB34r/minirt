@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 13:20:02 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 15:31:25 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,13 @@ typedef union u_uv
 
 typedef union u_tuple
 {
-	int	a[2];
+	uint32_t	a[2];
 	struct
 	{
-		int	x;
-		int	y;
+		uint32_t	x;
+		uint32_t	y;
 	};
 }	t_tuple;
-
 
 typedef struct s_line
 {
@@ -239,7 +238,8 @@ typedef struct s_material
 	mlx_texture_t	*texture;
 }	t_material;
 
-typedef int		(*t_intersect_fn)(t_line ray, const void *data, double *t);
+typedef int		(*t_intersect_fn)(t_line ray,
+			const void *data, double *t, t_uv *uv);
 
 typedef struct s_rt_element
 {

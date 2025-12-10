@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/27 17:27:20 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/09 11:51:04 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 13:34:14 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ double n
 int
 	sq_e_int(
 t_line lw,
-struct s_rt_element_superquadric s, double *t
+struct s_rt_element_superquadric s, double *t, t_uv *uv
 )
 {
 	size_t			i;
@@ -82,6 +82,7 @@ struct s_rt_element_superquadric s, double *t
 
 	f_t = initial_guess(lw.origin, s);
 	i = -1;
+	(void)uv;
 	while (++i < MAX_NEWTON_ITER)
 	{
 		f_t = newton_iter(lw, f_t, s);

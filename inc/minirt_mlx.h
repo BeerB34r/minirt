@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 13:15:23 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 15:30:31 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,14 +228,18 @@ t_vec4
 		);
 void	
 	get_sphere_uv(
-		double *u,
-		double *v,
-		t_vec3	p,
-		t_rt_element_sphere sphere
+		t_uv	*uv,
+		t_vec3	p
 		);
 t_vec4	
 	get_texture_pixel_value(
 		mlx_texture_t *texture,
 		t_hit *hit
+		);
+void	
+	get_plane_uv(
+		t_uv *uv,
+		t_vec3 p,
+		t_vec3 normal
 		);
 #endif // MINIRT_MLX_H

@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/09 13:47:05 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/09 14:06:50 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 13:38:41 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ static int	cyl_compute_quad(t_line ray,
 		return (1);
 }
 
-int	cylinder_int(t_line ray, const void *data, double *t)
+int	cylinder_int(t_line ray, const void *data, double *t, t_uv *uv)
 {
 	const t_rt_element_cylinder	*cyl = data;
 	t_cyl_work					w;
 
+	(void)uv;
 	if (!cyl_compute_quad(ray, cyl, &w))
 		return (0);
 	cyl_solve_side(ray, cyl, &w);

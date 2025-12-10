@@ -55,11 +55,12 @@ static int	tri_step_t(t_tri_work *w, double *t)
 	return (1);
 }
 
-int	triangle_int(t_line ray, const void *data, double *t)
+int	triangle_int(t_line ray, const void *data, double *t, t_uv *uv)
 {
 	const t_rt_element_triangle	*tri = data;
 	t_tri_work					w;
 
+	(void)uv;
 	if (!tri_step_det(ray, tri, &w))
 		return (0);
 	if (!tri_step_uv(ray, tri, &w))

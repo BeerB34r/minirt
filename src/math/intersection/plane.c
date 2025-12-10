@@ -28,14 +28,16 @@
 #include <math.h>
 #include <minirt_math.h>
 #include <minirt_declarations.h>
+#include <minirt_mlx.h>
 #include <stdio.h>
 
-int	plane_int(t_line ray, const void *data, double *t)
+int	plane_int(t_line ray, const void *data, double *t, t_uv *uv)
 {
 	const t_rt_element_plane	*pl = (const t_rt_element_plane *)data;
 	double						denom;
 	double						d;
 
+	(void)uv;
 	denom = vec3_dot_product(ray.dir, pl->normal);
 	if (fabs(denom) < EPSILON)
 		return (0);
@@ -43,5 +45,6 @@ int	plane_int(t_line ray, const void *data, double *t)
 	if (d < EPSILON)
 		return (0);
 	*t = d;
+	get_plane_uv(uv, get_local_point(ray, *t, pl->pos), pl->normal);
 	return (1);
 }

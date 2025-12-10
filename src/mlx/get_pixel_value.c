@@ -33,11 +33,11 @@
 #include <stdio.h>
 
 static inline int	check_intersection(const struct s_rt_element *obj,
-									t_line ray, double *t)
+									t_line ray, double *t, t_uv *uv)
 {
 	if (!obj->intersect || !obj->data)
 		return (0);
-	return (obj->intersect(ray, obj->data, t));
+	return (obj->intersect(ray, obj->data, t, uv));
 }
 
 static const struct s_camera_mode	g_modes[] = {
@@ -50,6 +50,8 @@ int	find_closest_intersection(t_scene *scene, t_line ray, t_hit *out_hit)
 {
 	double			t_min;
 	double			t;
+	t_uv			uv;
+	t_uv			uv_min;
 	t_element		*hit_obj;
 	unsigned int	i;
 
@@ -58,17 +60,19 @@ int	find_closest_intersection(t_scene *scene, t_line ray, t_hit *out_hit)
 	i = -1;
 	while (++i < scene->element_count)
 	{
-		if (check_intersection(&scene->elements[i], ray, &t))
+		if (check_intersection(&scene->elements[i], ray, &t, &uv))
 		{
 			if (t >= 0 && t < t_min)
 			{
 				t_min = t;
+				uv_min = uv;
 				hit_obj = &scene->elements[i];
 			}
 		}
 	}
 	if (!hit_obj)
 		return (0);
+	out_hit->uv = uv_min;
 	out_hit->obj = hit_obj;
 	out_hit->t = t_min;
 	return (1);

@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   sphere_uv.c                                        :+:    :+:            */
+/*   get_local_point.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/12/10 11:21:12 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/10 14:07:11 by alkuijte      ########   odam.nl         */
+/*   Created: 2025/12/10 14:01:28 by alkuijte      #+#    #+#                 */
+/*   Updated: 2025/12/10 15:31:53 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt_math.h>
-#include <math.h>
 
-void	get_sphere_uv(t_uv *uv, t_vec3 p)
+t_vec3	get_local_point(t_line ray, double t, t_vec3 pos)
 {
-	uv->u = 0.5 + (atan2(p.z, p.x) / (PI * 2.0f));
-	uv->v = 0.5 + (asin(p.y) / PI);
+	return (vec3_sub(vec3_add(ray.origin, vec3_scalar_mul(ray.dir, t)), pos));
 }

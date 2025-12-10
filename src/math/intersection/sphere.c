@@ -28,9 +28,10 @@
 #include <math.h>
 #include <minirt_math.h>
 #include <minirt_declarations.h>
+#include <minirt_mlx.h>
 #include <stdio.h>
 
-int	sphere_int(t_line ray, const void *data, double *t)
+int	sphere_int(t_line ray, const void *data, double *t, t_uv *uv)
 {
 	const t_rt_element_sphere	*sp = (const t_rt_element_sphere *)data;
 	t_vec3						l;
@@ -51,5 +52,6 @@ int	sphere_int(t_line ray, const void *data, double *t)
 		*t = (-b + disc);
 	else
 		return (0);
+	get_sphere_uv(uv, get_local_point(ray, *t, sp->pos));
 	return (1);
 }
