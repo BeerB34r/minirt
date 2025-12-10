@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 15:30:31 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 16:36:31 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,5 +241,20 @@ void
 		t_uv *uv,
 		t_vec3 p,
 		t_vec3 normal
+		);
+t_vec3	
+	apply_bump_map(
+		mlx_texture_t *bump_map,
+		t_hit *hit
+		);
+t_vec4	
+	get_texture_pixel_col(
+		mlx_texture_t *texture,
+		t_tuple coords
+		);
+int	
+	uv_to_xy(
+		double v,
+		int h
 		);
 #endif // MINIRT_MLX_H

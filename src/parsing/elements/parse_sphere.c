@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:15:06 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 15:37:51 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 16:09:01 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ struct s_rt_scene *scene
 			.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY,
 			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
 			.shininess = DEFAULT_SHININESS,
-			.texture = mlx_load_png("./textures/globe.png")};
+			.texture = mlx_load_png("./textures/globe.png"),
+			.bump_map = NULL};
 		obj->intersect = sphere_int;
 		obj->data = &obj->sphere;
 		obj->sphere = result;

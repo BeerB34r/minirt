@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:20:42 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 15:38:16 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 16:08:51 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ struct s_rt_scene *scene
 			.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY,
 			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
 			.shininess = DEFAULT_SHININESS,
-			.texture = mlx_load_png("./textures/uv_checker.png")};
+			.texture = mlx_load_png("./textures/uv_checker.png"),
+			.bump_map = NULL};
 		obj->intersect = plane_int;
 		obj->data = &obj->plane;
 		obj->plane = result;

@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 15:31:25 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 16:40:23 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define DEFAULT_SHININESS		   0.1f
 # define EXPOSURE				   1.5f
 # define MAX_DEPTH				   250
+# define BUMP_STRENGTH			   0.5f
 
 enum e_element_type
 {
@@ -123,6 +124,7 @@ typedef struct s_hit
 {
 	t_vec3				point;
 	t_vec3				normal;
+	t_vec3				shading_normal;
 	t_line				ray;
 	double				t;
 	struct s_rt_element	*obj;
@@ -236,6 +238,7 @@ typedef struct s_material
 	float			abso_reflectivity;
 	float			shininess;
 	mlx_texture_t	*texture;
+	mlx_texture_t	*bump_map;
 }	t_material;
 
 typedef int		(*t_intersect_fn)(t_line ray,

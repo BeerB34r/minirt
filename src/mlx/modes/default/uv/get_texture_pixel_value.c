@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/10 11:26:30 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/10 15:39:33 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/10 16:36:17 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <math.h>
 #include <stdio.h>
 
-static int	uv_to_xy(double v, int h)
+int	uv_to_xy(double v, int h)
 {
 	int	w;
 
