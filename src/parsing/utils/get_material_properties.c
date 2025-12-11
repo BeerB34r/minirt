@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                            ::::::::        */
-/*   minirt_utils.h                                          :+:    :+:       */
+/*   get_material_properties.c                               :+:    :+:       */
 /*                                                          +:+               */
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
-/*   Created: 2025/09/18 16:28:30 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/12/11 17:41:57 by mde-beer            ########   odam.nl   */
+/*   Created: 2025/12/11 17:25:47 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/12/11 18:02:47 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -25,124 +25,75 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
-#ifndef MINIRT_UTILS_H
-# define MINIRT_UTILS_H
+#include <unistd.h>
+#include <libft.h>
+#include <minirt_utils.h>
+#include <minirt_error.h>
 
-# include <stddef.h>
-# include <minirt_declarations.h>
+static
+int
+	get_custom_material_properties(
+const char *str,
+struct s_material *material
+)
+{
+	char **const		split = ft_split(str, ',');
+	double				values[5];
 
-char
-	**file_to_array(
-		const char *file
-		);	// FILE: utils/file_to_array.c
-void
-	free_array(
-		char **array
-		);	// FILE: utils/free_array.c
-/**
- * splits all strings in a given array of strings using ft_split
- *
- * @param str_array array of strings to be split
- * @param depth used in split_str_array's recursion, call with 0
- * @return a malloced array of arrays of strings
- */
-char
-	***split_str_array(
-		char **str_array,
-		int depth
-		);	// FILE: utils/split_str_array.c
-/**
- * helper function to free the return of split_str_array()
- */
-void
-	free_split_array(
-		char ***split_array
-		);	// FILE: utils/free_split_array.c
-size_t
-	count_fields(
-		char **element_fields
-		);	// FILE: utils/count_fields.c
+	if (!split)
+	{
+		ft_dprintf(STDERR_FILENO, ERR E_OOM);
+		return (1);
+	}
+	else if (count_fields(split) != 5)
+	{
+		free_array(split);
+		ft_dprintf(STDERR_FILENO, ERR E_FIELD, "material properties");
+		return (1);
+	}
+	else if (get_real_limit(split[0], &values[0], 0, 1)
+		|| get_real_limit(split[1], &values[1], 0, 1)
+		|| get_real_limit(split[2], &values[2], 0, 1)
+		|| get_real_limit(split[3], &values[3], 0, 1)
+		|| get_real_limit(split[4], &values[4], 0, 1)
+	)
+	{
+		free_array(split);
+		return (1);
+	}
+	*material = (struct s_material){
+			.colour.hex = 0,
+			.spec_reflectivity = values[0],
+			.diff_reflectivity = values[1],
+			.ambi_reflectivity = values[2],
+			.abso_reflectivity = values[3],
+			.shininess = values[4],
+			.texture = NULL,
+			.bump_map = NULL,
+	};
+	free_array(split);
+	return (0);
+}
 
-int	
-	get_int(
-		const char *str,
-		int *store
-		);	// FILE: utils/get_int.c
-int	
-	get_int_limit(
-		const char *str,
-		int *store,
-		int lower_bound,
-		int upper_bound
-		);	// FILE: utils/get_int_limit.c
-/**
- * parses the entirety of a string into a floating point number
- * returns positive on error, supports case-insensitive regex: 
- * "-?([0-9]+(\.[0-9]*)?[fF]?|inf(inity)?)"
- */
-int	
-	get_real(
-		const char *str,
-		double *store
-		);	// FILE: utils/get_int.c
-int	
-	get_real_limit(
-		const char *str,
-		double *store,
-		double lower_bound,
-		double upper_bound
-		);	// FILE: utils/get_int_limit.c
-int	
-	get_real_int(
-		const char *str,
-		double *store
-		);	// FILE: utils/get_real_int.c
-int	
-	get_real_int_limit(
-		const char *str,
-		double *store,
-		double lower_bound,
-		double upper_bound
-		);	// FILE: utils/get_real_int_limit.c
-int	
-	get_vec3(
-		const char *str,
-		t_vec3 *store
-		);	// FILE: utils/get_vec3.c
-int	
-	get_vec4(
-		const char *str,
-		t_vec4 *store
-		);	// FILE: utils/get_vec4.c
-int	
-	get_norm(
-		const char *str,
-		t_vec3 *store
-		);	// FILE: utils/get_norm.c
-int	
-	get_rgba(
-		const char *str,
-		struct s_rgba *colour
-		);	// FILE: utils/get_rgba.c
-int
-	get_texture(
-		const char *str,
-		mlx_texture_t **texture
-		);	// FILE: utils/get_texture.c
-int
-	get_rgba_or_texture(
-		const char *str,
-		struct s_rgba *colour,
-		struct s_material *material
-		);	// FILE: utils/get_rgba_or_texture.c
-int
-	get_bumpmap(
-		const char *str,
-		mlx_texture_t **bumpmap
-		);	// FILE: utils/get_bumpmap.c
 int
 	get_material_properties(
-		const char *str,
-		struct s_material *material
-		);	// FILE: utils/get_material_properties.c
-#endif // MINIRT_UTILS_H
+const char *str,
+struct s_material *material
+)
+{
+	if (!ft_strncmp(str, "DEFAULT", 8))
+	{
+		*material = (struct s_material){
+			.colour.hex = 0,
+			.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY,
+			.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY,
+			.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY,
+			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
+			.shininess = DEFAULT_SHININESS,
+			.texture = NULL,
+			.bump_map = NULL,
+		};
+		return (0);
+	}
+	return (get_custom_material_properties(str, material));
+}

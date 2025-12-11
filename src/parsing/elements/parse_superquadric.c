@@ -83,14 +83,8 @@ struct s_rt_scene *scene
 	result.a4 = result.a / sqrt(pow(result.a1, 2) + pow(result.a2, 2));
 	obj = &scene->elements[(scene->element_count)];
 	obj->type = SUPERQUADRIC;
-	obj->material.colour = result.colour;
-	obj->material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
-	obj->material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
-	obj->material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
-	obj->material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
-	obj->material.shininess = DEFAULT_SHININESS;
-	obj->material.texture = material.texture;
-	obj->material.bump_map = material.bump_map;
+	material.colour = result.colour;
+	obj->material = material;
 	obj->intersect = sq_int;
 	obj->data = &obj->superquadric;
 	obj->superquadric = result;
@@ -110,8 +104,8 @@ struct s_rt_scene *scene
 	struct s_rt_element_superquadric	result;
 
 	material = (struct s_material){0};
-	if (field_count < SUPERQUADRIC_FIELDS + 1
-		|| field_count > SUPERQUADRIC_FIELDS + 2)
+	if (field_count < SUPERQUADRIC_FIELDS + 2
+		|| field_count > SUPERQUADRIC_FIELDS + 3)
 		ft_dprintf(2, ERR E_FIELD, "superquadric");
 	else if (
 		!get_sq_subtype(element_fields[1], &result.subtype)
@@ -125,8 +119,9 @@ struct s_rt_scene *scene
 		&& !get_real_limit(element_fields[9], &result.a2, nextafter(0, 1), NAN)
 		&& !get_real_limit(element_fields[10], &result.a3, nextafter(0, 1), NAN)
 		&& !get_real_limit(element_fields[11], &result.a, nextafter(0, 1), NAN)
-		&& !get_rgba_or_texture(element_fields[12], &result.colour, &material)
-		&& !get_bumpmap(element_fields[13], &material.bump_map)
+		&& !get_material_properties(element_fields[12], &material)
+		&& !get_rgba_or_texture(element_fields[13], &result.colour, &material)
+		&& !get_bumpmap(element_fields[14], &material.bump_map)
 	)
 		return (final_touches(result, material, scene));
 	if (material.texture)

@@ -44,23 +44,18 @@ struct s_rt_scene *scene
 	struct s_rt_element			*obj;
 
 	material = (struct s_material){0};
-	if (field_count < SPHERE_FIELDS + 1 || field_count > SPHERE_FIELDS + 2)
+	if (field_count < SPHERE_FIELDS + 2 || field_count > SPHERE_FIELDS + 3)
 		ft_dprintf(2, ERR E_FIELD, "sphere");
 	else if (!get_vec3(element_fields[1], &result.pos)
 		&& !get_real(element_fields[2], &result.radius)
-		&& !get_rgba_or_texture(element_fields[3], &result.colour, &material)
-		&& !get_bumpmap(element_fields[4], &material.bump_map))
+		&& !get_material_properties(element_fields[3], &material)
+		&& !get_rgba_or_texture(element_fields[4], &result.colour, &material)
+		&& !get_bumpmap(element_fields[5], &material.bump_map))
 	{
 		obj = &scene->elements[(scene->element_count)];
 		obj->type = SPHERE;
-		obj->material = (t_material){.colour = result.colour,
-			.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY,
-			.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY,
-			.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY,
-			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
-			.shininess = DEFAULT_SHININESS,
-			.texture = material.texture,
-			.bump_map = material.bump_map};
+		material.colour = result.colour;
+		obj->material = material;
 		obj->intersect = sphere_int;
 		obj->data = &obj->sphere;
 		obj->sphere = result;
