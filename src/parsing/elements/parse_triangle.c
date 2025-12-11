@@ -76,14 +76,19 @@ char **element_fields,
 struct s_rt_scene *scene
 )
 {
+	const int						field_count = count_fields(element_fields);
+	struct s_material				material;
 	struct s_rt_element_triangle	result;
 	struct s_rt_element				*obj;
 
-	if (count_fields(element_fields) != TRIANGLE_FIELDS + 1)
+	material = (struct s_material){0};
+	if (field_count < TRIANGLE_FIELDS + 1 || field_count > TRIANGLE_FIELDS + 2)
 		ft_dprintf(2, ERR E_FIELD, "triangle");
-	else if (!get_vec3(element_fields[1], &result.v1) && !get_vec3(
-			element_fields[2], &result.v2) && !get_vec3(element_fields[3],
-			&result.v3) && !get_rgba(element_fields[4], &result.colour))
+	else if (!get_vec3(element_fields[1], &result.v1)
+			&& !get_vec3( element_fields[2], &result.v2)
+			&& !get_vec3(element_fields[3], &result.v3)
+			&& !get_rgba_or_texture(element_fields[4], &result.colour, &material)
+			&& !get_bumpmap(element_fields[5], &material.bump_map))
 	{
 		obj = &scene->elements[(scene->element_count)];
 		set_triangle_normal(&result);
@@ -95,13 +100,15 @@ struct s_rt_scene *scene
 			.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY,
 			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
 			.shininess = DEFAULT_SHININESS,
-			.texture = mlx_load_png("./textures/cat.png"),
-			.bump_map = mlx_load_png("./textures/bump_map.png")};
+			.texture = material.texture,
+			.bump_map = material.bump_map};
 		obj->intersect = triangle_int;
 		obj->data = &obj->triangle;
 		obj->triangle = result;
 		scene->element_count += 1;
 		return (0);
 	}
+	if (material.texture)
+		mlx_delete_texture(material.texture);
 	return (1);
 }

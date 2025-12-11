@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   parse_cylinder.c                                   :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2025/09/19 21:22:24 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 13:35:10 by alkuijte      ########   odam.nl         */
+/*                                                            ::::::::        */
+/*   get_rgba_or_texture.c                                   :+:    :+:       */
+/*                                                          +:+               */
+/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
+/*                                                        +#+                 */
+/*   Created: 2025/12/11 14:38:20 by mde-beer            #+#    #+#           */
+/*   Updated: 2025/12/11 14:44:39 by mde-beer            ########   odam.nl   */
 /*                                                                            */
-/* ************************************************************************** */
-
+/*   —————No norm compliance?——————                                           */
+/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -25,48 +25,34 @@
 /*   ——————————————————————————————                                           */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include <stdlib.h>
 #include <libft.h>
-#include <minirt_utils.h>
-#include <minirt_declarations.h>
-#include <minirt_math.h>
+#include <minirt_parse.h>
 #include <minirt_error.h>
 
 int
-	parse_cylinder(
-char **element_fields,
-struct s_rt_scene *scene
+	get_rgba_or_texture(
+const char *str,
+struct s_rgba *colour,
+struct s_material *material
 )
 {
-	const int						field_count = count_fields(element_fields);
-	struct s_material				material;
-	struct s_rt_element_cylinder	result;
-	struct s_rt_element				*obj;
+	char	*temp;
+	int		err;
 
-	material = (struct s_material){0};
-	if (field_count < CYLINDER_FIELDS + 1 || field_count > CYLINDER_FIELDS + 2)
-		ft_dprintf(2, ERR E_FIELD, "cylinder");
-	else if (!get_vec3(element_fields[1], &result.pos) && !get_norm(
-			element_fields[2], &result.axis) && !get_real(element_fields[3],
-			&result.radius) && !get_real(element_fields[4], &result.height)
-		&& !get_rgba_or_texture(element_fields[5], &result.colour, &material)
-		&& !get_bumpmap(element_fields[6], &material.bump_map))
+	if (ft_strchr(str, ','))
 	{
-		obj = &scene->elements[(scene->element_count)];
-		obj->type = CYLINDER;
-		obj->material = (t_material){.colour = result.colour,
-			.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY,
-			.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY,
-			.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY,
-			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
-			.shininess = DEFAULT_SHININESS, .texture = material.texture,
-			.bump_map = material.bump_map};
-		obj->intersect = cylinder_int;
-		obj->data = &obj->cylinder;
-		obj->cylinder = result;
-		scene->element_count += 1;
-		return (0);
+		material->texture = NULL;
+		return (get_rgba(str, colour));
 	}
-	if (material.texture)
-		mlx_delete_texture(material.texture);
-	return (1);
+	temp = ft_strdup(str);
+	if (!temp)
+		return (ft_dprintf(STDERR_FILENO, ERR E_OOM), 1);
+	if (ft_strchr(temp, '\n'))
+		*ft_strchr(temp,'\n') = 0;
+	colour->hex = 0;
+	err = get_texture(temp, &material->texture);
+	free(temp);
+	return (err);
 }

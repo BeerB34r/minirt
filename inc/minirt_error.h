@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/09/18 15:32:18 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/18 16:00:47 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/12/11 14:32:27 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -53,6 +53,8 @@
 # define E_UNREC "element identifier \"%s\" unrecognized\n"
 # define E_MISS "required element \"%s\" missing from configuration\n"
 # define E_STRERR "%s\n"
+# define E_FNAME "invalid filename \"%s\"\n"
+# define E_IEXT "file \"%s\" is not a png file\n"
 # define USAGE "USAGE: %s [filename.rt]\n"
 
 #endif // MINIRT_ERROR_H

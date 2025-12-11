@@ -124,5 +124,20 @@ int
 		const char *str,
 		struct s_rgba *colour
 		);	// FILE: utils/get_rgba.c
-
+int
+	get_texture(
+		const char *str,
+		mlx_texture_t **texture
+		);	// FILE: utils/get_texture.c
+int
+	get_rgba_or_texture(
+		const char *str,
+		struct s_rgba *colour,
+		struct s_material *material
+		);	// FILE: utils/get_rgba_or_texture.c
+int
+	get_bumpmap(
+		const char *str,
+		mlx_texture_t **bumpmap
+		);	// FILE: utils/get_bumpmap.c
 #endif // MINIRT_UTILS_H

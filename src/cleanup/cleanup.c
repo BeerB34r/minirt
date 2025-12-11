@@ -66,6 +66,13 @@ struct s_rt_scene scene
 
 	i = -1;
 	while (++i < scene.element_count)
+	{
 		g_cleanup_funcs[scene.elements[i].type](scene.elements[i]);
+		if (scene.elements[i].material.texture)
+			mlx_delete_texture(scene.elements[i].material.texture);
+		if (scene.elements[i].material.bump_map)
+			mlx_delete_texture(scene.elements[i].material.bump_map);
+	}
 	free(scene.elements);
+	free(scene.lights);
 }

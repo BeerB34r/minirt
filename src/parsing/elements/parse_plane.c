@@ -37,14 +37,18 @@ char **element_fields,
 struct s_rt_scene *scene
 )
 {
+	const int					field_count = count_fields(element_fields);
+	struct s_material			material;
 	struct s_rt_element_plane	result;
 	struct s_rt_element			*obj;
 
-	if (count_fields(element_fields) != PLANE_FIELDS + 1)
+	material = (struct s_material){0};
+	if (field_count < PLANE_FIELDS + 1 || field_count > PLANE_FIELDS + 2)
 		ft_dprintf(2, ERR E_FIELD, "plane");
 	else if (!get_vec3(element_fields[1], &result.pos)
 		&& !get_norm(element_fields[2], &result.normal)
-		&& !get_rgba(element_fields[3], &result.colour))
+		&& !get_rgba_or_texture(element_fields[3], &result.colour, &material)
+		&& !get_bumpmap(element_fields[4], &material.bump_map))
 	{
 		obj = &scene->elements[(scene->element_count)];
 		obj->type = PLANE;
@@ -55,13 +59,15 @@ struct s_rt_scene *scene
 			.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY,
 			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
 			.shininess = DEFAULT_SHININESS,
-			.texture = mlx_load_png("./textures/uv_checker.png"),
-			.bump_map = NULL};
+			.texture = material.texture,
+			.bump_map = material.bump_map};
 		obj->intersect = plane_int;
 		obj->data = &obj->plane;
 		obj->plane = result;
 		scene->element_count += 1;
 		return (0);
 	}
+	if (material.texture)
+		mlx_delete_texture(material.texture);
 	return (1);
 }

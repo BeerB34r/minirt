@@ -72,6 +72,7 @@ enum e_sq_subtype *store
 static int
 	final_touches(
 struct s_rt_element_superquadric result,
+struct s_material material,
 struct s_rt_scene *scene
 )
 {
@@ -88,6 +89,8 @@ struct s_rt_scene *scene
 	obj->material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
 	obj->material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
 	obj->material.shininess = DEFAULT_SHININESS;
+	obj->material.texture = material.texture;
+	obj->material.bump_map = material.bump_map;
 	obj->intersect = sq_int;
 	obj->data = &obj->superquadric;
 	obj->superquadric = result;
@@ -101,9 +104,14 @@ char **element_fields,
 struct s_rt_scene *scene
 )
 {
+	const int							field_count
+		= count_fields(element_fields);
+	struct s_material					material;
 	struct s_rt_element_superquadric	result;
 
-	if (count_fields(element_fields) != SUPERQUADRIC_FIELDS + 1)
+	material = (struct s_material){0};
+	if (field_count < SUPERQUADRIC_FIELDS + 1
+		|| field_count > SUPERQUADRIC_FIELDS + 2)
 		ft_dprintf(2, ERR E_FIELD, "superquadric");
 	else if (
 		!get_sq_subtype(element_fields[1], &result.subtype)
@@ -117,8 +125,11 @@ struct s_rt_scene *scene
 		&& !get_real_limit(element_fields[9], &result.a2, nextafter(0, 1), NAN)
 		&& !get_real_limit(element_fields[10], &result.a3, nextafter(0, 1), NAN)
 		&& !get_real_limit(element_fields[11], &result.a, nextafter(0, 1), NAN)
-		&& !get_rgba(element_fields[12], &result.colour)
+		&& !get_rgba_or_texture(element_fields[12], &result.colour, &material)
+		&& !get_bumpmap(element_fields[13], &material.bump_map)
 	)
-		return (final_touches(result, scene));
+		return (final_touches(result, material, scene));
+	if (material.texture)
+		mlx_delete_texture(material.texture);
 	return (1);
 }
