@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/04/22 19:07:54 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/09 11:50:07 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 16:30:38 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,12 @@ unsigned int old_element_count)
 				+ 0xFF;
 			if (new_elements[i + offset].material.colour.hex == 0x000000FF)
 				new_elements[i + offset].material.colour.hex = PIXEL_STL_TRI_FALLBACK;
-			new_elements[i + offset].material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
-			new_elements[i + offset].material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
-			new_elements[i + offset].material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
-			new_elements[i + offset].material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
-			new_elements[i + offset].material.shininess = DEFAULT_SHININESS;
-			new_elements[i + offset].intersect = triangle_int;
+			// new_elements[i + offset].material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
+			// new_elements[i + offset].material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
+			// new_elements[i + offset].material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
+			// new_elements[i + offset].material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
+			// new_elements[i + offset].material.shininess = DEFAULT_SHININESS;
+			// new_elements[i + offset].intersect = triangle_int;
 			new_elements[i + offset].data = &new_elements[i + offset].triangle;
 		}
 	}
