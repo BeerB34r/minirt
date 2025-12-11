@@ -6,14 +6,14 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/11 14:48:35 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/11 15:05:34 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 15:16:11 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt_declarations.h>
 #include <math.h>
 
-void	get_triangle_uv(t_uv *uv, const t_rt_element_triangle *t, t_tri_work w)
+void	get_triangle_uv(t_uv *uv, t_rt_triangle_uv *t, t_tri_work w)
 {
 	double	max_u;
 	double	max_v;

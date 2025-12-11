@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 15:38:31 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 13:24:55 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 15:33:42 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,5 +189,10 @@ void
 		t_uv *uv,
 		t_vec3 cyl_bottom,
 		t_vec3 cyl_top
+		);
+void	
+	get_triangle_tangents(
+		t_uv *uv,
+		const t_rt_triangle_uv *tr_uv
 		);
 #endif // MINIRT_MATH_H

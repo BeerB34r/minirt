@@ -65,6 +65,7 @@ int	triangle_int(t_line ray, const void *data, double *t, t_uv *uv)
 		return (0);
 	if (!tri_step_uv(ray, tri, &w))
 		return (0);
-	get_triangle_uv(uv, tri, w);
+	get_triangle_uv(uv, &tri->tr_uv, w);
+	get_triangle_tangents(uv, &tri->tr_uv);
 	return (tri_step_t(&w, t));
 }

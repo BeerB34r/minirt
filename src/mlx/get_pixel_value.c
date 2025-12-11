@@ -48,33 +48,27 @@ static const struct s_camera_mode	g_modes[] = {
 
 int	find_closest_intersection(t_scene *scene, t_line ray, t_hit *out_hit)
 {
-	double			t_min;
 	double			t;
 	t_uv			uv;
-	t_uv			uv_min;
-	t_element		*hit_obj;
 	unsigned int	i;
 
-	t_min = INFINITY;
-	hit_obj = NULL;
+	out_hit->t = INFINITY;
+	out_hit->obj = NULL;
 	i = -1;
 	while (++i < scene->element_count)
 	{
 		if (check_intersection(&scene->elements[i], ray, &t, &uv))
 		{
-			if (t >= 0 && t < t_min)
+			if (t >= 0 && t < out_hit->t)
 			{
-				t_min = t;
-				uv_min = uv;
-				hit_obj = &scene->elements[i];
+				out_hit->t = t;
+				out_hit->uv = uv;
+				out_hit->obj = &scene->elements[i];
 			}
 		}
 	}
-	if (!hit_obj)
+	if (!out_hit->obj)
 		return (0);
-	out_hit->uv = uv_min;
-	out_hit->obj = hit_obj;
-	out_hit->t = t_min;
 	return (1);
 }
 

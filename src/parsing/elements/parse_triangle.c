@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:34:30 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 14:47:20 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 15:32:57 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,28 @@ struct s_rt_element_triangle *tri
 
 static void
 	set_triangle_uv(
-		t_rt_element_triangle *tri
+		t_rt_element_triangle *t
 )
 {
 	double	l_e1;
 	double	l_e2;
+	double	tmp;
 
-	l_e1 = vec3_length(vec3_sub(tri->v2, tri->v1));
-	l_e2 = vec3_length(vec3_sub(tri->v3, tri->v1));
-	tri->uv1 = (t_vec2){0.0f, 0.0f};
-	tri->uv2 = (t_vec2){l_e1, 0.0f};
-	tri->uv3 = (t_vec2){0.0f, l_e2};
+	t->tr_uv.e1 = vec3_sub(t->v2, t->v1);
+	t->tr_uv.e2 = vec3_sub(t->v3, t->v1);
+	l_e1 = vec3_length(t->tr_uv.e1);
+	l_e2 = vec3_length(t->tr_uv.e2);
+	t->tr_uv.uv1 = (t_vec2){0.0f, 0.0f};
+	t->tr_uv.uv2 = (t_vec2){l_e1, 0.0f};
+	t->tr_uv.uv3 = (t_vec2){0.0f, l_e2};
+	t->tr_uv.du1 = t->tr_uv.uv2.x - t->v1.x;
+	t->tr_uv.dv1 = t->tr_uv.uv2.y - t->tr_uv.uv1.y;
+	t->tr_uv.du2 = t->tr_uv.uv3.x - t->tr_uv.uv1.x;
+	t->tr_uv.dv2 = t->tr_uv.uv3.y - t->tr_uv.uv1.y;
+	tmp = t->tr_uv.du1 * t->tr_uv.dv2 - t->tr_uv.du2 * t->tr_uv.dv1;
+	t->tr_uv.r = 1.0f / tmp;
+	if (t->tr_uv.r == 0.0f)
+		t->tr_uv.r = EPSILON;
 }
 
 int
@@ -85,7 +96,7 @@ struct s_rt_scene *scene
 			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
 			.shininess = DEFAULT_SHININESS,
 			.texture = mlx_load_png("./textures/cat.png"),
-			.bump_map = NULL};
+			.bump_map = mlx_load_png("./textures/bump_map.png")};
 		obj->intersect = triangle_int;
 		obj->data = &obj->triangle;
 		obj->triangle = result;

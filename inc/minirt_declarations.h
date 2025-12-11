@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 14:46:43 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 15:15:18 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,17 +181,29 @@ typedef struct s_rt_element_cylinder
 }	t_rt_element_cylinder;
 # define CYLINDER_FIELDS 5
 
-typedef struct s_rt_element_triangle
+typedef struct s_rt_triangle_uv
 {
-	t_norm			normal; // precomputed, not given by user
-	t_vec3			v1;
-	t_vec3			v2;
-	t_vec3			v3;
 	t_vec2			uv1;
 	t_vec2			uv2;
 	t_vec2			uv3;
-	struct s_rgba	colour;
-	uint16_t		attr; // only relevant for stlfile derived tris
+	t_vec3			e1;
+	t_vec3			e2;
+	double			du1;
+	double			dv1;
+	double			du2;
+	double			dv2;
+	double			r;
+}	t_rt_triangle_uv;
+
+typedef struct s_rt_element_triangle
+{
+	t_norm				normal; // precomputed, not given by user
+	t_vec3				v1;
+	t_vec3				v2;
+	t_vec3				v3;
+	t_rt_triangle_uv	tr_uv;
+	struct s_rgba		colour;
+	uint16_t			attr; // only relevant for stlfile derived tris
 }	t_rt_element_triangle;
 # define TRIANGLE_FIELDS 4
 # define PIXEL_STL_TRI_FALLBACK 0xFFBC8DFF
