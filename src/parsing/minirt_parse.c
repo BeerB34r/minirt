@@ -110,12 +110,12 @@ unsigned int old_element_count)
 				+ 0xFF;
 			if (new_elements[i + offset].material.colour.hex == 0x000000FF)
 				new_elements[i + offset].material.colour.hex = PIXEL_STL_TRI_FALLBACK;
-			// new_elements[i + offset].material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
-			// new_elements[i + offset].material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
-			// new_elements[i + offset].material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
-			// new_elements[i + offset].material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
-			// new_elements[i + offset].material.shininess = DEFAULT_SHININESS;
-			// new_elements[i + offset].intersect = triangle_int;
+			new_elements[i + offset].material.ambi_reflectivity = DEFAULT_AMBI_REFLECTIVITY;
+			new_elements[i + offset].material.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY;
+			new_elements[i + offset].material.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY;
+			new_elements[i + offset].material.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY;
+			new_elements[i + offset].material.shininess = DEFAULT_SHININESS;
+			new_elements[i + offset].intersect = triangle_int;
 			new_elements[i + offset].data = &new_elements[i + offset].triangle;
 		}
 	}
@@ -139,7 +139,7 @@ struct s_rt_scene *scene
 	while (++i < scene->element_count)
 		if (scene->elements[i].type == STLFILE)
 			tri_count += scene->elements[i].stlfile.tri_count;
-	new_elements = ft_calloc(scene->element_count - stl_count + tri_count,
+	new_elements = ft_calloc(scene->element_count - stl_count + tri_count + 1,
 			sizeof(struct s_rt_element));
 	if (!new_elements)
 	{
@@ -161,9 +161,9 @@ struct s_rt_scene *scene
 {
 	if (parse_return)
 		return (parse_return);
-	if (extract_lights(scene))
-		return (1);
 	if (flatten_stls(scene))
+		return (1);
+	if (extract_lights(scene))
 		return (1);
 	return (0);
 }
