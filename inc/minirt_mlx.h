@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 13:22:23 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 15:03:26 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,5 +267,11 @@ void
 		t_uv *uv, t_vec3 p,
 		t_vec3 cyl_bottom,
 		t_vec3 cyl_top
+		);
+void	
+	get_triangle_uv(
+		t_uv *uv,
+		const t_rt_element_triangle	*tri,
+		t_tri_work w
 		);
 #endif // MINIRT_MLX_H

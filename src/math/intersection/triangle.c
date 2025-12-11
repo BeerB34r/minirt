@@ -13,7 +13,7 @@
 #include <math.h>
 #include <minirt_math.h>
 #include <minirt_declarations.h>
-#include <stdio.h>
+#include <minirt_mlx.h>
 
 static int	tri_step_det(t_line ray,
 				const t_rt_element_triangle *tri, t_tri_work *w)
@@ -65,7 +65,6 @@ int	triangle_int(t_line ray, const void *data, double *t, t_uv *uv)
 		return (0);
 	if (!tri_step_uv(ray, tri, &w))
 		return (0);
-	uv->u = w.u;
-	uv->v = w.v;
+	get_triangle_uv(uv, tri, w);
 	return (tri_step_t(&w, t));
 }

@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 12:21:43 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 14:46:43 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef union u_vec3
 
 typedef t_vec3	t_norm;
 typedef t_vec3	t_vec4;
+typedef t_vec3	t_vec2;
 
 typedef struct u_uv
 {
@@ -186,6 +187,9 @@ typedef struct s_rt_element_triangle
 	t_vec3			v1;
 	t_vec3			v2;
 	t_vec3			v3;
+	t_vec2			uv1;
+	t_vec2			uv2;
+	t_vec2			uv3;
 	struct s_rgba	colour;
 	uint16_t		attr; // only relevant for stlfile derived tris
 }	t_rt_element_triangle;

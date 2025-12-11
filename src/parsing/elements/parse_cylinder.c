@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/19 21:22:24 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 13:19:54 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 13:35:10 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ struct s_rt_scene *scene
 			.diff_reflectivity = DEFAULT_DIFF_REFLECTIVITY,
 			.spec_reflectivity = DEFAULT_SPEC_REFLECTIVITY,
 			.abso_reflectivity = DEFAULT_ABSO_REFLECTIVITY,
-			.shininess = DEFAULT_SHININESS, .texture = mlx_load_png("./textures/cat.png"),
-			.bump_map = NULL};
+			.shininess = DEFAULT_SHININESS, .texture = NULL,
+			.bump_map = mlx_load_png("./textures/bump_map.png")};
 		obj->intersect = cylinder_int;
 		obj->data = &obj->cylinder;
 		obj->cylinder = result;
