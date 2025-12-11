@@ -92,6 +92,33 @@ struct s_rt_scene *scene
 	return (0);
 }
 
+static
+int
+	get_config(
+char **element_fields,
+struct s_material *material,
+struct s_rt_element_superquadric *result
+)
+{
+	return (
+		!get_sq_subtype(element_fields[1], &result->subtype)
+		&& !get_vec3(element_fields[2], &result->pos)
+		&& !get_vec4(element_fields[3], &result->rot)
+		&& !get_real_int_limit(element_fields[4], &result->e1p, 1, NAN)
+		&& !get_real_int_limit(element_fields[5], &result->e1q, 1, NAN)
+		&& !get_real_int_limit(element_fields[6], &result->e2p, 1, NAN)
+		&& !get_real_int_limit(element_fields[7], &result->e2q, 1, NAN)
+		&& !get_real_limit(element_fields[8], &result->a1, nextafter(0, 1), NAN)
+		&& !get_real_limit(element_fields[9], &result->a2, nextafter(0, 1), NAN)
+		&& !get_real_limit(element_fields[10],
+			&result->a3, nextafter(0, 1), NAN)
+		&& !get_real_limit(element_fields[11], &result->a, nextafter(0, 1), NAN)
+		&& !get_material_properties(element_fields[12], material)
+		&& !get_rgba_or_texture(element_fields[13], &result->colour, material)
+		&& !get_bumpmap(element_fields[14], &material->bump_map)
+	);
+}
+
 int
 	parse_superquadric(
 char **element_fields,
@@ -107,22 +134,7 @@ struct s_rt_scene *scene
 	if (field_count < SUPERQUADRIC_FIELDS + 2
 		|| field_count > SUPERQUADRIC_FIELDS + 3)
 		ft_dprintf(2, ERR E_FIELD, "superquadric");
-	else if (
-		!get_sq_subtype(element_fields[1], &result.subtype)
-		&& !get_vec3(element_fields[2], &result.pos)
-		&& !get_vec4(element_fields[3], &result.rot)
-		&& !get_real_int_limit(element_fields[4], &result.e1p, 1, NAN)
-		&& !get_real_int_limit(element_fields[5], &result.e1q, 1, NAN)
-		&& !get_real_int_limit(element_fields[6], &result.e2p, 1, NAN)
-		&& !get_real_int_limit(element_fields[7], &result.e2q, 1, NAN)
-		&& !get_real_limit(element_fields[8], &result.a1, nextafter(0, 1), NAN)
-		&& !get_real_limit(element_fields[9], &result.a2, nextafter(0, 1), NAN)
-		&& !get_real_limit(element_fields[10], &result.a3, nextafter(0, 1), NAN)
-		&& !get_real_limit(element_fields[11], &result.a, nextafter(0, 1), NAN)
-		&& !get_material_properties(element_fields[12], &material)
-		&& !get_rgba_or_texture(element_fields[13], &result.colour, &material)
-		&& !get_bumpmap(element_fields[14], &material.bump_map)
-	)
+	else if (get_config(element_fields, &material, &result))
 		return (final_touches(result, material, scene));
 	if (material.texture)
 		mlx_delete_texture(material.texture);

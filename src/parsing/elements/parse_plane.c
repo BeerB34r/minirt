@@ -31,6 +31,25 @@
 #include <minirt_math.h>
 #include <minirt_error.h>
 
+static
+void
+	finishing_touches(
+struct s_rt_scene *scene,
+struct s_rt_element_plane result,
+struct s_material material
+)
+{
+	struct s_rt_element *const	obj
+		= &scene->elements[(scene->element_count++)];
+
+	obj->type = PLANE;
+	material.colour = result.colour;
+	obj->material = material;
+	obj->intersect = plane_int;
+	obj->data = &obj->plane;
+	obj->plane = result;
+}
+
 int
 	parse_plane(
 char **element_fields,
@@ -40,7 +59,6 @@ struct s_rt_scene *scene
 	const int					field_count = count_fields(element_fields);
 	struct s_material			material;
 	struct s_rt_element_plane	result;
-	struct s_rt_element			*obj;
 
 	material = (struct s_material){0};
 	if (field_count < PLANE_FIELDS + 2 || field_count > PLANE_FIELDS + 3)
@@ -51,14 +69,7 @@ struct s_rt_scene *scene
 		&& !get_rgba_or_texture(element_fields[4], &result.colour, &material)
 		&& !get_bumpmap(element_fields[5], &material.bump_map))
 	{
-		obj = &scene->elements[(scene->element_count)];
-		obj->type = PLANE;
-		material.colour = result.colour;
-		obj->material = material;
-		obj->intersect = plane_int;
-		obj->data = &obj->plane;
-		obj->plane = result;
-		scene->element_count += 1;
+		finishing_touches(scene, result, material);
 		return (0);
 	}
 	if (material.texture)

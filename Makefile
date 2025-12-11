@@ -41,7 +41,7 @@ VPATH			=	$(SRCDIR)
 CFLAGS			:=	-Wall -Wextra -Werror -fhonor-infinities -fhonor-nans -fsanitize=address # -ffast-math -O3
 CPPFLAGS		=	$(INC) -g3
 LDFLAGS			:=	-lm lib/libft/libft.a lib/mlx42/build/libmlx42.a -ldl -lglfw -pthread
-CC				:=	cc
+CC				:=	clang
 RM				:=	rm -fr
 NAME			:=	minirt
 
@@ -55,7 +55,7 @@ MAKEFLAGS		+=	-r --no-print-directory -j
 
 all				:	$(NAME)
 
-$(NAME)			:	$(BIN)
+$(NAME)			:	$(BIN) lib/libft/libft.a
 	@echo "\033[G\033[JLinking executable\t[$@]"
 	@$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
@@ -69,6 +69,9 @@ $(BINDIR)%.o	:	%.c	| $(BINDIR) line
 test_%			:	%.o
 	$(CC) $(CPPFLAGS) $(TESTFLAGS) -o $@ $< $(TESTDIR)$(basename $<).c $(LDFLAGS)
 	./$@
+
+lib/libft/libft.a	:
+	@$(MAKE) -C lib/libft
 
 %/				:
 	@mkdir -p $@

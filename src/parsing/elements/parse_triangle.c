@@ -46,7 +46,7 @@ struct s_rt_element_triangle *tri
 
 static void
 	set_triangle_uv(
-		t_rt_element_triangle *t
+t_rt_element_triangle *t
 )
 {
 	double	l_e1;
@@ -70,6 +70,27 @@ static void
 		t->tr_uv.r = EPSILON;
 }
 
+static
+void
+	finishing_touches(
+struct s_rt_scene *scene,
+struct s_rt_element_triangle result,
+struct s_material material
+)
+{
+	struct s_rt_element *const	obj
+		= &scene->elements[(scene->element_count++)];
+
+	set_triangle_normal(&result);
+	set_triangle_uv(&result);
+	obj->type = TRIANGLE;
+	material.colour = result.colour;
+	obj->material = material;
+	obj->intersect = triangle_int;
+	obj->data = &obj->triangle;
+	obj->triangle = result;
+}
+
 int
 	parse_triangle(
 char **element_fields,
@@ -79,28 +100,18 @@ struct s_rt_scene *scene
 	const int						field_count = count_fields(element_fields);
 	struct s_material				material;
 	struct s_rt_element_triangle	result;
-	struct s_rt_element				*obj;
 
 	material = (struct s_material){0};
 	if (field_count < TRIANGLE_FIELDS + 2 || field_count > TRIANGLE_FIELDS + 3)
 		ft_dprintf(2, ERR E_FIELD, "triangle");
 	else if (!get_vec3(element_fields[1], &result.v1)
-			&& !get_vec3( element_fields[2], &result.v2)
-			&& !get_vec3(element_fields[3], &result.v3)
-			&& !get_material_properties(element_fields[4], &material)
-			&& !get_rgba_or_texture(element_fields[5], &result.colour, &material)
-			&& !get_bumpmap(element_fields[6], &material.bump_map))
+		&& !get_vec3(element_fields[2], &result.v2)
+		&& !get_vec3(element_fields[3], &result.v3)
+		&& !get_material_properties(element_fields[4], &material)
+		&& !get_rgba_or_texture(element_fields[5], &result.colour, &material)
+		&& !get_bumpmap(element_fields[6], &material.bump_map))
 	{
-		obj = &scene->elements[(scene->element_count)];
-		set_triangle_normal(&result);
-		set_triangle_uv(&result);
-		obj->type = TRIANGLE;
-		material.colour = result.colour;
-		obj->material = material;
-		obj->intersect = triangle_int;
-		obj->data = &obj->triangle;
-		obj->triangle = result;
-		scene->element_count += 1;
+		finishing_touches(scene, result, material);
 		return (0);
 	}
 	if (material.texture)

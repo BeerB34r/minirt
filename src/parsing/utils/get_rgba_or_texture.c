@@ -50,7 +50,7 @@ struct s_material *material
 	if (!temp)
 		return (ft_dprintf(STDERR_FILENO, ERR E_OOM), 1);
 	if (ft_strchr(temp, '\n'))
-		*ft_strchr(temp,'\n') = 0;
+		*ft_strchr(temp, '\n') = 0;
 	colour->hex = 0;
 	err = get_texture(temp, &material->texture);
 	free(temp);

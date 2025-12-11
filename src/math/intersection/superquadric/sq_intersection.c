@@ -34,7 +34,7 @@
 int	sq_int(t_line ray, const void *data, double *t, t_uv *uv)
 {
 	const struct s_rt_element_superquadric	*s = data;
-	unsigned int	hit_flag;
+	unsigned int							hit_flag;
 
 	hit_flag = 0;
 	if (s->subtype == ELLIPSOID)

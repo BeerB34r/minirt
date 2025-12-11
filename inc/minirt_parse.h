@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
 /*                                                        +#+                 */
 /*   Created: 2025/05/08 03:46:38 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/09/19 21:11:40 by mde-beer            ########   odam.nl   */
+/*   Updated: 2025/12/11 22:54:24 by mde-beer            ########   odam.nl   */
 /*                                                                            */
 /*   —————No norm compliance?——————                                           */
 /*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
@@ -112,4 +112,9 @@ void
 	free_scene(
 		struct s_rt_scene scene
 		);	// FILE: cleanup.c
+int	
+	flatten(
+		int parse_return,
+		struct s_rt_scene *scene
+		);	// FILE: flatten.c
 #endif // MINIRT_PARSE_H
