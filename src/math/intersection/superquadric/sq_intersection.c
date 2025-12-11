@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 17:59:40 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 13:37:30 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 16:12:32 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,27 @@
 /* ************************************************************************** */
 
 #include <math.h>
+#include <minirt_math.h>
 #include <minirt_declarations.h>
 #include <minirt_math_superquadrics.h>
+#include <minirt_mlx.h>
 
 int	sq_int(t_line ray, const void *data, double *t, t_uv *uv)
 {
 	const struct s_rt_element_superquadric	*s = data;
+	unsigned int	hit_flag;
 
+	hit_flag = 0;
 	if (s->subtype == ELLIPSOID)
-		return (sq_e_int(ray, *s, t, uv));
+		hit_flag = sq_e_int(ray, *s, t);
 	else if (s->subtype == HYPERBOLOID1)
-		return (sq_h1_int(ray, *s, t, uv));
+		hit_flag = sq_h1_int(ray, *s, t);
 	else if (s->subtype == HYPERBOLOID2)
-		return (sq_h2_int(ray, *s, t, uv));
+		hit_flag = sq_h2_int(ray, *s, t);
 	else if (s->subtype == TOROID)
-		return (sq_t_int(ray, *s, t, uv));
-	return (0);
+		hit_flag = sq_t_int(ray, *s, t);
+	if (hit_flag)
+		*uv = wrap0(sq_xyz_uv(
+					vec3_add(ray.origin, vec3_scalar_mul(ray.dir, *t)), *s));
+	return (hit_flag);
 }

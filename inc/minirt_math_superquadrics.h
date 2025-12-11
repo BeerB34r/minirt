@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/01 17:07:16 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 13:37:53 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 15:50:38 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ int
 	sq_e_int(
 		t_line lw,
 		struct s_rt_element_superquadric s,
-		double *t,
-		t_uv *uv
+		double *t
 		);	// FILE: math/superquadric/ellipsoid/e_intersection.c
 double
 	sq_e_derivative(
@@ -128,8 +127,7 @@ int
 	sq_h1_int(
 		t_line lw,
 		struct s_rt_element_superquadric s,
-		double *t,
-		t_uv *uv
+		double *t
 		);	// FILE: math/superquadric/hyperboloid1/h1_intersection.c
 double
 	sq_h1_derivative(
@@ -157,8 +155,7 @@ int
 	sq_h2_int(
 		t_line lw,
 		struct s_rt_element_superquadric s,
-		double *t,
-		t_uv *uv
+		double *t
 		);	// FILE: math/superquadric/hyperboloid2/h2_intersection.c
 double
 	sq_h2_derivative(
@@ -186,8 +183,7 @@ int
 	sq_t_int(
 		t_line lw,
 		struct s_rt_element_superquadric s,
-		double *t,
-		t_uv	*uv
+		double *t
 		);	// FILE: math/superquadric/toroid/t_intersection.c
 double
 	sq_t_derivative(
