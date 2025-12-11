@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 11:25:41 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 12:21:43 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,6 +311,9 @@ typedef struct s_cyl_work
 	double	t_cap;
 	double	t_final;
 	double	d;
+	t_uv	side_uv;
+	t_uv	top_cap_uv;
+	t_uv	bottom_cap_uv;
 }	t_cyl_work;
 
 typedef struct s_shade_input

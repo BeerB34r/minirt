@@ -6,13 +6,14 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/09 13:47:05 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/10 13:38:41 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 13:29:15 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <minirt_math.h>
 #include <minirt_declarations.h>
+#include <stdio.h>
 
 static int	cyl_compute_quad(t_line ray,
 			const t_rt_element_cylinder *cyl, t_cyl_work *w)
@@ -47,5 +48,11 @@ int	cylinder_int(t_line ray, const void *data, double *t, t_uv *uv)
 	if (w.t_final == INFINITY)
 		return (0);
 	*t = w.t_final;
+	if (w.t_final == w.t_side)
+		*uv = w.side_uv;
+	else if (w.t_final == w.t_bottom)
+		*uv = w.bottom_cap_uv;
+	else if (w.t_final == w.t_top)
+		*uv = w.top_cap_uv;
 	return (1);
 }

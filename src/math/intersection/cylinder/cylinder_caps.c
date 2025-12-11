@@ -6,13 +6,14 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/09 13:43:52 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/09 14:04:26 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 13:29:01 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <minirt_math.h>
 #include <minirt_declarations.h>
+#include <minirt_mlx.h>
 
 static void	cyl_solve_bottom_cap(t_line ray,
 			const t_rt_element_cylinder *cyl, t_cyl_work *w)
@@ -30,6 +31,9 @@ static void	cyl_solve_bottom_cap(t_line ray,
 		if (vec3_dot_product(w->v, w->v) <= cyl->radius * cyl->radius)
 			w->t_bottom = w->t_cap;
 	}
+	get_cyl_tangents(&w->bottom_cap_uv, cap_bottom, vec3_add(
+			cyl->pos, vec3_scalar_mul(w->axis, cyl->height)));
+	compute_cyl_cap_uv(&w->bottom_cap_uv, w->p, cap_bottom, cyl->radius);
 }
 
 static void	cyl_solve_top_cap(t_line ray,
@@ -48,6 +52,8 @@ static void	cyl_solve_top_cap(t_line ray,
 		if (vec3_dot_product(w->v, w->v) <= cyl->radius * cyl->radius)
 			w->t_top = w->t_cap;
 	}
+	get_cyl_tangents(&w->top_cap_uv, cyl->pos, cap_top);
+	compute_cyl_cap_uv(&w->top_cap_uv, w->p, cap_top, cyl->radius);
 }
 
 void	cyl_solve_caps(t_line ray,

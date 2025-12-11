@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 15:38:31 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 11:31:26 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 13:24:55 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@ double
 		t_vec3 b,
 		t_vec3 c
 		);	// FILE: math/vec3_box_product.c
+double	
+	vec3_length(
+		t_vec3 v
+		);
 
 //	//	line interface
 t_vec3	
@@ -179,5 +183,11 @@ void
 	get_plane_tangents(
 		t_uv *uv,
 		t_vec3 n
+		);
+void	
+	get_cyl_tangents(
+		t_uv *uv,
+		t_vec3 cyl_bottom,
+		t_vec3 cyl_top
 		);
 #endif // MINIRT_MATH_H

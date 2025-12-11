@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 11:31:38 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 13:22:23 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,5 +255,17 @@ int
 	uv_to_xy(
 		double v,
 		int h
+		);
+void	
+	compute_cyl_cap_uv(
+		t_uv *uv, t_vec3 p,
+		t_vec3 centre,
+		double radius
+		);
+void	
+	compute_cyl_side_uv(
+		t_uv *uv, t_vec3 p,
+		t_vec3 cyl_bottom,
+		t_vec3 cyl_top
 		);
 #endif // MINIRT_MLX_H
