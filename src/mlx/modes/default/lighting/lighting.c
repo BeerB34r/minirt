@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/09 14:25:35 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/10 16:44:17 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 11:20:03 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ t_vec4	shade(struct s_rt_scene *scene, t_hit *hit)
 		base_colour = get_texture_pixel_value(material.texture, hit);
 	else
 		base_colour = hex_to_vec4(material.colour.hex);
-	// if (material.bump_map)
-	// 	hit->shading_normal = apply_bump_map(material.bump_map, hit);
-	// else
-	// 	hit->shading_normal = hit->normal;
+	if (material.bump_map)
+		hit->shading_normal = apply_bump_map(material.bump_map, hit);
+	else
+		hit->shading_normal = hit->normal;
 	view_dir = vec3_normalise(vec3_flip(hit->ray.dir));
 	vec3_add_inplace(&colour, compute_ambient(
 			scene->ambient_light, material.ambi_reflectivity, base_colour));

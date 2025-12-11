@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/23 15:38:31 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 15:30:14 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 10:49:49 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,4 +170,5 @@ t_vec3
 		double t,
 		t_vec3 pos
 		);
+void	get_sphere_tangents(t_uv *uv, t_vec3 n);
 #endif // MINIRT_MATH_H

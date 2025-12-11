@@ -53,5 +53,6 @@ int	sphere_int(t_line ray, const void *data, double *t, t_uv *uv)
 	else
 		return (0);
 	get_sphere_uv(uv, get_local_point(ray, *t, sp->pos));
+	get_sphere_tangents(uv, l);
 	return (1);
 }

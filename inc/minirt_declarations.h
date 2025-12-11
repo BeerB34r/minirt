@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 16:40:23 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 11:25:41 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define DEFAULT_SHININESS		   0.1f
 # define EXPOSURE				   1.5f
 # define MAX_DEPTH				   250
-# define BUMP_STRENGTH			   0.5f
+# define BUMP_STRENGTH			   2.8f
 
 enum e_element_type
 {
@@ -94,14 +94,12 @@ typedef union u_vec3
 typedef t_vec3	t_norm;
 typedef t_vec3	t_vec4;
 
-typedef union u_uv
+typedef struct u_uv
 {
-	double	a[2];
-	struct
-	{
-		double	u;
-		double	v;
-	};
+	double	u;
+	double	v;
+	t_vec3	t;
+	t_vec3	b;
 }	t_uv;
 
 typedef union u_tuple

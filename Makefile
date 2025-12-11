@@ -13,6 +13,7 @@ SRCDIR			:=	src/ \
 					src/math/intersection/superquadric/hyperboloid1/ \
 					src/math/intersection/superquadric/hyperboloid2/ \
 					src/math/intersection/superquadric/toroid/ \
+					src/math/tangents/ \
 					src/math/vector/ \
 					src/mlx/ \
 					src/mlx/modes/ \
