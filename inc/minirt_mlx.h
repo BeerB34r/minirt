@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/10 16:36:31 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 11:31:38 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,8 +239,7 @@ t_vec4
 void	
 	get_plane_uv(
 		t_uv *uv,
-		t_vec3 p,
-		t_vec3 normal
+		t_vec3 p
 		);
 t_vec3	
 	apply_bump_map(
@@ -252,7 +251,7 @@ t_vec4
 		mlx_texture_t *texture,
 		t_tuple coords
 		);
-int	
+int		
 	uv_to_xy(
 		double v,
 		int h

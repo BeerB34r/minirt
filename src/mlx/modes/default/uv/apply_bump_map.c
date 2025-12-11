@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/10 16:04:16 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/11 11:19:29 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/11 11:33:43 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,11 @@ void	get_h(mlx_texture_t *bump_map, t_tuple coords, t_vec3	*h)
 	h->z = coords_to_greyscale(bump_map, coords);
 }
 
- // only thing that still needs to be done is to fetch the tangent and bitangent
- // then: normalise(normal + bump_strength * (-u_slope * tangent - v_slope * bitangent))
-
 t_vec3	apply_bump_map(mlx_texture_t *bump_map, t_hit *hit)
 {
 	t_tuple		coords;
 	t_vec3		h;
+	t_vec3		perturbation;
 	double		u_slope;
 	double		v_slope;
 
@@ -53,10 +51,10 @@ t_vec3	apply_bump_map(mlx_texture_t *bump_map, t_hit *hit)
 	get_h(bump_map, coords, &h);
 	u_slope = h.y - h.x;
 	v_slope = h.z - h.x;
-	t_vec3 perturbation = vec3_scalar_mul(
-		vec3_sub(
-			vec3_scalar_mul(hit->uv.t, -u_slope),
-			vec3_scalar_mul(hit->uv.b, v_slope))
-		, BUMP_STRENGTH);
+	perturbation = vec3_scalar_mul(
+			vec3_sub(
+				vec3_scalar_mul(hit->uv.t, -u_slope),
+				vec3_scalar_mul(hit->uv.b, v_slope)),
+			BUMP_STRENGTH);
 	return (vec3_normalise(vec3_add(hit->normal, perturbation)));
 }

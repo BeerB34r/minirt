@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   sphere_uv.c                                        :+:    :+:            */
+/*   plane_tangents.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/12/10 11:21:12 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/11 11:32:30 by alkuijte      ########   odam.nl         */
+/*   Created: 2025/12/11 11:27:42 by alkuijte      #+#    #+#                 */
+/*   Updated: 2025/12/11 11:34:47 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minirt_math.h>
 #include <math.h>
+#include <minirt_math.h>
 
-// Must be called before get_sphere_tangents
-void	get_sphere_uv(t_uv *uv, t_vec3 p)
+void	get_plane_tangents(t_uv *uv, t_vec3 n)
 {
-	uv->u = 0.5 + (atan2(p.z, p.x) / (PI * 2.0f));
-	uv->v = 0.5 + (asin(p.y) / PI);
+	if (fabs(n.x) > fabs(n.y))
+		uv->t = vec3_normalise(vec3_cross_product((t_vec3){0, 1, 0}, n));
+	else
+		uv->t = vec3_normalise(vec3_cross_product((t_vec3){1, 0, 0}, n));
+	uv->b = vec3_cross_product(n, uv->t);
 }

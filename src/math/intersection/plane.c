@@ -45,6 +45,7 @@ int	plane_int(t_line ray, const void *data, double *t, t_uv *uv)
 	if (d < EPSILON)
 		return (0);
 	*t = d;
-	get_plane_uv(uv, get_local_point(ray, *t, pl->pos), pl->normal);
+	get_plane_tangents(uv, pl->normal);
+	get_plane_uv(uv, get_local_point(ray, *t, pl->pos));
 	return (1);
 }
