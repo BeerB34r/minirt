@@ -46,12 +46,12 @@ t_vec4	get_light_col(struct s_rt_element_light light)
 
 t_vec4	mul_colour(t_vec4 a, t_vec4 b)
 {
-	t_vec4 c;
+	t_vec4	c;
 
 	c.x = a.x * b.x;
 	c.y = a.y * b.y;
 	c.z = a.z * b.z;
-	return c;
+	return (c);
 }
 
 t_vec4	blend_colour(t_vec4 a, t_vec4 b, double r)

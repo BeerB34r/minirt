@@ -112,8 +112,8 @@ void	populate_plane_array(struct s_rt_element_camera c, unsigned int w,
 	const t_vec3	q_y = vec3_scalar_mul(local_y(c.orientation),
 			(2 * g_y) / (h - 1));
 	const t_vec3	p_1m = vec3_sub(vec3_sub(
-				c.orientation, vec3_scalar_mul(local_y(c.orientation)
-				, tan(theta / 2))),
+				c.orientation, vec3_scalar_mul(local_y(c.orientation),
+					tan(theta / 2))),
 			vec3_scalar_mul(local_z(c.orientation), g_y));
 
 	view_plane_array(array, (t_plane_array_opts){.origin = c.pos,

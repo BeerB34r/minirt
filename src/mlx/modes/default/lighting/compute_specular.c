@@ -18,13 +18,13 @@
 t_vec4	compute_specular(t_vec4 light_col, t_shade_input in)
 {
 	t_vec4	specular;
+	t_vec4	r;
 	double	t;
 	double	refl;
 
 	specular = (t_vec4){0.0f, 0.0f, 0.0f, 1.0f};
 	refl = in.mat.spec_reflectivity;
-	t_vec3 r = vec3_normalise(reflect(vec3_scalar_mul(in.l, -1.0f), in.n));
-
+	r = vec3_normalise(reflect(vec3_scalar_mul(in.l, -1.0f), in.n));
 	t = pow(
 			fmaxf(
 				vec3_dot_product(
