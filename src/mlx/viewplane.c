@@ -55,7 +55,7 @@ t_norm local_x
 )
 {
 	const t_norm	x = (t_norm){.x = 1, .y = 0, .z = 0};
-	const t_norm	y = (t_norm){.x = 0, .y = 1, .z = 0};
+	const t_norm	y = (t_norm){.x = 0, .y = -1, .z = 0};
 	const double	theta = acos(vec3_dot_product(x, local_x));
 	t_norm			k;
 
