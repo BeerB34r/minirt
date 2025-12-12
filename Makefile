@@ -73,7 +73,7 @@ test_%			:	%.o
 lib/libft/libft.a	:
 	@$(MAKE) -C lib/libft
 
-lib/mlx42/build/libmlx42.a	:
+lib/mlx42/%	:
 	@./pull_mlx.sh
 
 %/				:
