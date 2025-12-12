@@ -29,8 +29,6 @@
 #include <minirt_mlx.h>
 #include <stdio.h>
 
-
-
 int	get_viewport(mlx_t **mlx, mlx_image_t **img, t_viewport metadata)
 {
 	*mlx = mlx_init(metadata.w, metadata.h, metadata.title, metadata.resizable);

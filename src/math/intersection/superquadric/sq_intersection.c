@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 17:59:40 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 16:12:32 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/12 11:28:29 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 int	sq_int(t_line ray, const void *data, double *t, t_uv *uv)
 {
 	const struct s_rt_element_superquadric	*s = data;
-	unsigned int	hit_flag;
+	unsigned int							hit_flag;
 
 	hit_flag = 0;
 	if (s->subtype == ELLIPSOID)

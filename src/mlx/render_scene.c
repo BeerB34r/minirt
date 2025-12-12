@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/06 14:58:25 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/12 11:26:20 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/12 11:29:09 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	render_scene(struct s_rt_scene *scene)
 	if (get_viewport(&mlx, &img, (t_viewport){VIEWPORT_WIDTH, VIEWPORT_HEIGHT,
 			VIEWPORT_TITLE, VIEWPORT_RESIZABLE}))
 		return ;
-	p = (struct s_progressive_rendering_params){ .max_depth = depth,
+	p = (struct s_progressive_rendering_params){.max_depth = depth,
 		.img = img, .mode = DEFAULT, .scene = scene};
 	populate_plane_array(scene->camera, VIEWPORT_WIDTH,
 		VIEWPORT_HEIGHT, p.angles);
@@ -76,4 +76,3 @@ void	render_scene(struct s_rt_scene *scene)
 	mlx_delete_image(mlx, img);
 	mlx_terminate(mlx);
 }
-
