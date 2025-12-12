@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/12 11:26:26 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/12 15:02:02 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define DEFAULT_ABSO_REFLECTIVITY 0.1f
 # define DEFAULT_SHININESS		   0.8f
 # define EXPOSURE				   1.5f
-# define MAX_DEPTH				   250
+# define MAX_DEPTH				   1
 # define BUMP_STRENGTH			   2.8f
 
 enum e_element_type
@@ -206,7 +206,7 @@ typedef struct s_rt_element_triangle
 	uint16_t			attr; // only relevant for stlfile derived tris
 }	t_rt_element_triangle;
 # define TRIANGLE_FIELDS 4
-# define PIXEL_STL_TRI_FALLBACK 0xFFBC8DFF
+# define PIXEL_STL_TRI_FALLBACK 0xFFB6C1FF
 
 struct s_rt_element_stlfile
 {

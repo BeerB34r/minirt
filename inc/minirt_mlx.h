@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/11 16:11:36 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/12 16:15:51 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,4 +278,5 @@ t_uv
 	wrap0(
 		t_uv uv
 		);
+	t_vec4	mul_colour(t_vec4 a, t_vec4 b);
 #endif // MINIRT_MLX_H
