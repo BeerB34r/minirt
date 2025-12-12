@@ -14,7 +14,7 @@
 #include <minirt_math.h>
 #include <minirt_mlx.h>
 
-t_vec4	compute_diffuse(t_vec4 light_col, t_shade_input in)
+t_vec4	compute_diffuse(t_vec4 light_col, double brightness, t_shade_input in)
 {
 	t_vec4	diffuse;
 	double	refl;
@@ -23,9 +23,9 @@ t_vec4	compute_diffuse(t_vec4 light_col, t_shade_input in)
 	refl = in.mat.diff_reflectivity;
 	if (in.dot_ln > 0.0)
 	{
-		diffuse.x = refl * light_col.x * in.dot_ln;
-		diffuse.y = refl * light_col.y * in.dot_ln;
-		diffuse.z = refl * light_col.z * in.dot_ln;
+		diffuse.x = refl * light_col.x * brightness * in.dot_ln;
+		diffuse.y = refl * light_col.y * brightness * in.dot_ln;
+		diffuse.z = refl * light_col.z * brightness * in.dot_ln;
 	}
 	return (diffuse);
 }

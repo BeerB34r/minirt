@@ -21,9 +21,9 @@ t_vec4	compute_ambient(struct s_rt_element_ambient_light ambient,
 	t_vec4	final_col;
 
 	amb_col = hex_to_vec4(ambient.colour.hex);
-	final_col.x = amb_col.x * mat_ambi_refl;
-	final_col.y = amb_col.y * mat_ambi_refl;
-	final_col.z = amb_col.z * mat_ambi_refl;
+	final_col.x = amb_col.x * ambient.ratio * mat_ambi_refl;
+	final_col.y = amb_col.y * ambient.ratio * mat_ambi_refl;
+	final_col.z = amb_col.z * ambient.ratio * mat_ambi_refl;
 	final_col.w = 1.0f;
 	return (final_col);
 }

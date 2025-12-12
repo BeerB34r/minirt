@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/09 14:25:35 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/12 16:27:17 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/12 16:51:43 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	shade_light(t_hit *hit, t_shade_input in, t_vec4 *colour)
 	light_col = get_light_col(in.light);
 	in.dot_ln = fmaxf(vec3_dot_product(in.l, in.n), 0.0f);
 	vec3_add_inplace(colour, compute_diffuse(
-			light_col, in));
+			light_col, in.light.brightness, in));
 	vec3_add_inplace(colour, compute_specular(
 			light_col, in));
 }
