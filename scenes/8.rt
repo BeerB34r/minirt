@@ -1,5 +1,0 @@
-A 1 1,1,1
-C 0,0,-6 0,0,1 90
-
-l -1,-1,-1 0.4 0,0,255
-sp 0,0,0 1 DEFAULT ./textures/checkerboard.png
