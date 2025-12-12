@@ -7,3 +7,6 @@
 !src.list
 !.gitignore
 !README.md
+!*.png
+!*.stl
+!*.sh

@@ -23,9 +23,9 @@ t_vec4	compute_diffuse(t_vec4 light_col, t_shade_input in)
 	refl = in.mat.diff_reflectivity;
 	if (in.dot_ln > 0.0)
 	{
-		diffuse.x = light_col.x * in.base_colour.x * refl * in.dot_ln;
-		diffuse.y = light_col.y * in.base_colour.y * refl * in.dot_ln;
-		diffuse.z = light_col.z * in.base_colour.z * refl * in.dot_ln;
+		diffuse.x = refl * light_col.x * in.dot_ln;
+		diffuse.y = refl * light_col.y * in.dot_ln;
+		diffuse.z = refl * light_col.z * in.dot_ln;
 	}
 	return (diffuse);
 }

@@ -67,7 +67,6 @@ t_vec4	trace_ray(t_trace_work *w)
 	w->colour = shade(w->scene, &w->hit);
 	if (w->hit.obj->material.abso_reflectivity > 0.0f)
 		handle_reflection(w);
-	w->colour = vec3_scalar_mul(w->colour, EXPOSURE);
 	return (w->colour);
 }
 
@@ -76,7 +75,11 @@ void	default_colour(struct s_mode_func_params p,
 					struct	s_rgba *colour)
 {
 	t_trace_work	w;
+	t_vec4			c;
 
 	w = create_trace_work(p.scene, angles[p.x][p.y], 0);
-	colour->hex = vec4_to_hex(trace_ray(&w));
+	c = trace_ray(&w);
+	c = vec3_scalar_mul(c, EXPOSURE);
+	clamp_colour(&c);
+	colour->hex = vec4_to_hex(c);
 }

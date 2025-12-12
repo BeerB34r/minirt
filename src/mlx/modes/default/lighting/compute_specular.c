@@ -18,18 +18,22 @@
 t_vec4	compute_specular(t_vec4 light_col, t_shade_input in)
 {
 	t_vec4	specular;
-	t_vec3	r;
-	double	spec_f;
+	double	t;
+	double	refl;
 
 	specular = (t_vec4){0.0f, 0.0f, 0.0f, 1.0f};
-	if (in.dot_ln > 0.0f)
-	{
-		r = vec3_normalise(vec3_sub(
-					vec3_scalar_mul(in.n, 2.0f * in.dot_ln), in.l));
-		spec_f = powf(fmaxf(vec3_dot_product(r, in.view_dir), 0.0f),
-				in.mat.shininess);
-		specular = vec3_scalar_mul(
-				light_col, in.mat.spec_reflectivity * spec_f);
-	}
+	refl = in.mat.spec_reflectivity;
+	t_vec3 r = vec3_normalise(reflect(vec3_scalar_mul(in.l, -1.0f), in.n));
+
+	t = pow(
+			fmaxf(
+				vec3_dot_product(
+					r,
+					in.view_dir),
+				0.0f),
+			in.mat.shininess);
+	specular.x = refl * light_col.x * t;
+	specular.y = refl * light_col.y * t;
+	specular.z = refl * light_col.z * t;
 	return (specular);
 }
