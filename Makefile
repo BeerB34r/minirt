@@ -55,7 +55,7 @@ MAKEFLAGS		+=	-r --no-print-directory -j
 
 all				:	$(NAME)
 
-$(NAME)			:	$(BIN) lib/libft/libft.a
+$(NAME)			:	$(BIN) lib/libft/libft.a lib/mlx42/build/libmlx42.a
 	@echo "\033[G\033[JLinking executable\t[$@]"
 	@$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
@@ -72,6 +72,9 @@ test_%			:	%.o
 
 lib/libft/libft.a	:
 	@$(MAKE) -C lib/libft
+
+lib/mlx42/build/libmlx42.a	:
+	@./pull_mlx.sh
 
 %/				:
 	@mkdir -p $@
