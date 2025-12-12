@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/12 15:02:02 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/12 17:05:15 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define DEFAULT_DIFF_REFLECTIVITY 0.5f
 # define DEFAULT_SPEC_REFLECTIVITY 0.8f
 # define DEFAULT_ABSO_REFLECTIVITY 0.1f
-# define DEFAULT_SHININESS		   0.8f
+# define DEFAULT_SHININESS		   400
 # define EXPOSURE				   1.5f
 # define MAX_DEPTH				   1
 # define BUMP_STRENGTH			   2.8f
