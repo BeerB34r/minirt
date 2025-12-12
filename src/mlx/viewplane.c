@@ -80,7 +80,7 @@ t_norm local_x
 t_norm	local_z(t_norm local_x)
 {
 	const t_norm	x = (t_norm){.x = 1, .y = 0, .z = 0};
-	const t_norm	z = (t_norm){.x = 0, .y = 0, .z = -1};
+	const t_norm	z = (t_norm){.x = 0, .y = 0, .z = 1};
 	const double	theta = acos(vec3_dot_product(x, local_x));
 	t_norm			k;
 
