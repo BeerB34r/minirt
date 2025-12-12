@@ -44,11 +44,11 @@ struct s_material *material
 		ft_dprintf(STDERR_FILENO, ERR E_OOM);
 	else if (count_fields(split) != 5)
 		ft_dprintf(STDERR_FILENO, ERR E_FIELD, "material properties");
-	else if (get_real_limit(split[0], &values[0], 0, 1)
-		|| get_real_limit(split[1], &values[1], 0, 1)
-		|| get_real_limit(split[2], &values[2], 0, 1)
-		|| get_real_limit(split[3], &values[3], 0, 1)
-		|| get_real_limit(split[4], &values[4], 0, 5000)
+	else if (!get_real_limit(split[0], &values[0], 0, 1)
+		&& !get_real_limit(split[1], &values[1], 0, 1)
+		&& !get_real_limit(split[2], &values[2], 0, 1)
+		&& !get_real_limit(split[3], &values[3], 0, 1)
+		&& !get_real_limit(split[4], &values[4], 0, 5000)
 	)
 	{
 		free_array(split);
