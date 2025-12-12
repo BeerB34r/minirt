@@ -28,7 +28,6 @@
 #include <minirt_declarations.h>
 #include <minirt_mlx.h>
 #include <MLX42.h>
-#include <stdio.h>
 
 void	key_hook(mlx_key_data_t kd, void *param)
 {
