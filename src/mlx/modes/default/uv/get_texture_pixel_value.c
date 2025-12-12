@@ -12,7 +12,6 @@
 
 #include <minirt_mlx.h>
 #include <math.h>
-#include <stdio.h>
 
 int	uv_to_xy(double v, int h)
 {

@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/06 14:58:25 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/08 19:40:50 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/12 11:29:09 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,14 @@
 #include <minirt_declarations.h>
 #include <minirt_mlx.h>
 #include <MLX42.h>
-#include <stdio.h>
 
-static bool	mlx_hooks(mlx_t	*mlx,\
-	struct s_progressive_rendering_params *progressive_rendering_args)
+void	key_hook(mlx_key_data_t kd, void *param)
 {
-	if (mlx_loop_hook(mlx, &progressive_rendering, progressive_rendering_args))
-		return (true);
-	else
-		return (false);
+	mlx_t	*mlx;
+
+	mlx = (mlx_t *)param;
+	if (kd.key == MLX_KEY_ESCAPE && kd.action == MLX_PRESS)
+		mlx_close_window(mlx);
 }
 
 	// struct s_rgba col = scene->elements[0].colour;
@@ -66,14 +65,13 @@ void	render_scene(struct s_rt_scene *scene)
 	if (get_viewport(&mlx, &img, (t_viewport){VIEWPORT_WIDTH, VIEWPORT_HEIGHT,
 			VIEWPORT_TITLE, VIEWPORT_RESIZABLE}))
 		return ;
-	p.max_depth = depth;
-	p.img = img;
-	p.mode = DEFAULT;
-	p.scene = scene;
+	p = (struct s_progressive_rendering_params){.max_depth = depth,
+		.img = img, .mode = DEFAULT, .scene = scene};
 	populate_plane_array(scene->camera, VIEWPORT_WIDTH,
 		VIEWPORT_HEIGHT, p.angles);
-	if (mlx_hooks(mlx, &p))
-		mlx_loop(mlx);
+	mlx_key_hook(mlx, key_hook, mlx);
+	mlx_loop_hook(mlx, progressive_rendering, &p);
+	mlx_loop(mlx);
 	mlx_delete_image(mlx, img);
 	mlx_terminate(mlx);
 }

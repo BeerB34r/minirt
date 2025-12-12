@@ -52,7 +52,7 @@ int	sphere_int(t_line ray, const void *data, double *t, t_uv *uv)
 		*t = (-b + disc);
 	else
 		return (0);
-	get_sphere_uv(uv, get_local_point(ray, *t, sp->pos));
+	get_sphere_uv(uv, vec3_normalise(get_local_point(ray, *t, sp->pos)));
 	get_sphere_tangents(uv, l);
 	return (1);
 }

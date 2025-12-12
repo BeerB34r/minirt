@@ -55,11 +55,11 @@ t_norm local_x
 )
 {
 	const t_norm	x = (t_norm){.x = 1, .y = 0, .z = 0};
-	const t_norm	y = (t_norm){.x = 0, .y = 1, .z = 0};
-	const double	theta = acos(vec3_dot_product(local_x, x));
+	const t_norm	y = (t_norm){.x = 0, .y = -1, .z = 0};
+	const double	theta = acos(vec3_dot_product(x, local_x));
 	t_norm			k;
 
-	k = vec3_normalise(vec3_cross_product(local_x, x));
+	k = vec3_normalise(vec3_cross_product(x, local_x));
 	if (vec3_magnitude(k) == vec3_magnitude(k))
 		;
 	else
@@ -80,11 +80,11 @@ t_norm local_x
 t_norm	local_z(t_norm local_x)
 {
 	const t_norm	x = (t_norm){.x = 1, .y = 0, .z = 0};
-	const t_norm	z = (t_norm){.x = 0, .y = 0, .z = 1};
-	const double	theta = acos(vec3_dot_product(local_x, x));
+	const t_norm	z = (t_norm){.x = 0, .y = 0, .z = -1};
+	const double	theta = acos(vec3_dot_product(x, local_x));
 	t_norm			k;
 
-	k = vec3_normalise(vec3_cross_product(local_x, x));
+	k = vec3_normalise(vec3_cross_product(x, local_x));
 	if (vec3_magnitude(k) == vec3_magnitude(k))
 		;
 	else
@@ -112,16 +112,9 @@ void	populate_plane_array(struct s_rt_element_camera c, unsigned int w,
 	const t_vec3	q_y = vec3_scalar_mul(local_y(c.orientation),
 			(2 * g_y) / (h - 1));
 	const t_vec3	p_1m = vec3_sub(vec3_sub(
-				c.orientation, vec3_scalar_mul((t_norm){
-					.x = c.orientation.z,
-					.y = c.orientation.x,
-					.z = c.orientation.y
-				}, tan(theta / 2))),
-			vec3_scalar_mul((t_norm){
-				.x = c.orientation.y,
-				.y = c.orientation.z,
-				.z = c.orientation.x
-			}, g_y));
+				c.orientation, vec3_scalar_mul(local_y(c.orientation)
+				, tan(theta / 2))),
+			vec3_scalar_mul(local_z(c.orientation), g_y));
 
 	view_plane_array(array, (t_plane_array_opts){.origin = c.pos,
 		.w = w, .h = h,
