@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                            ::::::::        */
-/*   minirt_utils.h                                          :+:    :+:       */
-/*                                                          +:+               */
-/*   By: mde-beer <mde-beer@student.codam.nl>              +#+                */
-/*                                                        +#+                 */
-/*   Created: 2025/09/18 16:28:30 by mde-beer            #+#    #+#           */
-/*   Updated: 2025/12/11 17:41:57 by mde-beer            ########   odam.nl   */
+/*                                                        ::::::::            */
+/*   minirt_utils.h                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/09/18 16:28:30 by mde-beer      #+#    #+#                 */
+/*   Updated: 2025/12/12 10:35:47 by alkuijte      ########   odam.nl         */
 /*                                                                            */
-/*   —————No norm compliance?——————                                           */
-/*   ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝                                           */
+/* ************************************************************************** */
+
 /*   ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇                                           */
 /*   ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀                                           */
 /*   ⠀⠪⡪⡪⣪⢪⢺⢸⢢⢓⢆⢤⢀⠀⠀⠀⠀⠈⢊⢞⡾⣿⡯⣏⢮⠷⠁⠀⠀⠀                                           */
@@ -124,23 +124,23 @@ int
 		const char *str,
 		struct s_rgba *colour
 		);	// FILE: utils/get_rgba.c
-int
+int	
 	get_texture(
 		const char *str,
 		mlx_texture_t **texture
 		);	// FILE: utils/get_texture.c
-int
+int	
 	get_rgba_or_texture(
 		const char *str,
 		struct s_rgba *colour,
 		struct s_material *material
 		);	// FILE: utils/get_rgba_or_texture.c
-int
+int	
 	get_bumpmap(
 		const char *str,
 		mlx_texture_t **bumpmap
 		);	// FILE: utils/get_bumpmap.c
-int
+int	
 	get_material_properties(
 		const char *str,
 		struct s_material *material
