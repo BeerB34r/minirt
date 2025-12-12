@@ -64,7 +64,7 @@ t_vec4	shade(struct s_rt_scene *scene, t_hit *hit)
 		hit->shading_normal = hit->normal;
 	view_dir = vec3_normalise(vec3_flip(hit->ray.dir));
 	vec3_add_inplace(&light, compute_ambient(
-			scene->ambient_light, material.ambi_reflectivity, colour));
+			scene->ambient_light, material.ambi_reflectivity));
 	i = -1;
 	while (++i < scene->light_count)
 		shade_light(hit, make_shade_input(scene->lights[i],

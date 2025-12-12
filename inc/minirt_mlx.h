@@ -186,8 +186,7 @@ int
 t_vec4	
 	compute_ambient(
 		struct s_rt_element_ambient_light ambient,
-		float mat_ambi_refl,
-		t_vec4 mat_col
+		float mat_ambi_refl
 		);
 void	
 	clamp_colour(
