@@ -1,18 +1,7 @@
 A 0.8 1,1,1
 C 0,0,-10 0,0,1 90
-l 0,0,-10 1 255,255,255
 
 sp 0,0,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
-sp 0,2,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
-sp 0,4,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
-sp 0,6,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
-sp 0,8,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
-sp 0,10,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
-sp 0,-2,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
-sp 0,-4,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
-sp 0,-6,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
-sp 0,-8,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
-sp 0,-10,0 1 0.2,0.8,0.8,0,0.8 ./textures/globe.png ./textures/globe.png
 pl 2,0,0 1,0,0 0,0,0,1,0 1,1,1
 pl -2,0,0 1,0,0 0,0,0,1,0 1,1,1
 pl 0,2,0 0,1,0 0,0,0,1,0 1,1,1

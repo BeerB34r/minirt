@@ -6,7 +6,7 @@
 /*   By: alkuijte <alkuijte@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/12/09 14:25:35 by alkuijte      #+#    #+#                 */
-/*   Updated: 2025/12/12 16:51:43 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/15 10:58:38 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,22 @@
 #include <minirt_mlx.h>
 #include <math.h>
 #include <stdio.h>
+
+static int	find_intersection(t_scene *scene, t_vec3 o, t_vec3 p)
+{
+	double			t;
+	t_uv			uv;
+	unsigned int	i;
+	t_line			ray;
+
+	ray.origin = o;
+	ray.dir = vec3_normalise(vec3_sub(p, o));
+	i = -1;
+	while (++i < scene->element_count)
+		if (check_intersection(&scene->elements[i], ray, &t, &uv))
+			return (1);
+	return (0);
+}
 
 static void	shade_light(t_hit *hit, t_shade_input in, t_vec4 *colour)
 {
@@ -67,7 +83,8 @@ t_vec4	shade(struct s_rt_scene *scene, t_hit *hit)
 			scene->ambient_light, material.ambi_reflectivity));
 	i = -1;
 	while (++i < scene->light_count)
-		shade_light(hit, make_shade_input(scene->lights[i],
-				material, view_dir), &light);
+		if (!find_intersection(scene, hit->point, scene->lights[i].pos))
+			shade_light(hit, make_shade_input(scene->lights[i],
+					material, view_dir), &light);
 	return (mul_colour(colour, light));
 }

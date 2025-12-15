@@ -32,7 +32,7 @@
 #include <minirt_mlx.h>
 #include <stdio.h>
 
-static inline int	check_intersection(const struct s_rt_element *obj,
+int	check_intersection(const struct s_rt_element *obj,
 									t_line ray, double *t, t_uv *uv)
 {
 	if (!obj->intersect || !obj->data)

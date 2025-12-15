@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/09/18 16:49:55 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/12 17:05:15 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/12 21:14:13 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define DEFAULT_ABSO_REFLECTIVITY 0.1f
 # define DEFAULT_SHININESS		   400
 # define EXPOSURE				   1.5f
-# define MAX_DEPTH				   1
+# define MAX_DEPTH				   25
 # define BUMP_STRENGTH			   2.8f
 
 enum e_element_type

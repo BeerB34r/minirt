@@ -6,7 +6,7 @@
 /*   By: mde-beer <mde-beer@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/31 18:06:32 by mde-beer      #+#    #+#                 */
-/*   Updated: 2025/12/12 16:51:26 by alkuijte      ########   odam.nl         */
+/*   Updated: 2025/12/15 10:56:52 by alkuijte      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,5 +282,12 @@ t_vec4
 	mul_colour(
 		t_vec4 a,
 		t_vec4 b
+		);
+int	
+	check_intersection(
+		const struct s_rt_element *obj,
+		t_line ray,
+		double *t,
+		t_uv *uv
 		);
 #endif // MINIRT_MLX_H
